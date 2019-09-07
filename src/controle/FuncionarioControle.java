@@ -62,7 +62,11 @@ public class FuncionarioControle {
     }
 
     public void excluir(int codExcluir) {
-            f.excluir(codExcluir);
+        f.excluir(codExcluir);
+    }
+
+    public FuncionarioBEAN listarUm(int cod) {
+        return f.localizar(cod);
     }
 
 }

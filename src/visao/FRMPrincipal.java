@@ -186,6 +186,7 @@ public class FRMPrincipal extends javax.swing.JFrame {
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         FRMFuncionario f = new FRMFuncionario();
         f.setVisible(true);
+        dispose();
         
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 

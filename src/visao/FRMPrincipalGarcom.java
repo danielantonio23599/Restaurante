@@ -32,8 +32,13 @@ public class FRMPrincipalGarcom extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
         jMenu9 = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -60,12 +65,35 @@ public class FRMPrincipalGarcom extends javax.swing.JFrame {
         );
 
         jMenu1.setText("Arquivo");
+
+        jMenuItem1.setText("Trocar Usuario");
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("Sair");
+        jMenu1.add(jMenuItem2);
+
+        jMenuItem3.setText("Ajuda");
+        jMenu1.add(jMenuItem3);
+
         jMenuBar1.add(jMenu1);
 
         jMenu7.setText("Exclusão");
+
+        jMenuItem4.setText("Excluir Pedido");
+        jMenu7.add(jMenuItem4);
+
         jMenuBar1.add(jMenu7);
 
         jMenu9.setText("Saida");
+
+        jMenuItem5.setText("Restaurante");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu9.add(jMenuItem5);
+
         jMenuBar1.add(jMenu9);
 
         setJMenuBar(jMenuBar1);
@@ -83,6 +111,13 @@ public class FRMPrincipalGarcom extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+       //
+       FRMVenda v = new FRMVenda();
+       v.setVisible(true);
+       this.setVisible(false);
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -126,6 +161,11 @@ public class FRMPrincipalGarcom extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

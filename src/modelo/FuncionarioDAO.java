@@ -42,11 +42,11 @@ public class FuncionarioDAO {
             stmt.setString(5, c.getEndereco());
             stmt.setString(6, c.getNome());
             stmt.setInt(7, c.getUniforme());
-            stmt.setInt(8, c.getCartao());
-            stmt.setString(9, c.getEmail());
-            stmt.setString(10, c.getCPF());
-            stmt.setString(11, c.getRG());
-            stmt.setString(12, c.getSenha());
+            stmt.setString(8, c.getEmail());
+            stmt.setString(9, c.getCPF());
+            stmt.setString(10, c.getRG());
+            stmt.setString(11, c.getSenha());
+            stmt.setInt(12, c.getCartao());
             stmt.setInt(13, c.getCargo());
             stmt.execute();
             stmt.close();

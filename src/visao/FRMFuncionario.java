@@ -726,6 +726,11 @@ public class FRMFuncionario extends javax.swing.JFrame {
     private void tabelaFuncionariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaFuncionariosMouseClicked
         int linha = tabelaFuncionarios.getSelectedRow();
         int i = controle.localizar(Integer.parseInt(tabelaFuncionarios.getValueAt(linha, 0) + ""));
+        try {
+            preencheCampos(i);
+        } catch (ParseException ex) {
+            Logger.getLogger(FRMFuncionario.class.getName()).log(Level.SEVERE, null, ex);
+        }
         codExcluir = i;
     }//GEN-LAST:event_tabelaFuncionariosMouseClicked
 
@@ -1009,6 +1014,32 @@ public class FRMFuncionario extends javax.swing.JFrame {
         jtfTelefone.setText("");
         jtfUniforme.setText("");
         jtfNumCatao.setText("");
+
+    }
+
+    private void preencheCampos(int cod) throws ParseException {
+        FuncionarioBEAN f = controle.listarUm(cod);
+        DateFormat formatUS = new SimpleDateFormat("yyyy-mm-dd");
+        Date date = formatUS.parse(f.getDataAdmicao());
+        Date date2 = formatUS.parse(f.getDataNacimento());
+
+//Depois formata data
+        DateFormat formatBR = new SimpleDateFormat("dd-mm-yyyy");
+        String dateFormated = formatBR.format(date);
+        String dateFormated2 = formatBR.format(date2);
+        comboCargo.setSelectedIndex(f.getCargo());
+        jtfAdm.setText(dateFormated);
+        jtfNasc.setText(dateFormated2);
+        jtfCPF.setText(f.getCPF());
+        jtfEmail.setText(f.getEmail());
+        jtaEndereco.setText(f.getEndereco());
+        jtfNome.setText(f.getNome());
+        jtfRG.setText(f.getRG());
+        jtfSalario.setText(f.getSalario()+"");
+        jpSenha.setText(f.getSenha());
+        jtfTelefone.setText(f.getTelefone());
+        jtfUniforme.setText(f.getUniforme()+"");
+        jtfNumCatao.setText(f.getCartao()+"");
 
     }
 }
