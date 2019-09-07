@@ -5,7 +5,10 @@
  */
 package controle;
 
+import java.util.ArrayList;
+import javax.swing.DefaultComboBoxModel;
 import modelo.FuncionarioDAO;
+import modelo.Produtos;
 
 /**
  *
@@ -18,5 +21,17 @@ public class ControleLogin {
     public int login(String email, String senha) {
 
         return f.Login(email, senha);
+    }
+
+    public DefaultComboBoxModel buscar(String produto) {
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+        ArrayList<String> pe = f.buscar(produto);
+        for (String p : pe) {
+            modelo.addElement(p);
+
+        }
+
+        return modelo;
+
     }
 }

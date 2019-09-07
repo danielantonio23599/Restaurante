@@ -5,7 +5,11 @@
  */
 package visao;
 
+import controle.CargoControle;
 import controle.ControleLogin;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.swing.ComboBoxModel;
 import javax.swing.JOptionPane;
 
 /**
@@ -14,11 +18,54 @@ import javax.swing.JOptionPane;
  */
 public class FRMLogin extends javax.swing.JFrame {
 
+    private ControleLogin c = new ControleLogin();
+
     /**
      * Creates new form FRMLogin2
      */
     public FRMLogin() {
         initComponents();
+        this.setLocationRelativeTo(null);
+        comboUsuario.grabFocus();
+        comboUsuario.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
+
+            @Override
+            public void keyReleased(KeyEvent evt) {
+
+                String cadenaEscrita = comboUsuario.getEditor().getItem().toString();
+
+                if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+                    btnLogin.hasFocus();
+                }
+                if (evt.getKeyCode() == KeyEvent.VK_0 || evt.getKeyCode() == KeyEvent.VK_1
+                        || evt.getKeyCode() == KeyEvent.VK_2 || evt.getKeyCode() == KeyEvent.VK_3
+                        || evt.getKeyCode() == KeyEvent.VK_4 || evt.getKeyCode() == KeyEvent.VK_5
+                        || evt.getKeyCode() == KeyEvent.VK_6 || evt.getKeyCode() == KeyEvent.VK_7
+                        || evt.getKeyCode() == KeyEvent.VK_8 || evt.getKeyCode() == KeyEvent.VK_9) {
+                    try {
+                        comboUsuario.setModel((ComboBoxModel<String>) c.buscar(cadenaEscrita));
+                        if (comboUsuario.getItemCount() > 0) {
+                            comboUsuario.getEditor().setItem(cadenaEscrita);
+                            comboUsuario.showPopup();
+
+                        } else {
+                            comboUsuario.addItem(cadenaEscrita);
+                        }
+                    } catch (NumberFormatException ey) {
+                    }
+                } else if (evt.getKeyCode() >= 65 && evt.getKeyCode() <= 90 || evt.getKeyCode() >= 96 && evt.getKeyCode() <= 105 || evt.getKeyCode() == 8) {
+                    comboUsuario.setModel(c.buscar(cadenaEscrita));
+                    if (comboUsuario.getItemCount() > 0) {
+                        comboUsuario.getEditor().setItem(cadenaEscrita);
+                        comboUsuario.showPopup();
+
+                    } else {
+                        comboUsuario.addItem(cadenaEscrita);
+                    }
+                }
+            }
+        });
+
     }
 
     /**
@@ -32,71 +79,69 @@ public class FRMLogin extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jtfUsuario = new javax.swing.JTextField();
-        jpfSenha = new javax.swing.JPasswordField();
-        btnLocalizar = new javax.swing.JButton();
-        btnAdicionar = new javax.swing.JButton();
-        btnExcluir = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        btnLocalizar1 = new javax.swing.JButton();
-        btnAdicionar1 = new javax.swing.JButton();
-        btnExcluir1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        comboUsuario = new javax.swing.JComboBox<>();
+        jpfSenha = new javax.swing.JPasswordField();
+        btnLogin = new javax.swing.JButton();
+        btnLocalizar1 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel2.setBackground(new java.awt.Color(0, 153, 102));
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setLayout(null);
 
-        jtfUsuario.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        jPanel2.add(jtfUsuario);
-        jtfUsuario.setBounds(200, 200, 300, 40);
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/key.png"))); // NOI18N
+        jPanel2.add(jLabel2);
+        jLabel2.setBounds(190, 290, 40, 40);
 
-        jpfSenha.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        jLabel21.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel21.setForeground(new java.awt.Color(0, 0, 51));
+        jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel21.setText("LOGIN");
+        jPanel2.add(jLabel21);
+        jLabel21.setBounds(0, 0, 800, 28);
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/user.png"))); // NOI18N
+        jPanel2.add(jLabel1);
+        jLabel1.setBounds(190, 190, 40, 50);
+
+        comboUsuario.setEditable(true);
+        comboUsuario.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        comboUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboUsuarioActionPerformed(evt);
+            }
+        });
+        jPanel2.add(comboUsuario);
+        comboUsuario.setBounds(240, 200, 300, 40);
+
+        jpfSenha.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
+        jpfSenha.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jpfSenhaActionPerformed(evt);
+            }
+        });
         jPanel2.add(jpfSenha);
-        jpfSenha.setBounds(201, 260, 300, 40);
+        jpfSenha.setBounds(240, 300, 300, 40);
 
-        btnLocalizar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnLocalizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/reltorio.png"))); // NOI18N
-        btnLocalizar.setText("Gerar Relátorio");
-        btnLocalizar.addActionListener(new java.awt.event.ActionListener() {
+        btnLogin.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btnLogin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icon.png"))); // NOI18N
+        btnLogin.setText("Login");
+        btnLogin.setMaximumSize(new java.awt.Dimension(105, 25));
+        btnLogin.setMinimumSize(new java.awt.Dimension(105, 25));
+        btnLogin.setPreferredSize(new java.awt.Dimension(105, 25));
+        btnLogin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLocalizarActionPerformed(evt);
+                btnLoginjButton6ActionPerformed(evt);
             }
         });
-        jPanel2.add(btnLocalizar);
-        btnLocalizar.setBounds(10, 604, 605, 35);
-
-        btnAdicionar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnAdicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icon.png"))); // NOI18N
-        btnAdicionar.setText("Login");
-        btnAdicionar.setMaximumSize(new java.awt.Dimension(105, 25));
-        btnAdicionar.setMinimumSize(new java.awt.Dimension(105, 25));
-        btnAdicionar.setPreferredSize(new java.awt.Dimension(105, 25));
-        btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAdicionarjButton6ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnAdicionar);
-        btnAdicionar.setBounds(160, 350, 140, 51);
-
-        btnExcluir.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/symbol.png"))); // NOI18N
-        btnExcluir.setText("Redução   Z    ");
-        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExcluirjButton8ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnExcluir);
-        btnExcluir.setBounds(10, 558, 605, 35);
-
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/logo.png"))); // NOI18N
-        jPanel2.add(jLabel6);
-        jLabel6.setBounds(190, 40, 312, 311);
+        jPanel2.add(btnLogin);
+        btnLogin.setBounds(230, 380, 140, 51);
 
         btnLocalizar1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btnLocalizar1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/remove-symbol (2).png"))); // NOI18N
@@ -107,65 +152,37 @@ public class FRMLogin extends javax.swing.JFrame {
             }
         });
         jPanel2.add(btnLocalizar1);
-        btnLocalizar1.setBounds(360, 350, 140, 51);
+        btnLocalizar1.setBounds(410, 380, 140, 51);
 
-        btnAdicionar1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnAdicionar1.setText("Mesas");
-        btnAdicionar1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAdicionar1jButton6ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnAdicionar1);
-        btnAdicionar1.setBounds(10, 512, 605, 35);
-
-        btnExcluir1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnExcluir1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/symbol.png"))); // NOI18N
-        btnExcluir1.setText("Redução   X    ");
-        btnExcluir1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExcluir1jButton8ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btnExcluir1);
-        btnExcluir1.setBounds(10, 652, 605, 35);
-
-        jLabel21.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel21.setText("LOGIN");
-        jPanel2.add(jLabel21);
-        jLabel21.setBounds(30, 10, 605, 28);
-
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/user.png"))); // NOI18N
-        jPanel2.add(jLabel1);
-        jLabel1.setBounds(150, 190, 40, 50);
-
-        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/key.png"))); // NOI18N
-        jPanel2.add(jLabel2);
-        jLabel2.setBounds(150, 260, 40, 40);
+        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/logotipo4.jpg"))); // NOI18N
+        jPanel2.add(jLabel6);
+        jLabel6.setBounds(0, 10, 800, 530);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 660, Short.MAX_VALUE)
+            .addGap(0, 800, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 660, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 490, Short.MAX_VALUE)
+            .addGap(0, 533, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 490, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 533, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -177,18 +194,15 @@ public class FRMLogin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnLocalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocalizarActionPerformed
+    private void btnLoginjButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginjButton6ActionPerformed
 
-    }//GEN-LAST:event_btnLocalizarActionPerformed
-
-    private void btnAdicionarjButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarjButton6ActionPerformed
-        ControleLogin c = new ControleLogin();
-        FRMPrincipal p = new FRMPrincipal();
-        if (!jtfUsuario.getText().equals("")) {
+        if (!comboUsuario.getSelectedItem().equals("")) {
             if (!jpfSenha.getText().equals("")) {
-                if (c.login(jtfUsuario.getText() + "", jpfSenha.getText() + "") != 0) {
-                    p.setVisible(true);
-                    this.dispose();
+                int cod = c.login(comboUsuario.getSelectedItem() + "", jpfSenha.getText() + "");
+                if (cod > 0) {
+                    tipoLogin(c.login(comboUsuario.getSelectedItem() + "", jpfSenha.getText() + ""));
+                } else {
+                    JOptionPane.showMessageDialog(null, "Login Incorreto");
                 }
             } else {
                 JOptionPane.showMessageDialog(null, "Insira sua senha");
@@ -196,23 +210,19 @@ public class FRMLogin extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(null, "Insira um email");
         }
-    }//GEN-LAST:event_btnAdicionarjButton6ActionPerformed
-
-    private void btnExcluirjButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirjButton8ActionPerformed
-
-    }//GEN-LAST:event_btnExcluirjButton8ActionPerformed
+    }//GEN-LAST:event_btnLoginjButton6ActionPerformed
 
     private void btnLocalizar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocalizar1ActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnLocalizar1ActionPerformed
 
-    private void btnAdicionar1jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionar1jButton6ActionPerformed
+    private void comboUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboUsuarioActionPerformed
 
-    }//GEN-LAST:event_btnAdicionar1jButton6ActionPerformed
+    }//GEN-LAST:event_comboUsuarioActionPerformed
 
-    private void btnExcluir1jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluir1jButton8ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnExcluir1jButton8ActionPerformed
+    private void jpfSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jpfSenhaActionPerformed
+        btnLoginjButton6ActionPerformed(evt);
+    }//GEN-LAST:event_jpfSenhaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -251,12 +261,9 @@ public class FRMLogin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAdicionar;
-    private javax.swing.JButton btnAdicionar1;
-    private javax.swing.JButton btnExcluir;
-    private javax.swing.JButton btnExcluir1;
-    private javax.swing.JButton btnLocalizar;
     private javax.swing.JButton btnLocalizar1;
+    private javax.swing.JButton btnLogin;
+    private javax.swing.JComboBox<String> comboUsuario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel21;
@@ -264,6 +271,34 @@ public class FRMLogin extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPasswordField jpfSenha;
-    private javax.swing.JTextField jtfUsuario;
     // End of variables declaration//GEN-END:variables
+public void tipoLogin(int funcionario) {
+        CargoControle c = new CargoControle();
+        String nome = c.listarFuncionario(funcionario);
+        FRMPrincipal p = new FRMPrincipal();
+        FRMPrincipalCaixa p1 = new FRMPrincipalCaixa();
+        FRMPrincipalGarcom p2 = new FRMPrincipalGarcom();
+        FRMPrincipalGerente p3 = new FRMPrincipalGerente();
+
+        switch (nome) {
+            case "ADM":
+                p.setVisible(true);
+                break;
+            case "CAIXA":
+                p1.setVisible(true);
+                break;
+            case "GARCOM":
+                p2.setVisible(true);
+                break;
+            case "GERENTE":
+                p3.setVisible(true);
+                break;
+            default:
+                p2.setVisible(true);
+                break;
+
+        }
+        dispose();
+
+    }
 }

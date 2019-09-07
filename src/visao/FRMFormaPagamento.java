@@ -149,7 +149,7 @@ public class FRMFormaPagamento extends javax.swing.JFrame {
                 .addContainerGap(269, Short.MAX_VALUE))
         );
 
-        jPanel1.setBackground(new java.awt.Color(153, 0, 0));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel3.setLayout(null);
 

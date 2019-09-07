@@ -29,7 +29,7 @@ public class FuncionarioDAO {
 
     public boolean adicionar(FuncionarioBEAN c) {
         String sql = "INSERT INTO funcionario (funSalario, funDataAdmicao, funDataNascimento, funTelefone,"
-                + " funEndereco, funNome, funUniforme, fun_carCodigo, funEmail, funCPF, funRG, funSenha,funNunCartao)"
+                + " funEndereco, funNome, funUniforme, funEmail, funCPF, funRG, funSenha,funNunCartao, fun_carCodigo)"
                 + " VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?);";
 
         try {
@@ -42,12 +42,12 @@ public class FuncionarioDAO {
             stmt.setString(5, c.getEndereco());
             stmt.setString(6, c.getNome());
             stmt.setInt(7, c.getUniforme());
-            stmt.setInt(8, c.getCargo());
+            stmt.setInt(8, c.getCartao());
             stmt.setString(9, c.getEmail());
             stmt.setString(10, c.getCPF());
             stmt.setString(11, c.getRG());
             stmt.setString(12, c.getSenha());
-            stmt.setInt(13, c.getCartao());
+            stmt.setInt(13, c.getCargo());
             stmt.execute();
             stmt.close();
             return true;
@@ -57,7 +57,7 @@ public class FuncionarioDAO {
     }
 
     public ArrayList<FuncionarioBEAN> listarALl() {
-        ArrayList<FuncionarioBEAN> c = new ArrayList<FuncionarioBEAN>();
+        ArrayList<FuncionarioBEAN> c = new ArrayList<>();
 
         String sql = "select * from funcionario;";
         try {
@@ -67,27 +67,28 @@ public class FuncionarioDAO {
                 FuncionarioBEAN ca = new FuncionarioBEAN();
                 ca.setCodigo(rs.getInt(1));
                 ca.setSalario(rs.getInt(2));
-                ca.setDataAdmicao(rs.getDate(3) + "");
+                ca.setDataAdmicao(rs.getDate(3)+"");
                 ca.setDataNacimento(rs.getDate(4) + "");
                 ca.setTelefone(rs.getString(5));
                 ca.setEndereco(rs.getString(6));
                 ca.setNome(rs.getString(7));
                 ca.setUniforme(rs.getInt(8));
-                // ca.setFoto(rs.getBytes(9));
-                ca.setCargo(rs.getInt(10));
-                ca.setEmail(rs.getString(11));
-                ca.setCPF(rs.getString(12));
-                ca.setRG(rs.getString(13));
-                ca.setSenha(rs.getString(14));
-                ca.setCartao(rs.getInt(15));
+                // ca.setFoto(rs.getBytes(9));                
+                ca.setCargo(rs.getInt(15));
+                ca.setEmail(rs.getString(10));
+                ca.setCPF(rs.getString(11));
+                ca.setRG(rs.getString(12));
+                ca.setSenha(rs.getString(13));
+                ca.setCartao(rs.getInt(14));
+                //ca.setCago(rs.getInt(16));
                 c.add(ca);
             }
             stmt.close();
-
+            return c;
         } catch (SQLException e) {
             throw new RuntimeException();
         }
-        return c;
+
     }
 
     public int funCargo(int cargo) {
@@ -186,6 +187,7 @@ public class FuncionarioDAO {
         }
 
     }
+
     public FuncionarioBEAN localizar(int codigo) {
         String sql = "select * from funcionario where funCodigo = ?;";
         FuncionarioBEAN ca = new FuncionarioBEAN();
@@ -265,6 +267,29 @@ public class FuncionarioDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public ArrayList<String> buscar(String funcionario) {
+
+        ArrayList<String> p = new ArrayList<>();
+        String sql = "SELECT funEmail FROM funcionario WHERE funEmail LIKE '" + funcionario + "%';";
+
+        try {
+            stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+
+                p.add(rs.getString(1));
+                // modelo.addElement(rs.getInt(1) + " : " + rs.getString(2) + String.format("%80s"," R$ " + rs.getFloat(3)+""));
+            }
+            stmt.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+
+        return p;
+
     }
 
 }

@@ -183,9 +183,9 @@ public class FRMPedido extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel1.setBackground(new java.awt.Color(153, 0, 0));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        tpPedido.setBackground(new java.awt.Color(153, 0, 0));
+        tpPedido.setBackground(new java.awt.Color(255, 255, 255));
         tpPedido.setTabPlacement(javax.swing.JTabbedPane.LEFT);
 
         jPanel5.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -333,12 +333,12 @@ public class FRMPedido extends javax.swing.JFrame {
         lbFotoPedido.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         lbFotoPedido.setRequestFocusEnabled(false);
         lbFotoPedido.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
                 lbFotoPedidoAncestorAdded(evt);
             }
             public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
-            }
-            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
             }
         });
         lbFotoPedido.addMouseListener(new java.awt.event.MouseAdapter() {

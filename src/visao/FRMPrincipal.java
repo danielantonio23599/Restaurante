@@ -60,7 +60,7 @@ public class FRMPrincipal extends javax.swing.JFrame {
 
         jLabel6.setBackground(new java.awt.Color(0, 102, 51));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/logo.png"))); // NOI18N
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/logo_betam.jpg"))); // NOI18N
         jLabel6.setPreferredSize(new java.awt.Dimension(1384, 705));
         jPanel1.add(jLabel6, "card2");
 
@@ -212,11 +212,11 @@ public class FRMPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-        dispose();
+       System.exit(0);
     }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
-        dispose();
+        System.exit(0);
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     /**

@@ -65,5 +65,9 @@ public class CargoControle {
         return c.pegaCodigo(string).getCodigo();
     }
 
+    public String listarFuncionario(int funcionario) {
+       return c.listarPorFuncionario(funcionario);
+    }
+
     
 }

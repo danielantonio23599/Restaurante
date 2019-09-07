@@ -160,7 +160,7 @@ public class FRMDespesa extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel1.setBackground(new java.awt.Color(153, 0, 0));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jtfTotal.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jtfTotal.setText("00,00");

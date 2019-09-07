@@ -16,6 +16,7 @@ import java.util.ArrayList;
  * @author Daniel
  */
 public class CargoDAO {
+
     private Connection connection;
 
     private PreparedStatement stmt;
@@ -25,7 +26,7 @@ public class CargoDAO {
     }
 
     public boolean adicionar(CargoBEAN c) {
-        String sql = "insert into cargo(carNome,carAtribuicao,carRequisitos,carPermicao) values (?,?,?,?)";
+        String sql = "insert into cargo(carNome,carAtribuicao,carRequisitos) values (?,?,?)";
 
         try {
             stmt = connection.prepareStatement(sql);
@@ -33,7 +34,6 @@ public class CargoDAO {
             stmt.setString(1, c.getNome());
             stmt.setString(2, c.getAtribuicao());
             stmt.setString(3, c.getRequisito());
-            stmt.setString(4, c.getPermicao());
             stmt.execute();
             stmt.close();
             return true;
@@ -42,7 +42,7 @@ public class CargoDAO {
         }
     }
 
-    public  ArrayList<CargoBEAN> listarALl() {
+    public ArrayList<CargoBEAN> listarALl() {
         ArrayList<CargoBEAN> c = new ArrayList<CargoBEAN>();
 
         String sql = "select * from cargo;";
@@ -55,7 +55,6 @@ public class CargoDAO {
                 ca.setNome(rs.getString(2));
                 ca.setAtribuicao(rs.getString(3));
                 ca.setRequisito(rs.getString(4));
-                ca.setPermicao(rs.getString(5));
                 c.add(ca);
             }
             stmt.close();
@@ -67,15 +66,14 @@ public class CargoDAO {
     }
 
     public void editar(CargoBEAN c) {
-        String sql = "update cargo set carNome = ? , carAtribuicao = ? , carRequisitos = ? , carPermicao = ? where carNome = '"+c.getNome()+"';";
+        String sql = "update cargo set carNome = ? , carAtribuicao = ? , carRequisitos = ? where carNome = '" + c.getNome() + "';";
 
         try {
             stmt = connection.prepareStatement(sql);
 
-             stmt.setString(1, c.getNome());
+            stmt.setString(1, c.getNome());
             stmt.setString(2, c.getAtribuicao());
             stmt.setString(3, c.getRequisito());
-            stmt.setString(4, c.getPermicao());
             int l = stmt.executeUpdate();
             stmt.close();
             if (l > 0) {
@@ -101,7 +99,6 @@ public class CargoDAO {
                 ca.setNome(rs.getString(2));
                 ca.setAtribuicao(rs.getString(3));
                 ca.setRequisito(rs.getString(4));
-                ca.setPermicao(rs.getString(5));
                 k.add(ca);
             }
             stmt.close();
@@ -140,6 +137,7 @@ public class CargoDAO {
             throw new RuntimeException(e);
         }
     }
+
     public CargoBEAN localizarPorNome(String cargo) {
         CargoBEAN c = new CargoBEAN();
         String sql = "select * from cargo where carNome = ?;";
@@ -152,12 +150,29 @@ public class CargoDAO {
                 c.setNome(rs.getString(2));
                 c.setAtribuicao(rs.getString(3));
                 c.setRequisito(rs.getString(4));
-                c.setPermicao(rs.getString(5));
             }
             stmt.close();
             return c;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public String listarPorFuncionario(int funcionario) {
+        String nome = "";
+        String sql = "select carNome from funcionario join cargo where carCodigo = fun_carCodigo and funCodigo = " + funcionario + " ;";
+        try {
+            stmt = connection.prepareStatement(sql);
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                nome = rs.getString(1);
+            }
+            stmt.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return nome;
     }
 }
