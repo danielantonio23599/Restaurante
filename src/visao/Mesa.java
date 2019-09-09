@@ -169,7 +169,7 @@ public class Mesa extends javax.swing.JPanel {
             venda.setNunMesa(mesa);
         } else {
             caixa.setNunMesa(mesa);
-            caixa.atualizaProdutos();
+           // caixa.atualizaProdutos();
         }
     }//GEN-LAST:event_painelMouseClicked
 

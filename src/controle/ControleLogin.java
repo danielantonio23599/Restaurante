@@ -7,8 +7,11 @@ package controle;
 
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
+import modelo.FuncionarioBEAN;
 import modelo.FuncionarioDAO;
 import modelo.Produtos;
+import modelo.SharedPreferencesBEAN;
+import modelo.SharedPreferencesDAO;
 
 /**
  *
@@ -19,8 +22,8 @@ public class ControleLogin {
     private FuncionarioDAO f = new FuncionarioDAO();
 
     public int login(String email, String senha) {
-
-        return f.Login(email, senha);
+        int funcionario = f.Login(email, senha);
+        return funcionario;
     }
 
     public DefaultComboBoxModel buscar(String produto) {
@@ -34,4 +37,5 @@ public class ControleLogin {
         return modelo;
 
     }
+
 }

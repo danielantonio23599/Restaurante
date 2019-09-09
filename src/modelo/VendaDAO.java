@@ -27,7 +27,7 @@ public class VendaDAO {
 
     public int abrirMesa(VendaBEAN c) {
         String sql = "insert into venda(venCheckIn,venMesa,ven_caiCodigo, venStatus) values (?,?,?,?)";
-
+        System.out.println(" check in "+c.getCheckIn()+" mesa "+c.getMesa()+" caixa "+c.getCaixa());
         try {
             stmt = connection.prepareStatement(sql);
             stmt.setString(1, c.getCheckIn());
@@ -142,6 +142,7 @@ public class VendaDAO {
         } catch (SQLException e) {
             throw new RuntimeException();
         }
+        //retorna 0 se não tiver nenhuma venda naquela mesa
         return cod;
     }
 

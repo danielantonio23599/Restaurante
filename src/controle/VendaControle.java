@@ -25,18 +25,17 @@ import modelo.VendaDAO;
  */
 public class VendaControle {
 
-    private VendaAtualDAO v = new VendaAtualDAO();
+    //private VendaAtualDAO v = new VendaAtualDAO();
     private VendaDAO ven = new VendaDAO();
     private PedidoVendaDAO p = new PedidoVendaDAO();
 
-    public VendaAtualBEAN listar() {
+    /*  public VendaAtualBEAN listar() {
         return v.listar();
     }
 
     public void adicionar(VendaAtualBEAN b) {
         v.inserir(b);
-    }
-
+    }*/
     public int abrirMesa(VendaBEAN v) {
         return ven.abrirMesa(v);
     }
@@ -54,7 +53,13 @@ public class VendaControle {
     }
 
     public ArrayList<ProdutosGravados> listarProdutosMesa(String text) {
-        return p.produtosMesa(Integer.parseInt(text));
+        //verificar se mesa esta aberta
+       // if (ven.getVenda(Integer.parseInt(text)) > 0) {
+
+            return p.produtosMesa(Integer.parseInt(text));
+       /* } else {
+            abrirMesa(text);
+        }*/
     }
 
     public void transferirMesa(String origem, String destino) {
@@ -85,12 +90,12 @@ public class VendaControle {
         return sdf.format(hora);
     }
 
-    public void transferirProduto(int mesaOrigem, int mesaDestino, int codP, int pedidoVenda) {
+    public void transferirProduto(int mesaOrigem, int mesaDestino, int pedido, String time) {
         int des = getVenda(mesaDestino);
         if (des == 0) {
             des = abrirMesa(mesaDestino + "");
         }
-        p.transferir(getVenda(mesaOrigem), codP, getVenda(mesaDestino), pedidoVenda);
+        p.transferir(getVenda(mesaOrigem), pedido, getVenda(mesaDestino), time);
     }
 
 }

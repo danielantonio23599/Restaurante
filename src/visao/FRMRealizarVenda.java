@@ -109,7 +109,7 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
         jLabel40 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         labNumMesa = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
+        btnSalvar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         botaoPesquisar = new javax.swing.JButton();
         comboProduto = new javax.swing.JComboBox<>();
@@ -133,7 +133,7 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         listObs = new javax.swing.JList<>();
         jtfQtd = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -174,13 +174,13 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
                 .addContainerGap(19, Short.MAX_VALUE))
         );
 
-        jButton4.setBackground(new java.awt.Color(0, 153, 0));
-        jButton4.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/plus.png"))); // NOI18N
-        jButton4.setText("Salvar");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnSalvar.setBackground(new java.awt.Color(0, 153, 0));
+        btnSalvar.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        btnSalvar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/plus.png"))); // NOI18N
+        btnSalvar.setText("Salvar");
+        btnSalvar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnSalvarActionPerformed(evt);
             }
         });
 
@@ -379,13 +379,13 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jButton1.setBackground(new java.awt.Color(204, 0, 0));
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/remove-symbol (2).png"))); // NOI18N
-        jButton1.setText("Cancelar");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setBackground(new java.awt.Color(204, 0, 0));
+        btnCancelar.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/remove-symbol (2).png"))); // NOI18N
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
             }
         });
 
@@ -400,9 +400,9 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(91, Short.MAX_VALUE))
         );
@@ -418,8 +418,8 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
 
@@ -439,12 +439,12 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void jtfQtdKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfQtdKeyReleased
-        float n1 = Float.parseFloat(jtfQtd.getText()+"");
+        float n1 = Float.parseFloat(jtfQtd.getText() + "");
         float n2 = produto.getPreco();
         float t = n1 * n2;
         jtfSubTotal.setText(t + "");
@@ -455,9 +455,9 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
         if (!caracteres.contains(evt.getKeyChar() + "")) {
             evt.consume();
         }
-        if(jtfQtd.getText().equals("")){
+        if (jtfQtd.getText().equals("")) {
             jtfQtd.setText("0");
-      }
+        }
     }//GEN-LAST:event_jtfQtdKeyTyped
 
     private void jtfObsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfObsActionPerformed
@@ -484,11 +484,16 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_botaoPesquisarActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        PedidoVendaBEAN venda = getDados();
-        v.adicionar(venda);
-        dispose();
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
+        CaixaControle c = new CaixaControle();
+        if (c.isCaixaAberto()) {
+            PedidoVendaBEAN venda = getDados();
+            v.adicionar(venda);
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(null, "Caixa ainda não foi Aberto, aguarde a abertura do mesmo...");
+        }
+    }//GEN-LAST:event_btnSalvarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -527,10 +532,10 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton botaoPesquisar;
+    private javax.swing.JButton btnCancelar;
+    private javax.swing.JButton btnSalvar;
     private javax.swing.JButton btnadicionar;
     private javax.swing.JComboBox<String> comboProduto;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel12;
@@ -577,9 +582,15 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
 
     private PedidoVendaBEAN getDados() {
         PedidoVendaBEAN venda = new PedidoVendaBEAN();
+        VendaControle v = new VendaControle();
         venda.setPedido(Integer.parseInt(lbCodigo.getText()));
         venda.setHora(getHoraAtual());
-        venda.setVenda(abrirMesa());
+        int codvenda = v.getVenda(Integer.parseInt(labNumMesa.getText() + ""));
+        if (codvenda != 0) {
+            venda.setVenda(codvenda);
+        } else {
+            venda.setVenda(abrirMesa());
+        }
         venda.setQuantidade(Float.parseFloat(jtfQtd.getText() + ""));
         venda.setDescricao(getListaOBS());
         return venda;

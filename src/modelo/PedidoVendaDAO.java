@@ -104,7 +104,7 @@ public class PedidoVendaDAO {
     public ArrayList<ProdutosGravados> produtosMesa(int mesa) {
         ArrayList<ProdutosGravados> c = new ArrayList<ProdutosGravados>();
 
-        String sql = "SELECT pevCodigo,pev_pedCodigo, pedNome,pevQTD, pevTime,venMesa, (pedPreco * pevQTD) "
+        String sql = "SELECT pev_venCodigo,pev_pedCodigo, pedNome,pevQTD, pevTime,venMesa, (pedPreco * pevQTD) "
                 + "FROM pedido join pedido_venda join venda"
                 + " where"
                 + " venCodigo = pev_venCodigo and pev_pedCodigo = pedCodigo and venMesa=" + mesa + " ;";
@@ -154,9 +154,9 @@ public class PedidoVendaDAO {
         return ca;
     }
 
-    public void transferir(int venda, int pedido, int vendaTranferir, int pedidoVenda) {
-        String sql = "update pedido_venda set pev_venCodigo = " + vendaTranferir + "  "
-                + "where pev_pedCodigo = " + pedido + " and pev_venCodigo = " + venda + " and pevCodigo =" + pedidoVenda + " ;";
+    public void transferir(int origem, int pedido, int destino, String time) {
+        String sql = "update pedido_venda set pev_venCodigo = " + destino + "  "
+                + "where pev_pedCodigo = " + pedido + " and pev_venCodigo = " + origem + " and pevTime = '"+time+"' ;";
 
         try {
             stmt = connection.prepareStatement(sql);

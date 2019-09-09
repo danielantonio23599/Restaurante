@@ -23,7 +23,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <EmptySpace min="0" pref="1374" max="32767" attributes="0"/>
+          <EmptySpace min="0" pref="1394" max="32767" attributes="0"/>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Component id="Home" alignment="0" max="32767" attributes="0"/>
           </Group>
@@ -31,7 +31,7 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <EmptySpace min="0" pref="703" max="32767" attributes="0"/>
+          <EmptySpace min="0" pref="708" max="32767" attributes="0"/>
           <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
               <Component id="Home" alignment="1" max="32767" attributes="0"/>
           </Group>
@@ -60,7 +60,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
                   <Component id="jPanel16" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace min="0" pref="3" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -81,11 +81,13 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="1" attributes="0">
                               <Component id="jButton14" min="-2" pref="140" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
+                              <Component id="jButton17" min="-2" pref="157" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jButton15" min="-2" pref="157" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="176" max="-2" attributes="0"/>
-                              <Component id="jLabel353" min="-2" pref="65" max="-2" attributes="0"/>
+                              <Component id="btnAtualizar" min="-2" pref="157" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jLabel353" min="-2" pref="65" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
                               <Component id="labNumMesa" min="-2" pref="93" max="-2" attributes="0"/>
                               <EmptySpace pref="506" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -103,10 +105,10 @@
                               <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
+                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
                                   <Component id="jScrollPane3" min="-2" pref="345" max="-2" attributes="0"/>
                                   <Group type="102" attributes="0">
-                                      <Component id="jTextField54" min="-2" pref="271" max="-2" attributes="0"/>
+                                      <Component id="jTextField54" max="32767" attributes="0"/>
                                       <EmptySpace min="-2" pref="5" max="-2" attributes="0"/>
                                       <Component id="jButton16" min="-2" pref="61" max="-2" attributes="0"/>
                                   </Group>
@@ -136,12 +138,15 @@
                               </Group>
                           </Group>
                           <Group type="103" alignment="1" groupAlignment="0" attributes="0">
-                              <Component id="jLabel353" alignment="0" min="-2" pref="61" max="-2" attributes="0"/>
                               <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                                  <Component id="jButton15" alignment="3" min="-2" pref="61" max="-2" attributes="0"/>
                                   <Component id="jButton14" alignment="3" min="-2" pref="61" max="-2" attributes="0"/>
+                                  <Component id="jButton17" alignment="3" min="-2" pref="61" max="-2" attributes="0"/>
+                                  <Component id="btnAtualizar" alignment="3" min="-2" pref="61" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="labNumMesa" alignment="0" min="-2" pref="61" max="-2" attributes="0"/>
+                              <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                                  <Component id="labNumMesa" alignment="3" min="-2" pref="61" max="-2" attributes="0"/>
+                                  <Component id="jLabel353" alignment="3" min="-2" pref="61" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -175,10 +180,13 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton14ActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton15">
+            <Component class="javax.swing.JButton" name="btnAtualizar">
               <Properties>
-                <Property name="text" type="java.lang.String" value="TRANSFERIR"/>
+                <Property name="text" type="java.lang.String" value="Atualizar Mesas"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAtualizarActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel353">
               <Properties>
@@ -237,6 +245,9 @@
                   <Image iconType="3" name="/icons/loupe.png"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton16ActionPerformed"/>
+              </Events>
             </Component>
             <Container class="javax.swing.JScrollPane" name="jScrollPane3">
               <AuxValues>
@@ -262,6 +273,11 @@
                 </Component>
               </SubComponents>
             </Container>
+            <Component class="javax.swing.JButton" name="jButton17">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="TRANSFERIR"/>
+              </Properties>
+            </Component>
           </SubComponents>
         </Container>
       </SubComponents>

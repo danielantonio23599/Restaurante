@@ -7,6 +7,7 @@ package visao;
 
 import controle.CargoControle;
 import controle.ControleLogin;
+import controle.SharedP_Control;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.ComboBoxModel;
@@ -275,6 +276,8 @@ public class FRMLogin extends javax.swing.JFrame {
 public void tipoLogin(int funcionario) {
         CargoControle c = new CargoControle();
         String nome = c.listarFuncionario(funcionario);
+        SharedP_Control s  = new SharedP_Control();
+        s.inserir(funcionario);
         FRMPrincipal p = new FRMPrincipal();
         FRMPrincipalCaixa p1 = new FRMPrincipalCaixa();
         FRMPrincipalGarcom p2 = new FRMPrincipalGarcom();

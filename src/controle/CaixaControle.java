@@ -27,8 +27,12 @@ public class CaixaControle {
     }
 
     public int getCaixa() {
-        CaixaBEAN ca = this.listar();
-        return ca.getCodigo();
+        if (isCaixaAberto()) {
+            CaixaBEAN ca = this.listar();
+            return ca.getCodigo();
+        } else {
+            return 0;
+        }
     }
 
     public String abrirCaixa(CaixaBEAN c) {
