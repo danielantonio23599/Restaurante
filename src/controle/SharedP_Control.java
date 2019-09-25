@@ -17,7 +17,7 @@ import modelo.SharedPreferencesDAO;
 public class SharedP_Control {
 
     private static FuncionarioDAO f = new FuncionarioDAO();
-    SharedPreferencesDAO sha = new SharedPreferencesDAO();
+    private SharedPreferencesDAO sha = new SharedPreferencesDAO();
 
     public void inserir(int funcionario) {
         logOFF();

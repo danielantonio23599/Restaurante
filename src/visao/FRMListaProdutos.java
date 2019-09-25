@@ -80,11 +80,12 @@ public class FRMListaProdutos extends javax.swing.JFrame {
                 }
             }
         });
-
+        
     }
 
     public void atualizaProdutos() {
         preencheTabelaProdutos(controle.listarProdutosMesa(labMesa.getText()));
+        atualizaProdutosNImpressos();
     }
 
     private boolean comparar(String cadena) {
@@ -594,7 +595,19 @@ public class FRMListaProdutos extends javax.swing.JFrame {
     }//GEN-LAST:event_jtfMesaDestinoKeyTyped
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        if (!taMotivo.getText().equals("")) {
+            if (tabelaProdutosE.isBackgroundSet()) {
+                int produto = Integer.parseInt(tabelaProdutosE.getValueAt(tabelaProdutosE.getSelectedRow(), 1) + "");
+                String time = tabelaProdutosE.getValueAt(tabelaProdutosE.getSelectedRow(), 5) + "";
+                controle.excluirProduto(Integer.parseInt(labMesa.getText()), taMotivo.getText(), produto, time);
+                atualizaProdutos();
+                JOptionPane.showMessageDialog(null, "Produto Excluido!!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Selecione um produto!!");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Insira uma justificativa!!");
+        }
     }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
@@ -628,13 +641,15 @@ public class FRMListaProdutos extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new FRMListaProdutos().setVisible(true);
+                
             }
         });
+        
     }
 
     public void setDados(String mesa) {
         labMesa.setText(mesa);
-        //atualizaProdutosNImpressos();
+        atualizaProdutosNImpressos();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -694,10 +709,10 @@ public class FRMListaProdutos extends javax.swing.JFrame {
                 false, false, false
             };
 
-            @Override
+            /*@Override
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit[columnIndex];
-            }
+            }*/
         ;
 
         };

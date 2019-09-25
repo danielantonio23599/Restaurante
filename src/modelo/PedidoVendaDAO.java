@@ -75,7 +75,7 @@ public class PedidoVendaDAO {
     public ArrayList<ProdutosGravados> OFFImpressoAll(int mesa) {
         ArrayList<ProdutosGravados> c = new ArrayList<ProdutosGravados>();
 
-        String sql = "SELECT pevCodigo,pev_pedCodigo, pedNome,pevQTD, pevTime,venMesa, (pedPreco * pevQTD) "
+        String sql = "SELECT pev_venCodigo,pev_pedCodigo, pedNome,pevQTD, pevTime,venMesa, (pedPreco * pevQTD) "
                 + "FROM pedido join pedido_venda join venda"
                 + " where"
                 + " venCodigo = pev_venCodigo and pev_pedCodigo = pedCodigo and pevImpresso = 'of'and venMesa=" + mesa + " ;";
@@ -156,7 +156,7 @@ public class PedidoVendaDAO {
 
     public void transferir(int origem, int pedido, int destino, String time) {
         String sql = "update pedido_venda set pev_venCodigo = " + destino + "  "
-                + "where pev_pedCodigo = " + pedido + " and pev_venCodigo = " + origem + " and pevTime = '"+time+"' ;";
+                + "where pev_pedCodigo = " + pedido + " and pev_venCodigo = " + origem + " and pevTime = '" + time + "' ;";
 
         try {
             stmt = connection.prepareStatement(sql);
@@ -200,6 +200,17 @@ public class PedidoVendaDAO {
             throw new RuntimeException(e);
         }
 
+    }
+
+    public void excluirProduto(int venda, String motivo, int produto, String time) {
+        String sql = "delete from pedido_venda where pev_pedCodigo = "+produto+" and pev_venCodigo = "+venda+" and pevTime = '"+time+"';";
+        try {
+            stmt = connection.prepareStatement(sql);
+            stmt.execute();
+            stmt.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

@@ -10,11 +10,13 @@ package modelo;
  * @author Daniel
  */
 public class ExcluzaoBEAN {
+
     private int codigo;
     private String nome;
     private String motivo;
-    private FuncionarioBEAN funcionario;
-    private VendaBEAN venda;
+    private String time;
+    private int funcionario;
+    private int venda;
 
     public int getCodigo() {
         return codigo;
@@ -26,6 +28,14 @@ public class ExcluzaoBEAN {
 
     public String getNome() {
         return nome;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public void setNome(String nome) {
@@ -40,21 +50,20 @@ public class ExcluzaoBEAN {
         this.motivo = motivo;
     }
 
-    public FuncionarioBEAN getFuncionario() {
+    public int getFuncionario() {
         return funcionario;
     }
 
-    public void setFuncionario(FuncionarioBEAN funcionario) {
+    public void setFuncionario(int funcionario) {
         this.funcionario = funcionario;
     }
 
-    public VendaBEAN getVenda() {
+    public int getVenda() {
         return venda;
     }
 
-    public void setVenda(VendaBEAN venda) {
+    public void setVenda(int venda) {
         this.venda = venda;
     }
-    
-    
+
 }

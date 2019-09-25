@@ -37,7 +37,7 @@ public class SharedPreferencesDAO {
                 ca.setFunCodigo(rs.getInt(1));
                 ca.setFunNome(rs.getString(2));
                 ca.setFunEmail(rs.getString(3));
-                ca.setFunCargo(rs.getInt(5));
+                ca.setFunCargo(rs.getInt(4));
 
             }
             stmt.close();
