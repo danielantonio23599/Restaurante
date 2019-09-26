@@ -61,12 +61,8 @@ public class VendaControle {
 
     public ArrayList<ProdutosGravados> listarProdutosMesa(String text) {
         //verificar se mesa esta aberta
-        // if (ven.getVenda(Integer.parseInt(text)) > 0) {
-
         return p.produtosMesa(Integer.parseInt(text));
-        /* } else {
-            abrirMesa(text);
-        }*/
+       
     }
 
     public void transferirMesa(String origem, String destino) {

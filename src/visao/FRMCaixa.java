@@ -731,9 +731,9 @@ public class FRMCaixa extends javax.swing.JFrame {
 
         Principal.add(FecharMesa, "mesa");
 
-        Home.setBackground(new java.awt.Color(255, 255, 255));
+        Home.setBackground(new java.awt.Color(204, 204, 204));
 
-        jPanel16.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel16.setBackground(new java.awt.Color(204, 204, 204));
 
         jButton13.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton13.setText("Fechar Mesa");
@@ -1223,28 +1223,24 @@ public class FRMCaixa extends javax.swing.JFrame {
         index.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/logo.png"))); // NOI18N
+        jLabel20.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/logo_beta_M.jpg"))); // NOI18N
 
         javax.swing.GroupLayout indexLayout = new javax.swing.GroupLayout(index);
         index.setLayout(indexLayout);
         indexLayout.setHorizontalGroup(
             indexLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(indexLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, 1059, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, 1079, Short.MAX_VALUE)
         );
         indexLayout.setVerticalGroup(
             indexLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(indexLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 569, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 683, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         Principal.add(index, "index");
 
-        despesas.setBackground(new java.awt.Color(153, 0, 0));
+        despesas.setBackground(new java.awt.Color(204, 204, 204));
 
         jtfTotal2.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jtfTotal2.setText("00,00");
@@ -1442,7 +1438,7 @@ public class FRMCaixa extends javax.swing.JFrame {
 
         Principal.add(despesas, "despesas");
 
-        CupFiscal.setBackground(new java.awt.Color(255, 255, 255));
+        CupFiscal.setBackground(new java.awt.Color(204, 204, 204));
 
         jPanel12.setBackground(new java.awt.Color(0, 153, 102));
         jPanel12.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -1754,7 +1750,7 @@ public class FRMCaixa extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Principal, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(Principal, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -2179,6 +2175,7 @@ public class FRMCaixa extends javax.swing.JFrame {
 
     void setNunMesa(String mesa) {
         labNumMesa.setText(mesa);
+        atualizaProdutos();
     }
 
     private void home() {

@@ -15,7 +15,12 @@ import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
+import modelo.ProdutosGravados;
 
 /**
  *
@@ -23,6 +28,8 @@ import javax.swing.JPanel;
  */
 public class FRMVenda extends javax.swing.JFrame {
 
+    private DefaultTableModel dTable;
+    private TableRowSorter<TableModel> tr;
     private VendaControle c = new VendaControle();
 
     /**
@@ -30,21 +37,9 @@ public class FRMVenda extends javax.swing.JFrame {
      */
     public FRMVenda() {
         initComponents();
-       /* JPanel p = new JPanel();
-        p.setLayout(new GridLayout(0, 5));
-        int controle = 100;
-        for (int i = 1; i <= controle; i++) {
-            Mesa v = new Mesa();
-            v.setValor("00");
-            v.setMesa("" + i);
-            v.setVenda(this);
-            p.add(v);
-        }
-        painelMesas.add(p);
-        //defini um tamanho preferido pro scrollpane
-        //defini o painel de checkboxes como viewport do scrollpane
-        painelMesas.setViewportView(p);*/
-       atualizaMesas();
+        setLocationRelativeTo(null);
+        setExtendedState(MAXIMIZED_BOTH);
+        atualizaMesas();
     }
 
     /**
@@ -70,7 +65,7 @@ public class FRMVenda extends javax.swing.JFrame {
         jTextField54 = new javax.swing.JTextField();
         jButton16 = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        tabelaProdutos = new javax.swing.JTable();
         jButton17 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -119,7 +114,7 @@ public class FRMVenda extends javax.swing.JFrame {
             }
         });
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaProdutos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -130,9 +125,14 @@ public class FRMVenda extends javax.swing.JFrame {
                 "Codigo", "Produto", "Preço", "Status"
             }
         ));
-        jScrollPane3.setViewportView(jTable3);
+        jScrollPane3.setViewportView(tabelaProdutos);
 
         jButton17.setText("TRANSFERIR");
+        jButton17.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton17ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
         jPanel16.setLayout(jPanel16Layout);
@@ -163,11 +163,11 @@ public class FRMVenda extends javax.swing.JFrame {
                                 .addComponent(labGarcom, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(19, 19, 19))
                     .addGroup(jPanel16Layout.createSequentialGroup()
-                        .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel16Layout.createSequentialGroup()
-                                .addComponent(jTextField54)
-                                .addGap(5, 5, 5)
+                                .addComponent(jTextField54, javax.swing.GroupLayout.PREFERRED_SIZE, 278, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(painelMesas, javax.swing.GroupLayout.PREFERRED_SIZE, 945, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -252,8 +252,18 @@ public class FRMVenda extends javax.swing.JFrame {
     private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton16ActionPerformed
+
+    private void jButton17ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton17ActionPerformed
+        if (!labNumMesa.getText().equals("0")) {
+            String num = JOptionPane.showInputDialog("Digite o numero da mesa de destino");
+            c.transferirMesa(labNumMesa.getText(), num);
+        } else {
+            JOptionPane.showMessageDialog(null, "selecione uma mesa de origem");
+        }
+    }//GEN-LAST:event_jButton17ActionPerformed
     public void setNunMesa(String numero) {
         labNumMesa.setText(numero);
+        atualizaProdutos();
     }
 
     private void atualizaMesas() {
@@ -331,11 +341,62 @@ public class FRMVenda extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel356;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTable jTable3;
     private javax.swing.JTextField jTextField54;
     private javax.swing.JLabel labCliente;
     private javax.swing.JLabel labGarcom;
     private javax.swing.JLabel labNumMesa;
     private javax.swing.JScrollPane painelMesas;
+    private javax.swing.JTable tabelaProdutos;
     // End of variables declaration//GEN-END:variables
+private DefaultTableModel criaTabelaProdutos() {
+        //sempre que usar JTable é necessário ter um DefaulttableModel
+        DefaultTableModel dTable = new DefaultTableModel() {
+            //Define o tipo dos campos (coluna) na mesma ordem que as colunas foram criadas
+            Class[] types = new Class[]{
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
+            };
+            //define se os campos podem ser editados na propria tabela
+            boolean[] canEdit = new boolean[]{
+                false, false, false
+            };
+
+            /*@Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }*/
+        ;
+
+        };
+        //retorna o DefaultTableModel
+    return dTable;
+    }
+
+    public void atualizaProdutos() {
+        preencheTabelaProdutos(c.listarProdutosMesa(labNumMesa.getText()));
+
+    }
+
+    private void preencheTabelaProdutos(ArrayList<ProdutosGravados> dados) {
+        dTable = criaTabelaProdutos();
+        //seta o nome das colunas da tabela
+        dTable.addColumn("Pedido");
+        dTable.addColumn("Cod Produto");
+        dTable.addColumn("Nome");
+        dTable.addColumn("Quantidade");
+        dTable.addColumn("Valor");
+        dTable.addColumn("Hora");
+
+        //pega os dados do ArrayList
+        //cada célula do arrayList vira uma linha(row) na tabela
+        for (ProdutosGravados dado : dados) {
+            dTable.addRow(new Object[]{dado.getCodPedidVenda(), dado.getCodProduto(), dado.getNome(),
+                dado.getQuantidade(), dado.getValor(), dado.getTime()});
+        }
+        //set o modelo da tabela
+        tabelaProdutos.setModel(dTable);
+
+        tr = new TableRowSorter<TableModel>(dTable);
+        tabelaProdutos.setRowSorter(tr);
+
+    }
 }

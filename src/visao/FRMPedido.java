@@ -25,7 +25,7 @@ import util.ManipularImagem;
  * @author Daniel
  */
 public class FRMPedido extends javax.swing.JFrame {
-
+    
     private PedidoControle controle = new PedidoControle();
     private TableRowSorter<TableModel> tr;
     private DefaultTableModel dTable;
@@ -43,7 +43,7 @@ public class FRMPedido extends javax.swing.JFrame {
         setExtendedState(MAXIMIZED_BOTH);
         atualizaTabela();
     }
-
+    
     private void atualizaTabela() {
         dados = controle.listarAll();
         this.preencheTabela(dados);
@@ -564,13 +564,13 @@ public class FRMPedido extends javax.swing.JFrame {
     private void btnAdicionarjButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarjButton6ActionPerformed
         String v = verificaCampos();
         if (v.equals("")) {
-
+            
             PedidoBEAN f = getDados();
             JOptionPane.showMessageDialog(null, controle.cadastrar(f));
             atualizaTabela();
         } else {
             JOptionPane.showMessageDialog(null, v);
-
+            
         }
     }//GEN-LAST:event_btnAdicionarjButton6ActionPerformed
 
@@ -583,7 +583,7 @@ public class FRMPedido extends javax.swing.JFrame {
             limpaCampos();
         } else {
             JOptionPane.showMessageDialog(null, v);
-
+            
         }
     }//GEN-LAST:event_btnEditarjButton7ActionPerformed
 
@@ -604,24 +604,24 @@ public class FRMPedido extends javax.swing.JFrame {
         int res = fc.showOpenDialog(this);//INICIA O FRM
 
         selecionou = true;
-
+        
         if (res == JFileChooser.APPROVE_OPTION) {
             File arquivo = fc.getSelectedFile();
             ManipularImagem m = new ManipularImagem();
-
+            
             try {
                 imagem = m.setDimensaoImagem(arquivo.getAbsolutePath(), 187, 300);
                 imagem2 = m.setDimensaoImagem(arquivo.getAbsolutePath(), 380, 515);
-
+                
                 lbFotoPedido.setIcon(new ImageIcon(imagem));
-
+                
                 labFoto.setIcon(new ImageIcon(imagem2));
                 lbFotoPedido.setText("");
-
+                
             } catch (Exception ex) {
                 // System.out.println(ex.printStackTrace().toString());
             }
-
+            
         } else {
             JOptionPane.showMessageDialog(null, "Voce nao selecionou nenhum arquivo.");
         }
@@ -788,7 +788,7 @@ public class FRMPedido extends javax.swing.JFrame {
         }
         if (jtaDescricao.getText().equals("")) {
             retorno += ", Descrição";
-
+            
         }
         if (jtfPreparo.getText().equals("")) {
             retorno += ", Preparo";
@@ -796,18 +796,15 @@ public class FRMPedido extends javax.swing.JFrame {
         if (comboTipo.getSelectedIndex() == 0) {
             retorno += ", Tipo";
         }
-        if (lbFotoPedido.getIcon() == null) {
-            retorno += ", Foto";
-        }
-
+        
         if (!retorno.equals("")) {
             retorno += " se encontra(ão) 'vazio(s)', preencha-o(s) por gentileza!!";
         }
         return retorno;
     }
-
+    
     private PedidoBEAN getDados() {
-
+        
         PedidoBEAN p = new PedidoBEAN();
         p.setCodigo(cod);
         p.setNome(jtfNome.getText() + "");
@@ -817,10 +814,14 @@ public class FRMPedido extends javax.swing.JFrame {
         p.setPreparo(jtfPreparo.getText() + "");
         p.setArmonizacao(jtaAmonizacao.getText() + "");
         p.setTipo(comboTipo.getSelectedItem() + "");
-        p.setFoto(ManipularImagem.getImgBytes(imagem2));
+        if (lbFotoPedido.getIcon() != null) {
+            p.setFoto(ManipularImagem.getImgBytes(imagem2));
+        } else {
+            p.setFoto(null);
+        }
         return p;
     }
-
+    
     private void limpaCampos() {
         jtfNome.setText("");
         jtfPreco.setText("");
@@ -836,7 +837,7 @@ public class FRMPedido extends javax.swing.JFrame {
         labPreco.setText("");
         labPrepar.setText("");
     }
-
+    
     private DefaultTableModel criaTabela() {
         //sempre que usar JTable é necessário ter um DefaulttableModel
         DefaultTableModel dTable = new DefaultTableModel() {
@@ -849,18 +850,18 @@ public class FRMPedido extends javax.swing.JFrame {
             boolean[] canEdit = new boolean[]{
                 false, false, false
             };
-
+            
             @Override
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit[columnIndex];
             }
         ;
-
+        
         };
         //retorna o DefaultTableModel
     return dTable;
     }
-
+    
     private void preencheTabela(ArrayList<PedidoBEAN> dados) {
         dTable = criaTabela();
         //seta o nome das colunas da tabela
@@ -872,7 +873,7 @@ public class FRMPedido extends javax.swing.JFrame {
         dTable.addColumn("Preparo");
         dTable.addColumn("Armonização");
         dTable.addColumn("Tipo");
-
+        
         for (PedidoBEAN dado : dados) {
 
 //Depois formata data
@@ -885,10 +886,11 @@ public class FRMPedido extends javax.swing.JFrame {
         tabelaPedido.setModel(dTable);
         tr = new TableRowSorter<TableModel>(dTable);
         tabelaPedido.setRowSorter(tr);
-
+        
     }
-
+    
     private void prencheCampos(PedidoBEAN c) {
+        limpaCampos();
         cod = c.getCodigo();
         jtfNome.setText(c.getNome());
         jtfPreco.setText(c.getPreco() + "");
@@ -901,9 +903,9 @@ public class FRMPedido extends javax.swing.JFrame {
         m.exibiImagemLabel(c.getFoto(), labFoto);
         labArmoni.setText(c.getArmonizacao());
         labDes.setText(c.getDescricao());
-        labPreco.setText(c.getPreco()+"");
+        labPreco.setText(c.getPreco() + "");
         labPrepar.setText(c.getPreparo());
-
+        
     }
-
+    
 }
