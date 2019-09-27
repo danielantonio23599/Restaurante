@@ -59,10 +59,15 @@ public class VendaControle {
         return ven.listarMesasAbertas();
     }
 
+    public int getValorMesa(int mesa) {
+        int venda = getVenda(mesa);
+        return ven.getValorMesa(venda);
+    }
+
     public ArrayList<ProdutosGravados> listarProdutosMesa(String text) {
         //verificar se mesa esta aberta
         return p.produtosMesa(Integer.parseInt(text));
-       
+
     }
 
     public void transferirMesa(String origem, String destino) {

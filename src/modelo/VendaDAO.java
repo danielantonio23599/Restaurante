@@ -27,7 +27,7 @@ public class VendaDAO {
 
     public int abrirMesa(VendaBEAN c) {
         String sql = "insert into venda(venCheckIn,venMesa,ven_caiCodigo, venStatus) values (?,?,?,?)";
-        System.out.println(" check in "+c.getCheckIn()+" mesa "+c.getMesa()+" caixa "+c.getCaixa());
+        System.out.println(" check in " + c.getCheckIn() + " mesa " + c.getMesa() + " caixa " + c.getCaixa());
         try {
             stmt = connection.prepareStatement(sql);
             stmt.setString(1, c.getCheckIn());
@@ -155,6 +155,29 @@ public class VendaDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public int getValorMesa(int venda) {
+        int total = 0;
+        String sql = "select sum(pevQTD*pedPreco) \n"
+                + "from\n"
+                + " caixa join venda join pedido_venda join pedido \n"
+                + "	where\n"
+                + "    caiCodigo = ven_caiCodigo and pev_venCodigo = venCodigo \n"
+                + "    and pev_pedCodigo = pedCodigo and caiStatus = 'aberto'and venStatus = 'aberta'"
+                + " and venCodigo =" + venda + " group by venMesa;";
+        try {
+            stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                total = rs.getInt(1);
+            }
+            stmt.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return total;
     }
 
 }
