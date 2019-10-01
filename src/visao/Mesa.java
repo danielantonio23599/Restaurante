@@ -24,7 +24,8 @@ public class Mesa extends javax.swing.JPanel {
     private VendaControle controle;
 
     public void setCorPainel() {
-        painel.setBackground(Color.blue);
+        Color azul = new Color(92,154,195);
+        painel.setBackground(azul);
         
     }
     
@@ -85,8 +86,6 @@ public class Mesa extends javax.swing.JPanel {
         jLabel72 = new javax.swing.JLabel();
         labValor = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(255, 255, 255));
-
         painel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         painel.setDoubleBuffered(false);
         painel.setEnabled(false);
@@ -99,14 +98,18 @@ public class Mesa extends javax.swing.JPanel {
             }
         });
 
-        labMesa.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        labMesa.setBackground(new java.awt.Color(255, 255, 255));
+        labMesa.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        labMesa.setForeground(new java.awt.Color(0, 0, 102));
         labMesa.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labMesa.setText("07");
 
         jLabel72.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel72.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/mesa.png"))); // NOI18N
+        jLabel72.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/restaurante.png"))); // NOI18N
 
-        labValor.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        labValor.setBackground(new java.awt.Color(255, 255, 255));
+        labValor.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        labValor.setForeground(new java.awt.Color(0, 0, 102));
         labValor.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         labValor.setText("00,00");
 
@@ -115,15 +118,16 @@ public class Mesa extends javax.swing.JPanel {
         painelLayout.setHorizontalGroup(
             painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jLabel72)
-                .addContainerGap(24, Short.MAX_VALUE))
-            .addGroup(painelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(labValor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(labMesa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addGroup(painelLayout.createSequentialGroup()
+                        .addComponent(jLabel72, javax.swing.GroupLayout.DEFAULT_SIZE, 142, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(painelLayout.createSequentialGroup()
+                        .addGroup(painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(labValor, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(labMesa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(5, 5, 5))))
         );
         painelLayout.setVerticalGroup(
             painelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -142,7 +146,7 @@ public class Mesa extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(5, 5, 5)
-                .addComponent(painel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(painel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(5, 5, 5))
         );
         layout.setVerticalGroup(

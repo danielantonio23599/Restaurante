@@ -61,6 +61,33 @@ public class VendaDAO {
         return cod;
     }
 
+    public VendaBEAN listarVenda(int venda) {
+        VendaBEAN v = new VendaBEAN();
+        String sql = "select * from venda where venCodigo = " + venda + ";";
+        try {
+            stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                v.setCodigo(rs.getInt(1));
+                v.setQRcode(rs.getString(2));
+                v.setCheckIn(rs.getString(3));
+                v.setCheckOut(rs.getString(4));
+                v.setCaixa(rs.getInt(5));
+                v.setValor(rs.getFloat(6));
+                v.setCusto(rs.getFloat(7));
+                v.setPagamento(rs.getInt(8));
+                v.setMesa(rs.getInt(9));
+                v.setStatus(rs.getString(10));
+
+            }
+            stmt.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return v;
+    }
+
     public ArrayList<Mesa> listarMesasAbertas() {
         ArrayList<Mesa> c = new ArrayList<>();
 
@@ -106,6 +133,22 @@ public class VendaDAO {
 
     }
 
+    public void atualizaVenda(VendaBEAN c) {
+        String sql = "update venda set venCheckOut = '" + c.getCheckOut() + "' , venValor = " + c.getValor() + " , ven_pagCodigo = " + c.getPagamento() + " "
+                + ", venStatus = 'fechada', venQRcode = '" + c.getQRcode() + "', venCusto = " + c.getCusto() + "  where venCodigo = " + c.getCodigo() + ";";
+        try {
+            stmt = connection.prepareStatement(sql);
+            int l = stmt.executeUpdate();
+            stmt.close();
+            if (l > 0) {
+                System.out.println("Foram alterados " + l + " linhas");
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
     public boolean isPagamentoUtlizado(int pagamento) {
         int cod = 0;
         String sql = "select venCodigo from venda where ven_pagCodigo = '" + pagamento + "';";
@@ -130,7 +173,7 @@ public class VendaDAO {
 
     public int getVenda(int mesa) {
         int cod = 0;
-        String sql = "select venCodigo from venda where venMesa = " + mesa + ";";
+        String sql = "select venCodigo from venda where venMesa = " + mesa + " and venStatus = 'aberta';";
         try {
             stmt = connection.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();

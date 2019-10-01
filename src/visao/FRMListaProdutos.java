@@ -540,7 +540,7 @@ public class FRMListaProdutos extends javax.swing.JFrame {
         Produtos pro = p.buscarUm(comboProduto.getSelectedItem() + "");
         if (pro != null) {
             FRMRealizarVenda r = new FRMRealizarVenda();
-            r.setProdutos(pro);
+            r.setProdutos(pro);            
             r.setDados(labMesa.getText() + "");
             r.setVisible(true);
 

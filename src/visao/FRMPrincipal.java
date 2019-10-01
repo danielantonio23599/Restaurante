@@ -5,6 +5,8 @@
  */
 package visao;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Daniel
@@ -206,19 +208,19 @@ public class FRMPrincipal extends javax.swing.JFrame {
         FRMFuncionario f = new FRMFuncionario();
         f.setVisible(true);
         dispose();
-        
+
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         FRMCaixa c = new FRMCaixa();
         c.setVisible(true);
-        
+
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
         FRMPedido p = new FRMPedido();
         p.setVisible(true);
-        
+
     }//GEN-LAST:event_jMenuItem8ActionPerformed
 
     private void jMenuItem9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem9ActionPerformed
@@ -232,11 +234,24 @@ public class FRMPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
-       System.exit(0);
-    }//GEN-LAST:event_jMenuItem11ActionPerformed
+        String message = "Deseja realmente sair do sistema?";
+        String title = "Confirmação";
+//Exibe caixa de dialogo (veja figura) solicitando confirmação ou não. 
+//Se o usuário clicar em "Sim" retorna 0 pra variavel reply, se informado não retorna 1
+        int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }    }//GEN-LAST:event_jMenuItem11ActionPerformed
 
     private void jMenuItem12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem12ActionPerformed
-        System.exit(0);
+        String message = "Deseja realmente sair do sistema?";
+        String title = "Confirmação";
+//Exibe caixa de dialogo (veja figura) solicitando confirmação ou não. 
+//Se o usuário clicar em "Sim" retorna 0 pra variavel reply, se informado não retorna 1
+        int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
+        if (reply == JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
     }//GEN-LAST:event_jMenuItem12ActionPerformed
 
     private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed

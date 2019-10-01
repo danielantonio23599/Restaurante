@@ -84,6 +84,26 @@ public class PagamentoDAO {
         }
         return ca;
     }
+    public PagamentoBEAN localizar(String pedido) {
+        PagamentoBEAN ca = new PagamentoBEAN();
+
+        String sql = "select * from pagamento where pagNome = '" + pedido + "';";
+        try {
+            stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                ca.setCodigo(rs.getInt(1));
+                ca.setNome(rs.getString(2));
+                ca.setAcrescimo(rs.getFloat(3));
+                
+            }
+            stmt.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return ca;
+    }
 
     public void editar(PagamentoBEAN c) {
         String sql = "update pagamento set pagNome = ? , pagAcrescimo = ? "

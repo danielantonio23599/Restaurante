@@ -5,6 +5,7 @@
  */
 package controle;
 
+import java.util.ArrayList;
 import modelo.ExcluzaoBEAN;
 import modelo.ExcluzaoDAO;
 
@@ -19,9 +20,16 @@ public class ExcluzaoControle {
 
     public void inserirExclusao(ExcluzaoBEAN pro) {
         int fun = c.listar().getFunCodigo();
-        pro.setFuncionario(fun);
-
+        pro.setFuncionarioC(fun);
         e.inserir(pro);
+    }
+
+    public ArrayList<ExcluzaoBEAN> listarExclusaoVenda(int venda) {        
+        return e.listarExclusaoVenda(venda);
+    }
+
+    public ExcluzaoBEAN listarUm(String cod) {
+        return e.listarUm(cod);
     }
 
 }

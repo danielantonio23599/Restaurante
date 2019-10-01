@@ -78,7 +78,7 @@ public class PedidoVendaDAO {
         String sql = "SELECT pev_venCodigo,pev_pedCodigo, pedNome,pevQTD, pevTime,venMesa, (pedPreco * pevQTD) "
                 + "FROM pedido join pedido_venda join venda"
                 + " where"
-                + " venCodigo = pev_venCodigo and pev_pedCodigo = pedCodigo and pevImpresso = 'of'and venMesa=" + mesa + " ;";
+                + " venCodigo = pev_venCodigo and pev_pedCodigo = pedCodigo and pevImpresso = 'of'and venMesa=" + mesa + " and venStatus = 'aberta' ;";
         try {
             stmt = connection.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
@@ -107,7 +107,7 @@ public class PedidoVendaDAO {
         String sql = "SELECT pev_venCodigo,pev_pedCodigo, pedNome,pevQTD, pevTime,venMesa, (pedPreco * pevQTD) "
                 + "FROM pedido join pedido_venda join venda"
                 + " where"
-                + " venCodigo = pev_venCodigo and pev_pedCodigo = pedCodigo and venMesa=" + mesa + " ;";
+                + " venCodigo = pev_venCodigo and pev_pedCodigo = pedCodigo and venMesa=" + mesa + " and venStatus = 'aberta';";
         try {
             stmt = connection.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
@@ -130,10 +130,10 @@ public class PedidoVendaDAO {
         return c;
     }
 
-    public PedidoVendaBEAN localizar(int pedido, int venda) {
+    public PedidoVendaBEAN localizar(int pedido, int venda, String time) {
         PedidoVendaBEAN ca = new PedidoVendaBEAN();
 
-        String sql = "select * from pedido_venda where pev_pedCodigo = " + pedido + " and pev_venCondigo = " + venda + ";";
+        String sql = "select * from pedido_venda where pev_pedCodigo = " + pedido + " and pev_venCondigo = " + venda + " and venTime = '" + time + "';";
         try {
             stmt = connection.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
@@ -203,7 +203,7 @@ public class PedidoVendaDAO {
     }
 
     public void excluirProduto(int venda, String motivo, int produto, String time) {
-        String sql = "delete from pedido_venda where pev_pedCodigo = "+produto+" and pev_venCodigo = "+venda+" and pevTime = '"+time+"';";
+        String sql = "delete from pedido_venda where pev_pedCodigo = " + produto + " and pev_venCodigo = " + venda + " and pevTime = '" + time + "';";
         try {
             stmt = connection.prepareStatement(sql);
             stmt.execute();
@@ -211,6 +211,42 @@ public class PedidoVendaDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public int getMesaBalcaoAberta(int caixa) {
+        int mesa = 0;
+        String sql = "select venMesa from venda where ven_caiCodigo = " + caixa + " and venStatus = 'aberta' and venMesa > 100 ;";
+        try {
+            stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                mesa = rs.getInt(1);
+
+            }
+            stmt.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return mesa;
+    }
+
+    public int getMaxMesa(int caixa) {
+        int mesa = 0;
+        String sql = "select max(venMesa) from venda where ven_caiCodigo = " + caixa + ";";
+        try {
+            stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                mesa = rs.getInt(1);
+
+            }
+            stmt.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return mesa;
     }
 
 }

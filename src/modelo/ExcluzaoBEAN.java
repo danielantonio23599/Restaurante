@@ -15,8 +15,35 @@ public class ExcluzaoBEAN {
     private String nome;
     private String motivo;
     private String time;
-    private int funcionario;
+    private String obs;
+    private float quantidade;
+    private String funcionario;
+    private int funcionarioC;
     private int venda;
+
+    public int getFuncionarioC() {
+        return funcionarioC;
+    }
+
+    public void setFuncionarioC(int funcionarioC) {
+        this.funcionarioC = funcionarioC;
+    }
+
+    public String getObs() {
+        return obs;
+    }
+
+    public void setObs(String obs) {
+        this.obs = obs;
+    }
+
+    public float getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(float quantidade) {
+        this.quantidade = quantidade;
+    }
 
     public int getCodigo() {
         return codigo;
@@ -50,11 +77,11 @@ public class ExcluzaoBEAN {
         this.motivo = motivo;
     }
 
-    public int getFuncionario() {
+    public String getFuncionario() {
         return funcionario;
     }
 
-    public void setFuncionario(int funcionario) {
+    public void setFuncionario(String funcionario) {
         this.funcionario = funcionario;
     }
 

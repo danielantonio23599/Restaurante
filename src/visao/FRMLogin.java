@@ -12,6 +12,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.ComboBoxModel;
 import javax.swing.JOptionPane;
+import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 /**
  *
@@ -27,7 +28,11 @@ public class FRMLogin extends javax.swing.JFrame {
     public FRMLogin() {
         initComponents();
         this.setLocationRelativeTo(null);
-        comboUsuario.grabFocus();
+
+        comboUsuario.setModel(c.buscar(""));
+        AutoCompleteDecorator.decorate(comboUsuario);
+
+        /* comboUsuario.grabFocus();
         comboUsuario.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
 
             @Override
@@ -36,7 +41,12 @@ public class FRMLogin extends javax.swing.JFrame {
                 String cadenaEscrita = comboUsuario.getEditor().getItem().toString();
 
                 if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                    btnLogin.hasFocus();
+                    if (comparar(cadenaEscrita)) {// compara si el texto escrito se ecuentra en la lista
+                        // busca el texto escrito en la base de datos
+                        c.buscar(cadenaEscrita);
+                    } else if (comboUsuario.getSelectedIndex() == 0) {// en caso contrario toma como default el elemento 0 o sea el primero de la lista y lo busca.
+                        comboUsuario.setSelectedIndex(0);
+                    }
                 }
                 if (evt.getKeyCode() == KeyEvent.VK_0 || evt.getKeyCode() == KeyEvent.VK_1
                         || evt.getKeyCode() == KeyEvent.VK_2 || evt.getKeyCode() == KeyEvent.VK_3
@@ -65,8 +75,7 @@ public class FRMLogin extends javax.swing.JFrame {
                     }
                 }
             }
-        });
-
+        });*/
     }
 
     /**
@@ -116,6 +125,11 @@ public class FRMLogin extends javax.swing.JFrame {
         comboUsuario.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboUsuarioActionPerformed(evt);
+            }
+        });
+        comboUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                comboUsuarioKeyPressed(evt);
             }
         });
         jPanel2.add(comboUsuario);
@@ -217,13 +231,19 @@ public class FRMLogin extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_btnLocalizar1ActionPerformed
 
+    private void jpfSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jpfSenhaActionPerformed
+        btnLoginjButton6ActionPerformed(evt);
+    }//GEN-LAST:event_jpfSenhaActionPerformed
+
     private void comboUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboUsuarioActionPerformed
 
     }//GEN-LAST:event_comboUsuarioActionPerformed
 
-    private void jpfSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jpfSenhaActionPerformed
-        btnLoginjButton6ActionPerformed(evt);
-    }//GEN-LAST:event_jpfSenhaActionPerformed
+    private void comboUsuarioKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_comboUsuarioKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            jpfSenha.requestFocus();
+        }
+    }//GEN-LAST:event_comboUsuarioKeyPressed
 
     /**
      * @param args the command line arguments
@@ -273,10 +293,11 @@ public class FRMLogin extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPasswordField jpfSenha;
     // End of variables declaration//GEN-END:variables
-public void tipoLogin(int funcionario) {
+//private UJComboBox comboUsuario;
+    public void tipoLogin(int funcionario) {
         CargoControle c = new CargoControle();
         String nome = c.listarFuncionario(funcionario);
-        SharedP_Control s  = new SharedP_Control();
+        SharedP_Control s = new SharedP_Control();
         s.inserir(funcionario);
         FRMPrincipal p = new FRMPrincipal();
         FRMPrincipalCaixa p1 = new FRMPrincipalCaixa();
@@ -303,5 +324,18 @@ public void tipoLogin(int funcionario) {
         }
         dispose();
 
+    }
+
+    private boolean comparar(String cadena) {
+        Object[] lista = comboUsuario.getComponents();
+        boolean encontrado = false;
+        for (Object object : lista) {
+            if (cadena.equals(object)) {
+                encontrado = true;
+                break;
+            }
+
+        }
+        return encontrado;
     }
 }

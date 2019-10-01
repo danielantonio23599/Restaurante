@@ -18,6 +18,7 @@ public class DespesaControle {
 
     private DespesaDiaDAO desdia = new DespesaDiaDAO();
     private DespesaDAO d = new DespesaDAO();
+    private CaixaControle c = new CaixaControle();
 
     public ArrayList<DespesaBEAN> listarALL() {
         return d.listarAll();
@@ -35,9 +36,9 @@ public class DespesaControle {
         return "Excluzão realizada com SUCESSO!!";
     }
 
-    public String adicionarDespesaDia(ArrayList<DespesaBEAN> dadosIncluir, int caixa) {
+    public String adicionarDespesaDia(ArrayList<DespesaBEAN> dadosIncluir) {
         for (DespesaBEAN d : dadosIncluir) {
-            this.d.adicionarDespesaDia(d, caixa);
+            this.d.adicionarDespesaDia(d, c.getCaixa());
         }
         return "Cadastro Realizado com SUCESSO!!";
 

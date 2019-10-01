@@ -33,7 +33,6 @@ public class ControleLogin {
             modelo.addElement(p);
 
         }
-
         return modelo;
 
     }

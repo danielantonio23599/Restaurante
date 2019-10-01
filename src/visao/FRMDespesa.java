@@ -348,7 +348,7 @@ public class FRMDespesa extends javax.swing.JFrame {
 
     private void btnEditarjButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarjButton7ActionPerformed
         if (dadosIncluir.size() > 0) {
-            JOptionPane.showMessageDialog(null, controle.adicionarDespesaDia(dadosIncluir, 0));
+            JOptionPane.showMessageDialog(null, controle.adicionarDespesaDia(dadosIncluir));
             dadosIncluir.clear();
         } else {
             JOptionPane.showMessageDialog(null, "Bla");

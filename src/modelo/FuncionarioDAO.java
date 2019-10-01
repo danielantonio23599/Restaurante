@@ -272,7 +272,7 @@ public class FuncionarioDAO {
     public ArrayList<String> buscar(String funcionario) {
 
         ArrayList<String> p = new ArrayList<>();
-        String sql = "SELECT funEmail FROM funcionario WHERE funEmail LIKE '" + funcionario + "%';";
+        String sql = "SELECT funEmail FROM funcionario ;";//WHERE funEmail LIKE '" + funcionario + "%';";
 
         try {
             stmt = connection.prepareStatement(sql);

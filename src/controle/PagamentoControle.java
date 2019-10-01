@@ -29,6 +29,10 @@ public class PagamentoControle {
         return p.localizar(pagamento);
 
     }
+    public PagamentoBEAN localizar(String pagamento) {
+        return p.localizar(pagamento);
+
+    }
 
     public String adicionar(PagamentoBEAN pagamento) {
         p.adicionar(pagamento);

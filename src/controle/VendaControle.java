@@ -35,14 +35,16 @@ public class VendaControle {
     private ExcluzaoControle e = new ExcluzaoControle();
     private PedidoDAO ped = new PedidoDAO();
     private SharedP_Control sc = new SharedP_Control();
+    private CaixaControle cc = new CaixaControle();
 
-    /*  public VendaAtualBEAN listar() {
-        return v.listar();
+    public VendaBEAN listarVenda(int mesa) {
+        return ven.listarVenda(getVenda(mesa));
     }
 
-    public void adicionar(VendaAtualBEAN b) {
-        v.inserir(b);
-    }*/
+    public void atualizaVenda(VendaBEAN v) {
+        ven.atualizaVenda(v);
+    }
+
     public int abrirMesa(VendaBEAN v) {
         return ven.abrirMesa(v);
     }
@@ -93,9 +95,7 @@ public class VendaControle {
     }
 
     private String getHoraAtual() {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-        Date hora = Calendar.getInstance().getTime(); // Ou qualquer outra forma que tem
-        return sdf.format(hora);
+        return Time.getTime();
     }
 
     public void transferirProduto(int mesaOrigem, int mesaDestino, int pedido, String time) {
@@ -107,14 +107,34 @@ public class VendaControle {
     }
 
     public void excluirProduto(int mesaorigem, String motivo, int produto, String time) {
-        p.excluirProduto(getVenda(mesaorigem), motivo, produto, time);
+        int venda = getVenda(mesaorigem);
+        PedidoVendaBEAN pedido = p.localizar(produto, venda, time);
 
         ExcluzaoBEAN pro = new ExcluzaoBEAN();
         pro.setNome(ped.localizar(produto).getNome());
         pro.setMotivo(motivo);
-        pro.setVenda(getVenda(mesaorigem));
+        pro.setVenda(venda);
+        pro.setObs(pedido.getDescricao());
+        pro.setQuantidade(pedido.getQuantidade());
         pro.setTime(Time.getTime());
+        p.excluirProduto(venda, motivo, produto, time);
+
         e.inserirExclusao(pro);
+    }
+
+    public int gerarMesaBalcao() {
+
+        int mesa = p.getMesaBalcaoAberta(cc.getCaixa());
+        if (mesa > 0) {
+            return mesa;
+        } else {
+            mesa = p.getMaxMesa(cc.getCaixa());
+            if (mesa > 100) {
+                return ++mesa;
+            } else {
+                return 101;
+            }
+        }
     }
 
 }
