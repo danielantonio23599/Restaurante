@@ -5,11 +5,13 @@
  */
 package visao;
 
+import visao.util.Mesa;
 import controle.CaixaControle;
 import controle.DespesaControle;
 import controle.ExcluzaoControle;
 import controle.PagamentoControle;
 import controle.PedidoControle;
+import controle.SangriaControle;
 import controle.VendaControle;
 import java.awt.CardLayout;
 import java.awt.GridLayout;
@@ -32,6 +34,7 @@ import modelo.ExcluzaoBEAN;
 import modelo.PagamentoBEAN;
 import modelo.Produtos;
 import modelo.ProdutosGravados;
+import modelo.SangriaBEAN;
 import modelo.VendaBEAN;
 import util.Time;
 
@@ -52,6 +55,7 @@ public class FRMCaixa extends javax.swing.JFrame {
     private ExcluzaoControle exclusaoControl = new ExcluzaoControle();
     private PagamentoControle pagControl = new PagamentoControle();
     private PedidoControle p = new PedidoControle();
+    private SangriaControle sangriaControle = new SangriaControle();
 
     /**
      * Creates new form FRMCaixa
@@ -135,13 +139,13 @@ public class FRMCaixa extends javax.swing.JFrame {
         pagamento = new javax.swing.ButtonGroup();
         valorgrupo = new javax.swing.ButtonGroup();
         jPanel2 = new javax.swing.JPanel();
-        btnLocalizar = new javax.swing.JButton();
-        btnAdicionar = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
-        btnExcluir = new javax.swing.JButton();
+        btnRelatorios = new javax.swing.JButton();
+        btnAbrir = new javax.swing.JButton();
+        btnFechar = new javax.swing.JButton();
+        btnReducaoZ = new javax.swing.JButton();
         btnLocalizar1 = new javax.swing.JButton();
-        btnLocalizar2 = new javax.swing.JButton();
-        btnLocalizar3 = new javax.swing.JButton();
+        btnDespesas = new javax.swing.JButton();
+        btnSangria = new javax.swing.JButton();
         btnAdicionar1 = new javax.swing.JButton();
         btnExcluir1 = new javax.swing.JButton();
         jLabel21 = new javax.swing.JLabel();
@@ -285,6 +289,32 @@ public class FRMCaixa extends javax.swing.JFrame {
         jButton16 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
+        Relatorio = new javax.swing.JPanel();
+        jPanel22 = new javax.swing.JPanel();
+        jLabel57 = new javax.swing.JLabel();
+        jtfCaixa = new javax.swing.JTextField();
+        jPanel23 = new javax.swing.JPanel();
+        jLabel34 = new javax.swing.JLabel();
+        lbSaldo = new javax.swing.JLabel();
+        jButton25 = new javax.swing.JButton();
+        jButton26 = new javax.swing.JButton();
+        jPanel18 = new javax.swing.JPanel();
+        rolagem = new javax.swing.JScrollPane();
+        rola = new javax.swing.JPanel();
+        painelvendas = new javax.swing.JPanel();
+        jScrollPane12 = new javax.swing.JScrollPane();
+        tabelaVendas = new javax.swing.JTable();
+        jLabel22 = new javax.swing.JLabel();
+        lbTotalVendido = new javax.swing.JLabel();
+        painelcancelados = new javax.swing.JPanel();
+        jScrollPane13 = new javax.swing.JScrollPane();
+        tabelaProCancelados = new javax.swing.JTable();
+        painelcancelados1 = new javax.swing.JPanel();
+        jScrollPane14 = new javax.swing.JScrollPane();
+        tabelaProCancelados1 = new javax.swing.JTable();
+        painelcancelados2 = new javax.swing.JPanel();
+        jScrollPane15 = new javax.swing.JScrollPane();
+        tabelaProCancelados2 = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -305,40 +335,41 @@ public class FRMCaixa extends javax.swing.JFrame {
         setUndecorated(true);
 
         jPanel2.setBackground(new java.awt.Color(0, 153, 102));
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 153, 102)));
 
-        btnLocalizar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnLocalizar.setText("RELATÓRIOS");
-        btnLocalizar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnLocalizar.addActionListener(new java.awt.event.ActionListener() {
+        btnRelatorios.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnRelatorios.setText("RELATÓRIOS");
+        btnRelatorios.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnRelatorios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLocalizarActionPerformed(evt);
+                btnRelatoriosActionPerformed(evt);
             }
         });
 
-        btnAdicionar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnAdicionar.setText("ABRIR CAIXA");
-        btnAdicionar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
+        btnAbrir.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnAbrir.setText("ABRIR CAIXA");
+        btnAbrir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAbrir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAdicionarjButton6ActionPerformed(evt);
+                btnAbrirjButton6ActionPerformed(evt);
             }
         });
 
-        btnEditar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnEditar.setText("FECHAR CAIXA");
-        btnEditar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+        btnFechar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnFechar.setText("FECHAR CAIXA");
+        btnFechar.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnFechar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarjButton7ActionPerformed(evt);
+                btnFecharjButton7ActionPerformed(evt);
             }
         });
 
-        btnExcluir.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnExcluir.setText("REDUÇÃO Z");
-        btnExcluir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+        btnReducaoZ.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnReducaoZ.setText("REDUÇÃO Z");
+        btnReducaoZ.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnReducaoZ.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnExcluirjButton8ActionPerformed(evt);
+                btnReducaoZjButton8ActionPerformed(evt);
             }
         });
 
@@ -351,21 +382,21 @@ public class FRMCaixa extends javax.swing.JFrame {
             }
         });
 
-        btnLocalizar2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnLocalizar2.setText("DESPESAS DO DIA");
-        btnLocalizar2.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnLocalizar2.addActionListener(new java.awt.event.ActionListener() {
+        btnDespesas.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnDespesas.setText("DESPESAS DO DIA");
+        btnDespesas.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnDespesas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLocalizar2ActionPerformed(evt);
+                btnDespesasActionPerformed(evt);
             }
         });
 
-        btnLocalizar3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnLocalizar3.setText("SANGRIA DE CAIXA");
-        btnLocalizar3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnLocalizar3.addActionListener(new java.awt.event.ActionListener() {
+        btnSangria.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnSangria.setText("SANGRIA DE CAIXA");
+        btnSangria.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnSangria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLocalizar3ActionPerformed(evt);
+                btnSangriaActionPerformed(evt);
             }
         });
 
@@ -399,13 +430,13 @@ public class FRMCaixa extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(btnExcluir1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel21, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAdicionar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEditar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnExcluir, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnLocalizar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAbrir, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnFechar, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnReducaoZ, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnRelatorios, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnLocalizar1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnLocalizar2, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-                    .addComponent(btnLocalizar3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnDespesas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSangria, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 285, Short.MAX_VALUE)
                     .addComponent(btnAdicionar1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -419,19 +450,19 @@ public class FRMCaixa extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnLocalizar1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnLocalizar3, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnSangria, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnLocalizar2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnDespesas, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnAbrir, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnExcluir1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnLocalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnRelatorios, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnReducaoZ, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(93, 93, 93))
         );
 
@@ -497,7 +528,6 @@ public class FRMCaixa extends javax.swing.JFrame {
 
         pagamento.add(radioAvista);
         radioAvista.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        radioAvista.setSelected(true);
         radioAvista.setText("À vista");
         radioAvista.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -551,7 +581,6 @@ public class FRMCaixa extends javax.swing.JFrame {
 
         valorgrupo.add(radioTotal);
         radioTotal.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
-        radioTotal.setSelected(true);
         radioTotal.setText("Total");
         radioTotal.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -843,7 +872,7 @@ public class FRMCaixa extends javax.swing.JFrame {
             .addGroup(FecharMesaLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(93, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
         FecharMesaLayout.setVerticalGroup(
             FecharMesaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -976,7 +1005,7 @@ public class FRMCaixa extends javax.swing.JFrame {
                         .addComponent(jButton17, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(30, 30, 30)
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 642, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 645, Short.MAX_VALUE)
                     .addComponent(jScrollPane9))
                 .addContainerGap())
         );
@@ -985,10 +1014,10 @@ public class FRMCaixa extends javax.swing.JFrame {
         Home.setLayout(HomeLayout);
         HomeLayout.setHorizontalGroup(
             HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, HomeLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(HomeLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, 1059, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         HomeLayout.setVerticalGroup(
             HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1311,7 +1340,7 @@ public class FRMCaixa extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addGap(0, 125, Short.MAX_VALUE))
+                .addGap(0, 74, Short.MAX_VALUE))
         );
         CloseLayout.setVerticalGroup(
             CloseLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1352,7 +1381,7 @@ public class FRMCaixa extends javax.swing.JFrame {
         index.setLayout(indexLayout);
         indexLayout.setHorizontalGroup(
             indexLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, 1130, Short.MAX_VALUE)
+            .addComponent(jLabel20, javax.swing.GroupLayout.DEFAULT_SIZE, 1079, Short.MAX_VALUE)
         );
         indexLayout.setVerticalGroup(
             indexLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1480,7 +1509,7 @@ public class FRMCaixa extends javax.swing.JFrame {
         jPanel15.setLayout(jPanel15Layout);
         jPanel15Layout.setHorizontalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1128, Short.MAX_VALUE)
+            .addGap(0, 1077, Short.MAX_VALUE)
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1496,9 +1525,9 @@ public class FRMCaixa extends javax.swing.JFrame {
                 .addGroup(despesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jSeparator5)
                     .addGroup(despesasLayout.createSequentialGroup()
-                        .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 1056, Short.MAX_VALUE)
+                        .addComponent(jScrollPane11, javax.swing.GroupLayout.DEFAULT_SIZE, 1028, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jSeparator6, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE))
+                        .addComponent(jSeparator6, javax.swing.GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE))
                     .addGroup(despesasLayout.createSequentialGroup()
                         .addGroup(despesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(despesasLayout.createSequentialGroup()
@@ -1566,7 +1595,7 @@ public class FRMCaixa extends javax.swing.JFrame {
                 .addGap(171, 171, 171))
             .addGroup(despesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, despesasLayout.createSequentialGroup()
-                    .addGap(0, 609, Short.MAX_VALUE)
+                    .addGap(0, 611, Short.MAX_VALUE)
                     .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
@@ -1642,7 +1671,7 @@ public class FRMCaixa extends javax.swing.JFrame {
                     .addComponent(jLabel40)
                     .addComponent(jLabel42)
                     .addComponent(jtfTotalFiscal, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 126, Short.MAX_VALUE))
+                .addGap(0, 128, Short.MAX_VALUE))
         );
 
         jPanel14.setBorder(javax.swing.BorderFactory.createTitledBorder("Adcionar Produto"));
@@ -1778,7 +1807,7 @@ public class FRMCaixa extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 92, Short.MAX_VALUE))
+                .addGap(0, 41, Short.MAX_VALUE))
             .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         CupFiscalLayout.setVerticalGroup(
@@ -1801,6 +1830,318 @@ public class FRMCaixa extends javax.swing.JFrame {
         );
 
         Principal.add(CupFiscal, "fiscal");
+
+        jLabel57.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        jLabel57.setText("Caixa");
+
+        jtfCaixa.setEditable(false);
+        jtfCaixa.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        jtfCaixa.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jtfCaixa.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfCaixaActionPerformed(evt);
+            }
+        });
+
+        jPanel23.setBackground(new java.awt.Color(204, 204, 204));
+
+        jLabel34.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
+        jLabel34.setText("Saldo do Caixa : R$");
+
+        lbSaldo.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
+        lbSaldo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lbSaldo.setText("1,00");
+
+        jButton25.setBackground(new java.awt.Color(0, 102, 51));
+        jButton25.setText("IMPRIMIR");
+        jButton25.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton25ActionPerformed(evt);
+            }
+        });
+
+        jButton26.setBackground(new java.awt.Color(204, 0, 0));
+        jButton26.setText("Cancelar");
+        jButton26.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton26ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel23Layout = new javax.swing.GroupLayout(jPanel23);
+        jPanel23.setLayout(jPanel23Layout);
+        jPanel23Layout.setHorizontalGroup(
+            jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel23Layout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(jLabel34)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(52, 52, 52)
+                .addComponent(jButton25, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(64, 64, 64)
+                .addComponent(jButton26, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(241, 241, 241))
+        );
+        jPanel23Layout.setVerticalGroup(
+            jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel23Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addGroup(jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel34, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lbSaldo, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton25, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton26, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(14, Short.MAX_VALUE))
+        );
+
+        jPanel18.setBackground(new java.awt.Color(0, 153, 102));
+        jPanel18.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 153, 102)));
+
+        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
+        jPanel18.setLayout(jPanel18Layout);
+        jPanel18Layout.setHorizontalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        jPanel18Layout.setVerticalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 126, Short.MAX_VALUE)
+        );
+
+        rolagem.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+        painelvendas.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Vendas Finalizadas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
+
+        tabelaVendas.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        tabelaVendas.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane12.setViewportView(tabelaVendas);
+
+        jLabel22.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jLabel22.setText("Total:");
+
+        lbTotalVendido.setText("00");
+
+        javax.swing.GroupLayout painelvendasLayout = new javax.swing.GroupLayout(painelvendas);
+        painelvendas.setLayout(painelvendasLayout);
+        painelvendasLayout.setHorizontalGroup(
+            painelvendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelvendasLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(painelvendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane12, javax.swing.GroupLayout.DEFAULT_SIZE, 439, Short.MAX_VALUE)
+                    .addGroup(painelvendasLayout.createSequentialGroup()
+                        .addComponent(jLabel22, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lbTotalVendido, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        painelvendasLayout.setVerticalGroup(
+            painelvendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelvendasLayout.createSequentialGroup()
+                .addComponent(jScrollPane12, javax.swing.GroupLayout.PREFERRED_SIZE, 433, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(painelvendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbTotalVendido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        painelcancelados.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Produtos Cancelados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
+
+        tabelaProCancelados.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        tabelaProCancelados.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tabelaProCancelados.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaProCanceladosMouseClicked(evt);
+            }
+        });
+        jScrollPane13.setViewportView(tabelaProCancelados);
+
+        javax.swing.GroupLayout painelcanceladosLayout = new javax.swing.GroupLayout(painelcancelados);
+        painelcancelados.setLayout(painelcanceladosLayout);
+        painelcanceladosLayout.setHorizontalGroup(
+            painelcanceladosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelcanceladosLayout.createSequentialGroup()
+                .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 4, Short.MAX_VALUE))
+        );
+        painelcanceladosLayout.setVerticalGroup(
+            painelcanceladosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelcanceladosLayout.createSequentialGroup()
+                .addComponent(jScrollPane13)
+                .addContainerGap())
+        );
+
+        painelcancelados1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sagrias", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
+
+        tabelaProCancelados1.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        tabelaProCancelados1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tabelaProCancelados1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaProCancelados1MouseClicked(evt);
+            }
+        });
+        jScrollPane14.setViewportView(tabelaProCancelados1);
+
+        javax.swing.GroupLayout painelcancelados1Layout = new javax.swing.GroupLayout(painelcancelados1);
+        painelcancelados1.setLayout(painelcancelados1Layout);
+        painelcancelados1Layout.setHorizontalGroup(
+            painelcancelados1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane14, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        painelcancelados1Layout.setVerticalGroup(
+            painelcancelados1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelcancelados1Layout.createSequentialGroup()
+                .addComponent(jScrollPane14)
+                .addContainerGap())
+        );
+
+        painelcancelados2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Despesas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
+
+        tabelaProCancelados2.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        tabelaProCancelados2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        tabelaProCancelados2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tabelaProCancelados2MouseClicked(evt);
+            }
+        });
+        jScrollPane15.setViewportView(tabelaProCancelados2);
+
+        javax.swing.GroupLayout painelcancelados2Layout = new javax.swing.GroupLayout(painelcancelados2);
+        painelcancelados2.setLayout(painelcancelados2Layout);
+        painelcancelados2Layout.setHorizontalGroup(
+            painelcancelados2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jScrollPane15, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        painelcancelados2Layout.setVerticalGroup(
+            painelcancelados2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(painelcancelados2Layout.createSequentialGroup()
+                .addComponent(jScrollPane15)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout rolaLayout = new javax.swing.GroupLayout(rola);
+        rola.setLayout(rolaLayout);
+        rolaLayout.setHorizontalGroup(
+            rolaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(rolaLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(painelvendas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(painelcancelados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(painelcancelados2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(painelcancelados1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(60, Short.MAX_VALUE))
+        );
+        rolaLayout.setVerticalGroup(
+            rolaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(rolaLayout.createSequentialGroup()
+                .addGroup(rolaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(rolaLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(rolaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(painelcancelados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(painelvendas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(painelcancelados2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(rolaLayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(painelcancelados1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(229, Short.MAX_VALUE))
+        );
+
+        rolagem.setViewportView(rola);
+
+        javax.swing.GroupLayout jPanel22Layout = new javax.swing.GroupLayout(jPanel22);
+        jPanel22.setLayout(jPanel22Layout);
+        jPanel22Layout.setHorizontalGroup(
+            jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel22Layout.createSequentialGroup()
+                .addComponent(jPanel23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(jPanel22Layout.createSequentialGroup()
+                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel22Layout.createSequentialGroup()
+                        .addComponent(jLabel57)
+                        .addGap(18, 18, 18)
+                        .addComponent(jtfCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel22Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(rolagem, javax.swing.GroupLayout.PREFERRED_SIZE, 1027, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel22Layout.setVerticalGroup(
+            jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel22Layout.createSequentialGroup()
+                .addGap(0, 0, 0)
+                .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel57)
+                    .addComponent(jtfCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(rolagem, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jPanel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout RelatorioLayout = new javax.swing.GroupLayout(Relatorio);
+        Relatorio.setLayout(RelatorioLayout);
+        RelatorioLayout.setHorizontalGroup(
+            RelatorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(RelatorioLayout.createSequentialGroup()
+                .addComponent(jPanel22, javax.swing.GroupLayout.PREFERRED_SIZE, 1056, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 23, Short.MAX_VALUE))
+        );
+        RelatorioLayout.setVerticalGroup(
+            RelatorioLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        Principal.add(Relatorio, "Relatorio");
 
         jMenu1.setText("Arquivo");
 
@@ -1866,7 +2207,7 @@ public class FRMCaixa extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(Principal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(Principal, javax.swing.GroupLayout.DEFAULT_SIZE, 1079, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1880,11 +2221,12 @@ public class FRMCaixa extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnLocalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocalizarActionPerformed
+    private void btnRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelatoriosActionPerformed
+        mudarTela("Relatorio");
+        atualizaRelatorio();
+    }//GEN-LAST:event_btnRelatoriosActionPerformed
 
-    }//GEN-LAST:event_btnLocalizarActionPerformed
-
-    private void btnAdicionarjButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarjButton6ActionPerformed
+    private void btnAbrirjButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirjButton6ActionPerformed
         boolean aux = controleCaixa.isCaixaAberto();
         if (aux == false) {
             String valor = JOptionPane.showInputDialog("Digite o valor que o caixa começará de TROCO!!!");
@@ -1911,15 +2253,15 @@ public class FRMCaixa extends javax.swing.JFrame {
             //hoome();
             atualizaMesas();
         }
-    }//GEN-LAST:event_btnAdicionarjButton6ActionPerformed
+    }//GEN-LAST:event_btnAbrirjButton6ActionPerformed
 
-    private void btnEditarjButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarjButton7ActionPerformed
+    private void btnFecharjButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharjButton7ActionPerformed
         mudarTela("close");
-    }//GEN-LAST:event_btnEditarjButton7ActionPerformed
+    }//GEN-LAST:event_btnFecharjButton7ActionPerformed
 
-    private void btnExcluirjButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirjButton8ActionPerformed
+    private void btnReducaoZjButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReducaoZjButton8ActionPerformed
 
-    }//GEN-LAST:event_btnExcluirjButton8ActionPerformed
+    }//GEN-LAST:event_btnReducaoZjButton8ActionPerformed
 
     private void btnLocalizar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocalizar1ActionPerformed
         mudarTela("fiscal");
@@ -1930,14 +2272,31 @@ public class FRMCaixa extends javax.swing.JFrame {
 
     }//GEN-LAST:event_btnLocalizar1ActionPerformed
 
-    private void btnLocalizar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocalizar2ActionPerformed
+    private void btnDespesasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDespesasActionPerformed
         mudarTela("despesas");
         atualizaTabela();
-    }//GEN-LAST:event_btnLocalizar2ActionPerformed
+    }//GEN-LAST:event_btnDespesasActionPerformed
 
-    private void btnLocalizar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocalizar3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnLocalizar3ActionPerformed
+    private void btnSangriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSangriaActionPerformed
+        if (controleCaixa.getCaixa() > 0) {
+            String valor = JOptionPane.showInputDialog("Digite o valor que deseja retirar do caixa !");
+            float sangria = Float.parseFloat(valor);
+            float total = controleCaixa.getSaldoAtual();
+            if (sangria > total) {
+                JOptionPane.showMessageDialog(null, "Valor Maior que Saldo Atual");
+            } else {
+                SangriaBEAN s = new SangriaBEAN();
+                s.setValor(sangria);
+                s.setTime(Time.getTime());
+                s.setCaixa(controleCaixa.getCaixa());
+                int reply = JOptionPane.showConfirmDialog(null, "Deseja realmete retirar R$ " + sangria + " do caixa?", "Comfirmação", JOptionPane.YES_NO_OPTION);
+                if (reply == JOptionPane.YES_OPTION) {
+                    sangriaControle.cadastrar(s);
+                    JOptionPane.showMessageDialog(null, "Operação Liberada com Sucesso!!");
+                }
+            }
+        }
+    }//GEN-LAST:event_btnSangriaActionPerformed
 
     private void jtfTotalFiscalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfTotalFiscalActionPerformed
         // TODO add your handling code here:
@@ -1993,7 +2352,7 @@ public class FRMCaixa extends javax.swing.JFrame {
     }//GEN-LAST:event_jtfDesc2ActionPerformed
 
     private void jtfPreco2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfPreco2ActionPerformed
-        btnAdicionarjButton6ActionPerformed(evt);
+
     }//GEN-LAST:event_jtfPreco2ActionPerformed
 
     private void botaoAdicionarDespesaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoAdicionarDespesaActionPerformed
@@ -2156,6 +2515,30 @@ public class FRMCaixa extends javax.swing.JFrame {
         somarTotal();
     }//GEN-LAST:event_jButton8ActionPerformed
 
+    private void jtfCaixaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfCaixaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfCaixaActionPerformed
+
+    private void jButton25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton25ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton25ActionPerformed
+
+    private void jButton26ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton26ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton26ActionPerformed
+
+    private void tabelaProCanceladosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaProCanceladosMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tabelaProCanceladosMouseClicked
+
+    private void tabelaProCancelados1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaProCancelados1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tabelaProCancelados1MouseClicked
+
+    private void tabelaProCancelados2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaProCancelados2MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tabelaProCancelados2MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -2197,19 +2580,20 @@ public class FRMCaixa extends javax.swing.JFrame {
     private javax.swing.JPanel FecharMesa;
     private javax.swing.JPanel Home;
     private javax.swing.JPanel Principal;
+    private javax.swing.JPanel Relatorio;
     private javax.swing.JButton botaoAdicionarDespesa;
     private javax.swing.JButton botaoExcluirDespesa;
     private javax.swing.JButton botaoIncluirDespesaDia;
     private javax.swing.JButton botaoPesquisar;
-    private javax.swing.JButton btnAdicionar;
+    private javax.swing.JButton btnAbrir;
     private javax.swing.JButton btnAdicionar1;
-    private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnExcluir;
+    private javax.swing.JButton btnDespesas;
     private javax.swing.JButton btnExcluir1;
-    private javax.swing.JButton btnLocalizar;
+    private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnLocalizar1;
-    private javax.swing.JButton btnLocalizar2;
-    private javax.swing.JButton btnLocalizar3;
+    private javax.swing.JButton btnReducaoZ;
+    private javax.swing.JButton btnRelatorios;
+    private javax.swing.JButton btnSangria;
     private javax.swing.JComboBox<String> comboPagamento;
     private javax.swing.JComboBox<String> comboProduto;
     private javax.swing.JPanel despesas;
@@ -2227,6 +2611,8 @@ public class FRMCaixa extends javax.swing.JFrame {
     private javax.swing.JButton jButton20;
     private javax.swing.JButton jButton21;
     private javax.swing.JButton jButton22;
+    private javax.swing.JButton jButton25;
+    private javax.swing.JButton jButton26;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
@@ -2244,6 +2630,7 @@ public class FRMCaixa extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
+    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel26;
@@ -2253,6 +2640,7 @@ public class FRMCaixa extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel353;
     private javax.swing.JLabel jLabel355;
     private javax.swing.JLabel jLabel356;
@@ -2264,6 +2652,7 @@ public class FRMCaixa extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel55;
     private javax.swing.JLabel jLabel56;
+    private javax.swing.JLabel jLabel57;
     private javax.swing.JLabel jLabel58;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -2292,10 +2681,13 @@ public class FRMCaixa extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
+    private javax.swing.JPanel jPanel22;
+    private javax.swing.JPanel jPanel23;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
@@ -2305,6 +2697,10 @@ public class FRMCaixa extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane10;
     private javax.swing.JScrollPane jScrollPane11;
+    private javax.swing.JScrollPane jScrollPane12;
+    private javax.swing.JScrollPane jScrollPane13;
+    private javax.swing.JScrollPane jScrollPane14;
+    private javax.swing.JScrollPane jScrollPane15;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane5;
@@ -2333,6 +2729,7 @@ public class FRMCaixa extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
+    private javax.swing.JTextField jtfCaixa;
     private javax.swing.JTextField jtfDesc2;
     private javax.swing.JTextField jtfMesa;
     private javax.swing.JTextField jtfNome2;
@@ -2346,22 +2743,34 @@ public class FRMCaixa extends javax.swing.JFrame {
     private javax.swing.JLabel labCliente;
     private javax.swing.JLabel labGarcom;
     private javax.swing.JLabel labNumMesa;
+    private javax.swing.JLabel lbSaldo;
     private javax.swing.JLabel lbTotal;
+    private javax.swing.JLabel lbTotalVendido;
     private javax.swing.ButtonGroup pagamento;
+    private javax.swing.JPanel painelcancelados;
+    private javax.swing.JPanel painelcancelados1;
+    private javax.swing.JPanel painelcancelados2;
+    private javax.swing.JPanel painelvendas;
     private javax.swing.JRadioButton radioAprazo;
     private javax.swing.JRadioButton radioAvista;
     private javax.swing.JRadioButton radioParcelado;
     private javax.swing.JRadioButton radioTotal;
     private javax.swing.JRadioButton radioTotalD;
+    private javax.swing.JPanel rola;
+    private javax.swing.JScrollPane rolagem;
     private javax.swing.JTable tabelaDespesas2;
+    private javax.swing.JTable tabelaProCancelados;
+    private javax.swing.JTable tabelaProCancelados1;
+    private javax.swing.JTable tabelaProCancelados2;
     private javax.swing.JTable tabelaProdutos;
     private javax.swing.JTable tabelaProdutosBalcao;
     private javax.swing.JTable tabelaProdutosCancelados;
     private javax.swing.JTable tabelaProdutosF;
+    private javax.swing.JTable tabelaVendas;
     private javax.swing.ButtonGroup valorgrupo;
     // End of variables declaration//GEN-END:variables
 
-    void setNunMesa(String mesa) {
+    public void setNunMesa(String mesa) {
         labNumMesa.setText(mesa);
         atualizaProdutos();
         atualizaProdutosCancelados();
@@ -2501,6 +2910,7 @@ public class FRMCaixa extends javax.swing.JFrame {
     private void preencheTabelaProdutosExcluidos(ArrayList<ExcluzaoBEAN> dados) {
         dTable = criaTabelaProdutosExcluidos();
         //seta o nome das colunas da tabela
+        
         dTable.addColumn("Código");
         dTable.addColumn("Mesa");
         dTable.addColumn("Funcionário");
@@ -2672,4 +3082,85 @@ public class FRMCaixa extends javax.swing.JFrame {
         return d;
 
     }
+//relatorio
+
+    private void atualizaRelatorio() {
+        ArrayList<VendaBEAN> vendas = c.listarVendasAbertas();
+        preencheTabelaCancelados(exclusaoControl.listarExclusaoCaixa());
+        preencheTabelaVenda(vendas);
+        lbTotalVendido.setText(c.getTotalVendido()+"");
+        lbSaldo.setText(controleCaixa.getSaldoAtual()+"");
+        jtfCaixa.setText(controleCaixa.getCaixa()+"");
+    }
+
+    private DefaultTableModel criaTabelaVenda() {
+        //sempre que usar JTable é necessário ter um DefaulttableModel
+        DefaultTableModel dTable = new DefaultTableModel() {
+            //Define o tipo dos campos (coluna) na mesma ordem que as colunas foram criadas
+            Class[] types = new Class[]{
+                java.lang.Integer.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class,
+                java.lang.Float.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+            //define se os campos podem ser editados na propria tabela
+            boolean[] canEdit = new boolean[]{
+                false, false, false
+            };
+
+        ;
+
+        };
+        //retorna o DefaultTableModel
+    return dTable;
+    }
+
+    private void preencheTabelaVenda(ArrayList<VendaBEAN> dados) {
+        dTable = criaTabelaVenda();
+        //seta o nome das colunas da tabela
+        dTable.addColumn("Codigo");
+        dTable.addColumn("Mesa");
+        dTable.addColumn("CheckIN");
+        dTable.addColumn("CheckOUT");
+        dTable.addColumn("Valor");
+        dTable.addColumn("Pagamento");
+        dTable.addColumn("Caixa");
+
+        //pega os dados do ArrayList
+        //cada célula do arrayList vira uma linha(row) na tabela
+        for (VendaBEAN dado : dados) {
+            dTable.addRow(new Object[]{dado.getCodigo(), dado.getMesa(), dado.getCheckIn(), dado.getCheckOut(),
+                dado.getValor(), dado.getPagamento(), dado.getCaixa()});
+        }
+        //set o modelo da tabela
+        tabelaVendas.setModel(dTable);
+
+        tr = new TableRowSorter<TableModel>(dTable);
+        tabelaVendas.setRowSorter(tr);
+
+    }
+     private void preencheTabelaCancelados(ArrayList<ExcluzaoBEAN> dados) {
+        dTable = criaTabelaProdutosExcluidos();
+        //seta o nome das colunas da tabela
+        dTable.addColumn("Código");
+        dTable.addColumn("Mesa");
+        dTable.addColumn("Funcionário");
+        dTable.addColumn("Produto");
+        dTable.addColumn("Quantidade");
+        dTable.addColumn("Hora");
+        dTable.addColumn("Observação");
+        dTable.addColumn("Motivo");
+
+        //pega os dados do ArrayList
+        //cada célula do arrayList vira uma linha(row) na tabela
+        for (ExcluzaoBEAN dado : dados) {
+            dTable.addRow(new Object[]{dado.getCodigo(), dado.getVenda(), dado.getFuncionario(),
+                dado.getNome(), dado.getQuantidade(), dado.getTime(), dado.getObs(), dado.getMotivo()
+            });
+        }
+        //set o modelo da tabela
+        tabelaProCancelados.setModel(dTable);
+        tr = new TableRowSorter<TableModel>(dTable);
+        tabelaProCancelados.setRowSorter(tr);
+
+    }
+
 }
