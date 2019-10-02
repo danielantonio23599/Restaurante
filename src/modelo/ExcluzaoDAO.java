@@ -93,7 +93,7 @@ public class ExcluzaoDAO {
                 e.setMotivo(rs.getString(3));
                 e.setTime(rs.getString(4));
                 e.setQuantidade(rs.getFloat(5));
-                e.setObs(rs.getString(6));                
+                e.setObs(rs.getString(6));
                 e.setFuncionarioC(rs.getInt(7));
                 e.setVenda(rs.getInt(8));
                 e.setFuncionario(rs.getString(9));
@@ -104,6 +104,37 @@ public class ExcluzaoDAO {
             throw new RuntimeException();
         }
         return e;
+    }
+
+    public ArrayList<ExcluzaoBEAN> listarExclusaoCaixa(int caixa) {
+        ArrayList<ExcluzaoBEAN> c = new ArrayList<>();
+
+        String sql = "select advCodigo, advNome, advMotivo, advQTD, advObs, advTime, funNome, venMesa\n"
+                + "	from excluzao join funcionario join venda\n"
+                + "		where  adv_funCodigo = funCodigo and venCodigo = adv_venCodigo and ven_caiCodigo =" + caixa + " \n"
+                + "			group by venCodigo \n"
+                + "				order by venMesa;";
+        try {
+            stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                ExcluzaoBEAN e = new ExcluzaoBEAN();
+                e.setCodigo(rs.getInt(1));
+                e.setNome(rs.getString(2));
+                e.setMotivo(rs.getString(3));
+                e.setQuantidade(rs.getFloat(4));
+                e.setObs(rs.getString(5));
+                e.setTime(rs.getString(6));
+                e.setFuncionario(rs.getString(7));
+                e.setVenda(rs.getInt(8));
+                c.add(e);
+            }
+            stmt.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return c;
     }
 
 }

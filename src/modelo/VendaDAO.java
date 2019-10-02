@@ -223,4 +223,50 @@ public class VendaDAO {
         return total;
     }
 
+    public ArrayList<VendaBEAN> listarVendasAbertas(int caixa) {
+        ArrayList<VendaBEAN> vendas = new ArrayList<VendaBEAN>();
+        String sql = "select * from venda where venStatus = 'fechada' and ven_caiCodigo = " + caixa + ";";
+        try {
+            stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                VendaBEAN v = new VendaBEAN();
+                v.setCodigo(rs.getInt(1));
+                v.setQRcode(rs.getString(2));
+                v.setCheckIn(rs.getString(3));
+                v.setCheckOut(rs.getString(4));
+                v.setCaixa(rs.getInt(5));
+                v.setValor(rs.getFloat(6));
+                v.setCusto(rs.getFloat(7));
+                v.setPagamento(rs.getInt(8));
+                v.setMesa(rs.getInt(9));
+                v.setStatus(rs.getString(10));
+                vendas.add(v);
+
+            }
+            stmt.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return vendas;
+    }
+    public float getTotalVendido(int caixa){
+   float total = 0;
+        String sql = "select COALESCE(sum(venValor),0)  "
+                + "from venda where venStatus = 'fechada' and ven_caiCodigo = "+caixa+" group by ven_caiCodigo;";
+        try {
+            stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                total = rs.getFloat(1);
+            }
+            stmt.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return total;
+    }
+
 }

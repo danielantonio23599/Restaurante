@@ -137,4 +137,12 @@ public class VendaControle {
         }
     }
 
+    public ArrayList<VendaBEAN> listarVendasAbertas() {
+        return ven.listarVendasAbertas(cc.getCaixa());
+    }
+
+    public float getTotalVendido() {
+        return ven.getTotalVendido(cc.getCaixa());
+    }
+
 }

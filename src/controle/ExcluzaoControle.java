@@ -17,6 +17,7 @@ public class ExcluzaoControle {
 
     private ExcluzaoDAO e = new ExcluzaoDAO();
     SharedP_Control c = new SharedP_Control();
+    CaixaControle caixa = new CaixaControle();
 
     public void inserirExclusao(ExcluzaoBEAN pro) {
         int fun = c.listar().getFunCodigo();
@@ -24,12 +25,16 @@ public class ExcluzaoControle {
         e.inserir(pro);
     }
 
-    public ArrayList<ExcluzaoBEAN> listarExclusaoVenda(int venda) {        
+    public ArrayList<ExcluzaoBEAN> listarExclusaoVenda(int venda) {
         return e.listarExclusaoVenda(venda);
     }
 
     public ExcluzaoBEAN listarUm(String cod) {
         return e.listarUm(cod);
+    }
+
+    public ArrayList<ExcluzaoBEAN> listarExclusaoCaixa() {
+        return e.listarExclusaoCaixa(caixa.getCaixa());
     }
 
 }

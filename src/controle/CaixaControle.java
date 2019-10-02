@@ -42,8 +42,16 @@ public class CaixaControle {
 
     }
 
+    public void fecharCaixa(CaixaBEAN ca) {
+        c.fecharCaixa(ca);
+    }
+
     public CaixaBEAN listar() {
         return c.listar();
+    }
+
+    public float getSaldoAtual() {
+        return c.getSaldoAtual(getCaixa());
     }
 
 }

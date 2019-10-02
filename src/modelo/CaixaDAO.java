@@ -93,4 +93,28 @@ public class CaixaDAO {
 
     }
 
+    public float getSaldoAtual(int caixa) {
+       
+        float saldo = 0;
+        String sql ="select	( (COALESCE(sum(venValor) ,0)+ caiTroco) -\n" +
+"			  ( \n" +
+"				(select COALESCE(sum(disPreco),0) from caixa join despesa_dia join despesa where caiCodigo =  ded_caiCodigo and disCodigo = ded_disCodigo and caiCodigo = "+caixa+")\n" +
+"					+ (select COALESCE(sum(sanValor),0) as sangria from caixa join sangria where caiCodigo = san_caiCodigo and caiCodigo = "+caixa+")\n" +
+"			  )\n" +
+"		 ) as Saldo\n" +
+"			from caixa join venda where caiCodigo = ven_caiCodigo and venStatus = 'fechada' and caiCodigo = "+caixa+";";
+    try {
+            stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                saldo = rs.getFloat(1);
+            }
+            stmt.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return saldo;
+    }
+
 }
