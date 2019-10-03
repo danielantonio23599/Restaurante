@@ -14,6 +14,16 @@ public class DespesaBEAN {
     private String nome;
     private String descricao;
     private float preco;
+    private boolean despesaCaixa;
+
+    public boolean isDespesaCaixa() {
+        return despesaCaixa;
+    }
+
+    public void setDespesaCaixa(boolean despesaCaixa) {
+        this.despesaCaixa = despesaCaixa;
+    }
+    
 
     public float getPreco() {
         return preco;

@@ -5,6 +5,7 @@
  */
 package controle;
 
+import java.util.ArrayList;
 import modelo.SangriaBEAN;
 import modelo.SangriaDAO;
 
@@ -15,9 +16,17 @@ import modelo.SangriaDAO;
 public class SangriaControle {
 
     private SangriaDAO s = new SangriaDAO();
+    private CaixaControle c = new CaixaControle();
 
     public void cadastrar(SangriaBEAN sangria) {
         s.adicionar(sangria);
+    }
+
+    public ArrayList<SangriaBEAN> listarSangriasCaixa() {
+        return s.buscar(c.getCaixa());
+    }
+    public float getTotalSangriasCaixa() {
+        return s.getTotalSangriasCaixa(c.getCaixa());
     }
 
 }

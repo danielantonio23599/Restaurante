@@ -21,7 +21,25 @@ public class DespesaControle {
     private CaixaControle c = new CaixaControle();
 
     public ArrayList<DespesaBEAN> listarALL() {
-        return d.listarAll();
+        ArrayList<DespesaBEAN> despesas = new ArrayList<>();
+        ArrayList<DespesaBEAN> t = d.listarAll();
+        ArrayList<DespesaBEAN> u = listarDespesaDia();
+        for (DespesaBEAN td : t) {
+            DespesaBEAN ca = new DespesaBEAN();
+            ca.setDespesaCaixa(false);
+            for (DespesaBEAN cai : u) {
+                if (td.getCodigo() == cai.getCodigo()) {
+                    ca.setDespesaCaixa(true);
+                }
+
+            }
+            ca.setCodigo(td.getCodigo());
+            ca.setNome(td.getNome());
+            ca.setDescricao(td.getDescricao());
+            ca.setPreco(td.getPreco());
+            despesas.add(ca);
+        }
+        return despesas;
     }
 
     public String adicionar(DespesaBEAN despesa) {
@@ -42,6 +60,14 @@ public class DespesaControle {
         }
         return "Cadastro Realizado com SUCESSO!!";
 
+    }
+
+    public ArrayList<DespesaBEAN> listarDespesaDia() {
+        return d.listarDespesaCaixa(c.getCaixa());
+    }
+
+    public Float getTotalDespesasCaixa() {
+        return d.getTotalDespesasCaixa(c.getCaixa());
     }
 
 }

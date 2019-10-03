@@ -25,10 +25,10 @@ public class SangriaDAO {
         this.connection = ConnectionFactory.getConnection();
     }
 
-    public ArrayList<SangriaBEAN> buscar(int codigo) {
+    public ArrayList<SangriaBEAN> buscar(int caixa) {
 
         ArrayList<SangriaBEAN> p = new ArrayList<>();
-        String sql = "SELECT * FROM sangria WHERE san_caiCodigo = " + codigo + ";";
+        String sql = "SELECT * FROM sangria WHERE san_caiCodigo = " + caixa + ";";
 
         try {
             stmt = connection.prepareStatement(sql);
@@ -65,6 +65,27 @@ public class SangriaDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public float getTotalSangriasCaixa(int caixa) {
+        float total = 0;
+        String sql = "SELECT COALESCE(sum(sanValor),0) FROM sangria WHERE san_caiCodigo = " + caixa + ";";
+
+        try {
+            stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+
+                total = rs.getFloat(1);
+
+            }
+            stmt.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+
+        return total;
     }
 
 }

@@ -95,7 +95,8 @@ public class FRMCaixa extends javax.swing.JFrame {
     private void preencheTabela(ArrayList<DespesaBEAN> dados) {
         dTable = criaTabela();
         for (DespesaBEAN dado : dados) {
-            dTable.addRow(new Object[]{false, dado.getCodigo(),
+
+            dTable.addRow(new Object[]{dado.isDespesaCaixa(), dado.getCodigo(),
                 dado.getNome(), dado.getDescricao(), dado.getPreco()});
 
         }
@@ -311,10 +312,14 @@ public class FRMCaixa extends javax.swing.JFrame {
         tabelaProCancelados = new javax.swing.JTable();
         painelcancelados1 = new javax.swing.JPanel();
         jScrollPane14 = new javax.swing.JScrollPane();
-        tabelaProCancelados1 = new javax.swing.JTable();
+        tabelaSangria = new javax.swing.JTable();
+        jLabel28 = new javax.swing.JLabel();
+        lbTotalSangrias = new javax.swing.JLabel();
         painelcancelados2 = new javax.swing.JPanel();
         jScrollPane15 = new javax.swing.JScrollPane();
-        tabelaProCancelados2 = new javax.swing.JTable();
+        tabelaDespesas = new javax.swing.JTable();
+        jLabel25 = new javax.swing.JLabel();
+        lbTotalDespesas = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
@@ -1930,6 +1935,7 @@ public class FRMCaixa extends javax.swing.JFrame {
         jLabel22.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel22.setText("Total:");
 
+        lbTotalVendido.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
         lbTotalVendido.setText("00");
 
         javax.swing.GroupLayout painelvendasLayout = new javax.swing.GroupLayout(painelvendas);
@@ -1953,8 +1959,7 @@ public class FRMCaixa extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(painelvendasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel22, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lbTotalVendido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(lbTotalVendido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         painelcancelados.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Produtos Cancelados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
@@ -1983,8 +1988,8 @@ public class FRMCaixa extends javax.swing.JFrame {
         painelcanceladosLayout.setHorizontalGroup(
             painelcanceladosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelcanceladosLayout.createSequentialGroup()
-                .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 4, Short.MAX_VALUE))
+                .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 8, Short.MAX_VALUE))
         );
         painelcanceladosLayout.setVerticalGroup(
             painelcanceladosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1995,8 +2000,8 @@ public class FRMCaixa extends javax.swing.JFrame {
 
         painelcancelados1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Sagrias", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
-        tabelaProCancelados1.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
-        tabelaProCancelados1.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaSangria.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        tabelaSangria.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -2007,30 +2012,50 @@ public class FRMCaixa extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tabelaProCancelados1.addMouseListener(new java.awt.event.MouseAdapter() {
+        tabelaSangria.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabelaProCancelados1MouseClicked(evt);
+                tabelaSangriaMouseClicked(evt);
             }
         });
-        jScrollPane14.setViewportView(tabelaProCancelados1);
+        jScrollPane14.setViewportView(tabelaSangria);
+
+        jLabel28.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jLabel28.setText("Total:");
+
+        lbTotalSangrias.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        lbTotalSangrias.setText("00");
 
         javax.swing.GroupLayout painelcancelados1Layout = new javax.swing.GroupLayout(painelcancelados1);
         painelcancelados1.setLayout(painelcancelados1Layout);
         painelcancelados1Layout.setHorizontalGroup(
             painelcancelados1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane14, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(painelcancelados1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(painelcancelados1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelcancelados1Layout.createSequentialGroup()
+                        .addComponent(jLabel28, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lbTotalSangrias, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelcancelados1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jScrollPane14, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         painelcancelados1Layout.setVerticalGroup(
             painelcancelados1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelcancelados1Layout.createSequentialGroup()
-                .addComponent(jScrollPane14)
+                .addComponent(jScrollPane14, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(painelcancelados1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbTotalSangrias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
         painelcancelados2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Despesas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
-        tabelaProCancelados2.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
-        tabelaProCancelados2.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaDespesas.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        tabelaDespesas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -2041,24 +2066,43 @@ public class FRMCaixa extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        tabelaProCancelados2.addMouseListener(new java.awt.event.MouseAdapter() {
+        tabelaDespesas.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tabelaProCancelados2MouseClicked(evt);
+                tabelaDespesasMouseClicked(evt);
             }
         });
-        jScrollPane15.setViewportView(tabelaProCancelados2);
+        jScrollPane15.setViewportView(tabelaDespesas);
+
+        jLabel25.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jLabel25.setText("Total:");
+
+        lbTotalDespesas.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        lbTotalDespesas.setText("00");
 
         javax.swing.GroupLayout painelcancelados2Layout = new javax.swing.GroupLayout(painelcancelados2);
         painelcancelados2.setLayout(painelcancelados2Layout);
         painelcancelados2Layout.setHorizontalGroup(
             painelcancelados2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane15, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(painelcancelados2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(painelcancelados2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(painelcancelados2Layout.createSequentialGroup()
+                        .addComponent(jScrollPane15, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelcancelados2Layout.createSequentialGroup()
+                        .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lbTotalDespesas, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         painelcancelados2Layout.setVerticalGroup(
             painelcancelados2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(painelcancelados2Layout.createSequentialGroup()
-                .addComponent(jScrollPane15)
-                .addContainerGap())
+                .addComponent(jScrollPane15, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(painelcancelados2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel25, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbTotalDespesas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout rolaLayout = new javax.swing.GroupLayout(rola);
@@ -2071,25 +2115,23 @@ public class FRMCaixa extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(painelcancelados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(painelcancelados2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(painelcancelados1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(60, Short.MAX_VALUE))
+                .addGroup(rolaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(painelcancelados2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(painelcancelados1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(77, Short.MAX_VALUE))
         );
         rolaLayout.setVerticalGroup(
             rolaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(rolaLayout.createSequentialGroup()
-                .addGroup(rolaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addContainerGap()
+                .addGroup(rolaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(painelvendas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(rolaLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(rolaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(painelcancelados, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(painelvendas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(painelcancelados2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(rolaLayout.createSequentialGroup()
-                        .addGap(20, 20, 20)
-                        .addComponent(painelcancelados1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(229, Short.MAX_VALUE))
+                        .addComponent(painelcancelados2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(painelcancelados1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(painelcancelados, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(235, Short.MAX_VALUE))
         );
 
         rolagem.setViewportView(rola);
@@ -2214,7 +2256,7 @@ public class FRMCaixa extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(Principal, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(Principal, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE))
                 .addGap(0, 0, 0))
         );
 
@@ -2278,9 +2320,12 @@ public class FRMCaixa extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDespesasActionPerformed
 
     private void btnSangriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSangriaActionPerformed
+        float sangria = 0;
         if (controleCaixa.getCaixa() > 0) {
             String valor = JOptionPane.showInputDialog("Digite o valor que deseja retirar do caixa !");
-            float sangria = Float.parseFloat(valor);
+            if (!valor.equals("")) {
+                sangria = Float.parseFloat(valor);
+            }
             float total = controleCaixa.getSaldoAtual();
             if (sangria > total) {
                 JOptionPane.showMessageDialog(null, "Valor Maior que Saldo Atual");
@@ -2531,13 +2576,13 @@ public class FRMCaixa extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_tabelaProCanceladosMouseClicked
 
-    private void tabelaProCancelados1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaProCancelados1MouseClicked
+    private void tabelaSangriaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaSangriaMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_tabelaProCancelados1MouseClicked
+    }//GEN-LAST:event_tabelaSangriaMouseClicked
 
-    private void tabelaProCancelados2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaProCancelados2MouseClicked
+    private void tabelaDespesasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaDespesasMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_tabelaProCancelados2MouseClicked
+    }//GEN-LAST:event_tabelaDespesasMouseClicked
 
     /**
      * @param args the command line arguments
@@ -2633,8 +2678,10 @@ public class FRMCaixa extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
+    private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
@@ -2745,6 +2792,8 @@ public class FRMCaixa extends javax.swing.JFrame {
     private javax.swing.JLabel labNumMesa;
     private javax.swing.JLabel lbSaldo;
     private javax.swing.JLabel lbTotal;
+    private javax.swing.JLabel lbTotalDespesas;
+    private javax.swing.JLabel lbTotalSangrias;
     private javax.swing.JLabel lbTotalVendido;
     private javax.swing.ButtonGroup pagamento;
     private javax.swing.JPanel painelcancelados;
@@ -2758,14 +2807,14 @@ public class FRMCaixa extends javax.swing.JFrame {
     private javax.swing.JRadioButton radioTotalD;
     private javax.swing.JPanel rola;
     private javax.swing.JScrollPane rolagem;
+    private javax.swing.JTable tabelaDespesas;
     private javax.swing.JTable tabelaDespesas2;
     private javax.swing.JTable tabelaProCancelados;
-    private javax.swing.JTable tabelaProCancelados1;
-    private javax.swing.JTable tabelaProCancelados2;
     private javax.swing.JTable tabelaProdutos;
     private javax.swing.JTable tabelaProdutosBalcao;
     private javax.swing.JTable tabelaProdutosCancelados;
     private javax.swing.JTable tabelaProdutosF;
+    private javax.swing.JTable tabelaSangria;
     private javax.swing.JTable tabelaVendas;
     private javax.swing.ButtonGroup valorgrupo;
     // End of variables declaration//GEN-END:variables
@@ -2910,7 +2959,7 @@ public class FRMCaixa extends javax.swing.JFrame {
     private void preencheTabelaProdutosExcluidos(ArrayList<ExcluzaoBEAN> dados) {
         dTable = criaTabelaProdutosExcluidos();
         //seta o nome das colunas da tabela
-        
+
         dTable.addColumn("Código");
         dTable.addColumn("Mesa");
         dTable.addColumn("Funcionário");
@@ -3088,9 +3137,14 @@ public class FRMCaixa extends javax.swing.JFrame {
         ArrayList<VendaBEAN> vendas = c.listarVendasAbertas();
         preencheTabelaCancelados(exclusaoControl.listarExclusaoCaixa());
         preencheTabelaVenda(vendas);
-        lbTotalVendido.setText(c.getTotalVendido()+"");
-        lbSaldo.setText(controleCaixa.getSaldoAtual()+"");
-        jtfCaixa.setText(controleCaixa.getCaixa()+"");
+        preencheTabelaDespesas(controle.listarDespesaDia());
+        preencheTabelaSangria(sangriaControle.listarSangriasCaixa());
+        lbTotalVendido.setText(c.getTotalVendido() + "");
+        lbSaldo.setText(controleCaixa.getSaldoAtual() + "");
+        jtfCaixa.setText(controleCaixa.getCaixa() + "");
+        lbTotalDespesas.setText(controle.getTotalDespesasCaixa() + "");
+        lbTotalSangrias.setText(sangriaControle.getTotalSangriasCaixa() + "");
+
     }
 
     private DefaultTableModel criaTabelaVenda() {
@@ -3137,7 +3191,8 @@ public class FRMCaixa extends javax.swing.JFrame {
         tabelaVendas.setRowSorter(tr);
 
     }
-     private void preencheTabelaCancelados(ArrayList<ExcluzaoBEAN> dados) {
+
+    private void preencheTabelaCancelados(ArrayList<ExcluzaoBEAN> dados) {
         dTable = criaTabelaProdutosExcluidos();
         //seta o nome das colunas da tabela
         dTable.addColumn("Código");
@@ -3163,4 +3218,83 @@ public class FRMCaixa extends javax.swing.JFrame {
 
     }
 
+    private void preencheTabelaDespesas(ArrayList<DespesaBEAN> dados) {
+        dTable = criaTabelaDespesas();
+        //seta o nome das colunas da tabela
+        dTable.addColumn("Código");
+        dTable.addColumn("Nome");
+        dTable.addColumn("Descrição");
+        dTable.addColumn("Valor");
+
+        //pega os dados do ArrayList
+        //cada célula do arrayList vira uma linha(row) na tabela
+        for (DespesaBEAN dado : dados) {
+            dTable.addRow(new Object[]{dado.getCodigo(), dado.getNome(), dado.getDescricao(),
+                dado.getPreco()
+            });
+        }
+        //set o modelo da tabela
+        tabelaDespesas.setModel(dTable);
+        tr = new TableRowSorter<TableModel>(dTable);
+        tabelaDespesas.setRowSorter(tr);
+
+    }
+
+    private void preencheTabelaSangria(ArrayList<SangriaBEAN> dados) {
+        dTable = criaTabelaSangria();
+        //seta o nome das colunas da tabela
+        dTable.addColumn("Código");
+        dTable.addColumn("Valor");
+        dTable.addColumn("Hora");
+
+        //pega os dados do ArrayList
+        //cada célula do arrayList vira uma linha(row) na tabela
+        for (SangriaBEAN dado : dados) {
+            dTable.addRow(new Object[]{dado.getCodigo(), dado.getValor(), dado.getTime()
+            });
+        }
+        //set o modelo da tabela
+        tabelaSangria.setModel(dTable);
+        tr = new TableRowSorter<TableModel>(dTable);
+        tabelaSangria.setRowSorter(tr);
+
+    }
+
+    private DefaultTableModel criaTabelaSangria() {
+        //sempre que usar JTable é necessário ter um DefaulttableModel
+        DefaultTableModel dTable = new DefaultTableModel() {
+            //Define o tipo dos campos (coluna) na mesma ordem que as colunas foram criadas
+            Class[] types = new Class[]{
+                java.lang.Integer.class, java.lang.Float.class, java.lang.String.class
+            };
+            //define se os campos podem ser editados na propria tabela
+            boolean[] canEdit = new boolean[]{
+                false, false, false
+            };
+
+        ;
+
+        };
+        //retorna o DefaultTableModel
+    return dTable;
+    }
+
+    private DefaultTableModel criaTabelaDespesas() {
+        //sempre que usar JTable é necessário ter um DefaulttableModel
+        DefaultTableModel dTable = new DefaultTableModel() {
+            //Define o tipo dos campos (coluna) na mesma ordem que as colunas foram criadas
+            Class[] types = new Class[]{
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Float.class
+            };
+            //define se os campos podem ser editados na propria tabela
+            boolean[] canEdit = new boolean[]{
+                false, false, false, false
+            };
+
+        ;
+
+        };
+        //retorna o DefaultTableModel
+    return dTable;
+    }
 }
