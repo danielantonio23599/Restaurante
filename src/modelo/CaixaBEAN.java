@@ -16,10 +16,8 @@ public class CaixaBEAN {
     private String data;
     private String in;
     private String out;
-    private float valorBruto;
-    private float valorLiquido;
-    private float despesas;
-    private float troco;
+    private float trocoIn;
+    private float trocoFin;
     private String status;
 
     public String getStatus() {
@@ -63,37 +61,20 @@ public class CaixaBEAN {
         this.out = out;
     }
 
-    public float getValorBruto() {
-        return valorBruto;
+    public float getTrocoIn() {
+        return trocoIn;
     }
 
-    public void setValorBruto(float valorBruto) {
-        this.valorBruto = valorBruto;
+    public void setTrocoIn(float trocoIn) {
+        this.trocoIn = trocoIn;
     }
 
-    public float getValorLiquido() {
-        return valorLiquido;
+    public float getTrocoFin() {
+        return trocoFin;
     }
 
-    public void setValorLiquido(float valorLiquido) {
-        this.valorLiquido = valorLiquido;
-    }
-
-    public float getDespesas() {
-        return despesas;
-    }
-
-    public void setDespesas(float despesas) {
-        this.despesas = despesas;
-    }
-
-    public float getTroco() {
-        return troco;
-    }
-
-    public void setTroco(float troco) {
-        this.troco = troco;
-    }
-    
+    public void setTrocoFin(float trocoFin) {
+        this.trocoFin = trocoFin;
+    }  
     
 }

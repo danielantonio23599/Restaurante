@@ -8,6 +8,7 @@ package controle;
 import java.io.IOException;
 import modelo.CaixaBEAN;
 import modelo.CaixaDAO;
+import util.Time;
 
 /**
  *
@@ -16,6 +17,7 @@ import modelo.CaixaDAO;
 public class CaixaControle {
 
     private CaixaDAO c = new CaixaDAO();
+
 
     public boolean isCaixaAberto() {
         CaixaBEAN caixa = c.listar();
@@ -42,7 +44,11 @@ public class CaixaControle {
 
     }
 
-    public void fecharCaixa(CaixaBEAN ca) {
+    public void fecharCaixa(Float troco) {
+        CaixaBEAN ca = new CaixaBEAN();
+        ca.setCodigo(getCaixa());
+        ca.setOut(Time.getTime());
+        ca.setTrocoFin(troco);
         c.fecharCaixa(ca);
     }
 
@@ -54,4 +60,7 @@ public class CaixaControle {
         return c.getSaldoAtual(getCaixa());
     }
 
+    public float getTotalVendido() {
+        return c.getTotalVendido(getCaixa());
+    }
 }

@@ -34,6 +34,7 @@ public class FRMFormaPagamento extends javax.swing.JFrame {
     public FRMFormaPagamento() {
         initComponents();
         setExtendedState(MAXIMIZED_BOTH);
+        atualizaTabela();
     }
 
     private void atualizaTabela() {

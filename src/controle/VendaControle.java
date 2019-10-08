@@ -145,4 +145,8 @@ public class VendaControle {
         return ven.getTotalVendido(cc.getCaixa());
     }
 
+    public ArrayList<ProdutosGravados> listarProdutosVendidosCaixa() {
+        return ven.listarProdutosVendidosCaixa(cc.getCaixa());
+    }
+
 }

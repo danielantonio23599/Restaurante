@@ -251,10 +251,11 @@ public class VendaDAO {
         }
         return vendas;
     }
-    public float getTotalVendido(int caixa){
-   float total = 0;
+
+    public float getTotalVendido(int caixa) {
+        float total = 0;
         String sql = "select COALESCE(sum(venValor),0)  "
-                + "from venda where venStatus = 'fechada' and ven_caiCodigo = "+caixa+" group by ven_caiCodigo;";
+                + "from venda where venStatus = 'fechada' and ven_caiCodigo = " + caixa + " group by ven_caiCodigo;";
         try {
             stmt = connection.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
@@ -267,6 +268,32 @@ public class VendaDAO {
             throw new RuntimeException();
         }
         return total;
+    }
+
+    public ArrayList<ProdutosGravados> listarProdutosVendidosCaixa(int caixa) {
+        ArrayList<ProdutosGravados> c = new ArrayList<ProdutosGravados>();
+
+        String sql = "SELECT  pedCodigo, pedNome,sum(pevQTD) as unidades ,pedPreco from \n"
+                + "pedido join pedido_venda join venda where venCodigo = pev_venCodigo and pev_pedCodigo = pedCodigo and venStatus = 'fechada' and \n"
+                + "ven_caiCodigo = "+caixa+" group by pedCodigo;";
+        try {
+            stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                ProdutosGravados ca = new ProdutosGravados();
+                
+                ca.setCodProduto(rs.getInt(1));
+                ca.setNome(rs.getString(2));
+                ca.setQuantidade(rs.getFloat(3));
+                ca.setValor(rs.getFloat(4));
+                c.add(ca);
+            }
+            stmt.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return c;
     }
 
 }
