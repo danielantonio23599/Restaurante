@@ -17,6 +17,8 @@ import java.awt.CardLayout;
 import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -227,8 +229,6 @@ public class FRMCaixa extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jtfNota2 = new javax.swing.JTextField();
-        jtfNota5 = new javax.swing.JTextField();
-        jtfNota20 = new javax.swing.JTextField();
         jtfNota100 = new javax.swing.JTextField();
         jtfNota50 = new javax.swing.JTextField();
         jtfNota10 = new javax.swing.JTextField();
@@ -244,6 +244,8 @@ public class FRMCaixa extends javax.swing.JFrame {
         jtfMoeda1 = new javax.swing.JTextField();
         jLabel17 = new javax.swing.JLabel();
         jtfTotalTroco = new javax.swing.JTextField();
+        jtfNota5 = new javax.swing.JTextField();
+        jtfNota20 = new javax.swing.JTextField();
         jLabel19 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -1197,20 +1199,6 @@ public class FRMCaixa extends javax.swing.JFrame {
             }
         });
 
-        jtfNota5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jtfNota5.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jtfMoeda5KeyTyped(evt);
-            }
-        });
-
-        jtfNota20.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        jtfNota20.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jtfMoeda5KeyTyped(evt);
-            }
-        });
-
         jtfNota100.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jtfNota100.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -1282,6 +1270,30 @@ public class FRMCaixa extends javax.swing.JFrame {
 
         jtfTotalTroco.setEditable(false);
 
+        jtfNota5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jtfNota5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfNota5ActionPerformed(evt);
+            }
+        });
+        jtfNota5.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfNota5jtfMoeda5KeyTyped(evt);
+            }
+        });
+
+        jtfNota20.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        jtfNota20.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfNota20ActionPerformed(evt);
+            }
+        });
+        jtfNota20.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfNota20jtfMoeda5KeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -1318,21 +1330,24 @@ public class FRMCaixa extends javax.swing.JFrame {
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel14)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtfMoeda50, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE))
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel7)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel11))
-                                .addGap(0, 0, 0)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jtfNota100, javax.swing.GroupLayout.DEFAULT_SIZE, 93, Short.MAX_VALUE)
-                                    .addComponent(jtfNota20)
-                                    .addComponent(jtfNota5)))
+                                .addComponent(jtfMoeda50))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(jLabel15)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jtfMoeda10))))
+                                .addComponent(jtfMoeda10))
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                    .addComponent(jLabel7)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(jtfNota5))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel3Layout.createSequentialGroup()
+                                    .addComponent(jLabel11)
+                                    .addGap(0, 0, 0)
+                                    .addComponent(jtfNota100, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel3Layout.createSequentialGroup()
+                                    .addComponent(jLabel9)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(jtfNota20)))))
                     .addGroup(jPanel3Layout.createSequentialGroup()
                         .addComponent(jLabel17)
                         .addGap(13, 13, 13)
@@ -1352,8 +1367,8 @@ public class FRMCaixa extends javax.swing.JFrame {
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
                     .addComponent(jLabel9)
-                    .addComponent(jtfNota20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtfNota10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtfNota10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfNota20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
@@ -2735,14 +2750,36 @@ public class FRMCaixa extends javax.swing.JFrame {
 //Se o usuário clicar em "Sim" retorna 0 pra variavel reply, se informado não retorna 1
             int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
-                controleCaixa.fecharCaixa(Float.parseFloat(jtfTroco.getText()));
-                JOptionPane.showMessageDialog(null, "Caixa fechado com sucesso!!!");
-                atualizaTabelaprodusClose();
+                if (Float.parseFloat(jtfFaturamentoLiquido.getText()) == Float.parseFloat(jtfTroco.getText())) {
+                    controleCaixa.fecharCaixa(Float.parseFloat(jtfTroco.getText()));
+                    JOptionPane.showMessageDialog(null, "Caixa fechado com sucesso!!!");
+                    atualizaTabelaprodusClose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Verifique seu troco, incompativel com o seu dinheiro em caixa!!");
+                }
             }
         } else {
             JOptionPane.showMessageDialog(null, "Opreração cancelada, favor fechar todas as mesas!!");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jtfNota5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfNota5ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfNota5ActionPerformed
+
+    private void jtfNota5jtfMoeda5KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfNota5jtfMoeda5KeyTyped
+        bloqueaLetras(evt);
+        atualizaTroco();
+    }//GEN-LAST:event_jtfNota5jtfMoeda5KeyTyped
+
+    private void jtfNota20ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfNota20ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtfNota20ActionPerformed
+
+    private void jtfNota20jtfMoeda5KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfNota20jtfMoeda5KeyTyped
+        bloqueaLetras(evt);
+        atualizaTroco();
+    }//GEN-LAST:event_jtfNota20jtfMoeda5KeyTyped
     private void bloqueaLetras(java.awt.event.KeyEvent evt) {
         String caracteres = "0987654321";
         if (!caracteres.contains(evt.getKeyChar() + "")) {
@@ -3089,11 +3126,11 @@ public class FRMCaixa extends javax.swing.JFrame {
         jtfTotal.setText(total + "");
         float totalD = (float) (total + (total * 0.1));
         if (radioTotalD.isSelected() == true) {
-            lbTotal.setText(totalD+"");
+            lbTotal.setText(totalD + "");
         } else {
             lbTotal.setText(jtfTotal.getText());
         }
-        
+
         jtfTotalD.setText(totalD + "");
         atualizaProdutos();
         atualizaProdutosCancelados();
@@ -3511,13 +3548,13 @@ public class FRMCaixa extends javax.swing.JFrame {
             troco += (2 * Integer.parseInt(jtfNota2.getText()));
         }
         if (!jtfNota5.getText().equals("")) {
-            troco += (5 * Integer.parseInt(jtfNota5.getText()));
+            troco += (5f * Integer.parseInt(jtfNota5.getText()));
         }
         if (!jtfNota10.getText().equals("")) {
             troco += (10 * Integer.parseInt(jtfNota10.getText()));
         }
         if (!jtfNota20.getText().equals("")) {
-            troco += (20 * Integer.parseInt(jtfNota20.getText()));
+            troco += (20f * Integer.parseInt(jtfNota20.getText()));
         }
         if (!jtfNota50.getText().equals("")) {
             troco += (50 * Integer.parseInt(jtfNota50.getText()));
@@ -3526,21 +3563,27 @@ public class FRMCaixa extends javax.swing.JFrame {
             troco += (100 * Integer.parseInt(jtfNota100.getText()));
         }
         if (!jtfMoeda5.getText().equals("")) {
-            troco += (0.05f * Integer.parseInt(jtfMoeda5.getText()));
+            troco += (Integer.parseInt(jtfMoeda5.getText()) * 0.05f);
         }
         if (!jtfMoeda10.getText().equals("")) {
-            troco += (0.10f * Integer.parseInt(jtfMoeda10.getText()));
+            troco += (Integer.parseInt(jtfMoeda10.getText()) * 0.1f);
         }
         if (!jtfMoeda25.getText().equals("")) {
-            troco += (0.25f * Integer.parseInt(jtfMoeda25.getText()));
+            troco += (Integer.parseInt(jtfMoeda25.getText()) * 0.25f);
         }
         if (!jtfMoeda50.getText().equals("")) {
-            troco += (0.5f * Integer.parseInt(jtfMoeda50.getText()));
+            troco += ((Integer.parseInt(jtfMoeda50.getText())) * 0.5f);
         }
         if (!jtfMoeda1.getText().equals("")) {
             troco += Integer.parseInt(jtfMoeda1.getText());
         }
-        jtfTroco.setText(troco + "");
-        jtfTotalTroco.setText(troco + "");
+        NumberFormat df = new DecimalFormat("0.00");
+        String numero = String.valueOf(df.format(troco));
+        numero = numero.replace(",", ".");
+        jtfTroco.setText(numero);
+        jtfTotalTroco.setText(numero);
+        if (Float.parseFloat(jtfFaturamentoLiquido.getText()) < troco) {
+            JOptionPane.showMessageDialog(null, "Verifique seu troco, incompativel com o seu dinheiro em caixa!!");
+        }
     }
 }
