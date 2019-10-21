@@ -12,9 +12,9 @@ import java.util.Date;
 import modelo.ExcluzaoBEAN;
 import modelo.ExcluzaoDAO;
 import modelo.Mesa;
+import modelo.ProdutoDAO;
+import modelo.PedidoBEAN;
 import modelo.PedidoDAO;
-import modelo.PedidoVendaBEAN;
-import modelo.PedidoVendaDAO;
 import modelo.Produtos;
 import modelo.ProdutosGravados;
 import modelo.VendaAtualBEAN;
@@ -31,9 +31,9 @@ public class VendaControle {
 
     //private VendaAtualDAO v = new VendaAtualDAO();
     private VendaDAO ven = new VendaDAO();
-    private PedidoVendaDAO p = new PedidoVendaDAO();
+    private PedidoDAO p = new PedidoDAO();
     private ExcluzaoControle e = new ExcluzaoControle();
-    private PedidoDAO ped = new PedidoDAO();
+    private ProdutoDAO ped = new ProdutoDAO();
     private SharedP_Control sc = new SharedP_Control();
     private CaixaControle cc = new CaixaControle();
 
@@ -49,7 +49,7 @@ public class VendaControle {
         return ven.abrirMesa(v);
     }
 
-    public void adicionar(PedidoVendaBEAN venda) {
+    public void adicionar(PedidoBEAN venda) {
         p.adicionar(venda);
     }
 
@@ -68,8 +68,11 @@ public class VendaControle {
 
     public ArrayList<ProdutosGravados> listarProdutosMesa(String text) {
         //verificar se mesa esta aberta
-        return p.produtosMesa(Integer.parseInt(text));
-
+        if (ven.getVenda(Integer.parseInt(text)) != 0) {
+            return p.produtosMesa(Integer.parseInt(text));
+        } else {
+            return null;
+        }
     }
 
     public void transferirMesa(String origem, String destino) {
@@ -108,7 +111,7 @@ public class VendaControle {
 
     public void excluirProduto(int mesaorigem, String motivo, int produto, String time) {
         int venda = getVenda(mesaorigem);
-        PedidoVendaBEAN pedido = p.localizar(produto, venda, time);
+        PedidoBEAN pedido = p.localizar(produto, venda, time);
 
         ExcluzaoBEAN pro = new ExcluzaoBEAN();
         pro.setNome(ped.localizar(produto).getNome());

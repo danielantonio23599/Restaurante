@@ -5,18 +5,24 @@
  */
 package modelo;
 
+import java.sql.Time;
+
 /**
  *
  * @author Daniel
  */
 public class ProdutoBEAN {
-    private int codigo;
-    private String nome;
-    private float preco;
-    private float custo;
-    private int quantidade;
-    private String descricao;
-    private String QR;
+private int codigo;
+private String nome;
+private float preco;
+private float custo;
+private String Armonizacao;
+private byte[] foto;
+private String preparo;
+private String descricao;
+private String tipo;
+private int quantidade;
+
 
     public int getCodigo() {
         return codigo;
@@ -50,12 +56,28 @@ public class ProdutoBEAN {
         this.custo = custo;
     }
 
-    public int getQuantidade() {
-        return quantidade;
+    public String getArmonizacao() {
+        return Armonizacao;
     }
 
-    public void setQuantidade(int quantidade) {
-        this.quantidade = quantidade;
+    public void setArmonizacao(String Armonizacao) {
+        this.Armonizacao = Armonizacao;
+    }
+
+    public byte[] getFoto() {
+        return foto;
+    }
+
+    public void setFoto(byte[] foto) {
+        this.foto = foto;
+    }
+
+    public String getPreparo() {
+        return preparo;
+    }
+
+    public void setPreparo(String preparo) {
+        this.preparo = preparo;
     }
 
     public String getDescricao() {
@@ -66,13 +88,22 @@ public class ProdutoBEAN {
         this.descricao = descricao;
     }
 
-    public String getQR() {
-        return QR;
+    public String getTipo() {
+        return tipo;
     }
 
-    public void setQR(String QR) {
-        this.QR = QR;
+    public void setTipo(String tipo) {
+        this.tipo = tipo;
     }
-    
-    
+
+    public int getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(int quantidade) {
+        this.quantidade = quantidade;
+    }
+
+  
+
 }

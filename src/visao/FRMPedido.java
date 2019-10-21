@@ -16,7 +16,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import modelo.PedidoBEAN;
+import modelo.ProdutoBEAN;
 import modelo.ProdutoBEAN;
 import util.ManipularImagem;
 
@@ -29,7 +29,7 @@ public class FRMPedido extends javax.swing.JFrame {
     private PedidoControle controle = new PedidoControle();
     private TableRowSorter<TableModel> tr;
     private DefaultTableModel dTable;
-    private ArrayList<PedidoBEAN> dados;
+    private ArrayList<ProdutoBEAN> dados;
     private int cod = 0;
     BufferedImage imagem;
     BufferedImage imagem2;
@@ -565,7 +565,7 @@ public class FRMPedido extends javax.swing.JFrame {
         String v = verificaCampos();
         if (v.equals("")) {
             
-            PedidoBEAN f = getDados();
+            ProdutoBEAN f = getDados();
             JOptionPane.showMessageDialog(null, controle.cadastrar(f));
             atualizaTabela();
         } else {
@@ -577,7 +577,7 @@ public class FRMPedido extends javax.swing.JFrame {
     private void btnEditarjButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarjButton7ActionPerformed
         String v = verificaCampos();
         if (v.equals("")) {
-            PedidoBEAN f = getDados();
+            ProdutoBEAN f = getDados();
             JOptionPane.showMessageDialog(null, controle.editar(f));
             atualizaTabela();
             limpaCampos();
@@ -803,9 +803,9 @@ public class FRMPedido extends javax.swing.JFrame {
         return retorno;
     }
     
-    private PedidoBEAN getDados() {
+    private ProdutoBEAN getDados() {
         
-        PedidoBEAN p = new PedidoBEAN();
+        ProdutoBEAN p = new ProdutoBEAN();
         p.setCodigo(cod);
         p.setNome(jtfNome.getText() + "");
         p.setPreco(Float.parseFloat(jtfPreco.getText() + ""));
@@ -862,7 +862,7 @@ public class FRMPedido extends javax.swing.JFrame {
     return dTable;
     }
     
-    private void preencheTabela(ArrayList<PedidoBEAN> dados) {
+    private void preencheTabela(ArrayList<ProdutoBEAN> dados) {
         dTable = criaTabela();
         //seta o nome das colunas da tabela
         dTable.addColumn("Código");
@@ -874,7 +874,7 @@ public class FRMPedido extends javax.swing.JFrame {
         dTable.addColumn("Armonização");
         dTable.addColumn("Tipo");
         
-        for (PedidoBEAN dado : dados) {
+        for (ProdutoBEAN dado : dados) {
 
 //Depois formata data
             dTable.addRow(new Object[]{dado.getCodigo(), dado.getNome(),
@@ -889,7 +889,7 @@ public class FRMPedido extends javax.swing.JFrame {
         
     }
     
-    private void prencheCampos(PedidoBEAN c) {
+    private void prencheCampos(ProdutoBEAN c) {
         limpaCampos();
         cod = c.getCodigo();
         jtfNome.setText(c.getNome());

@@ -91,12 +91,12 @@ public class VendaDAO {
     public ArrayList<Mesa> listarMesasAbertas() {
         ArrayList<Mesa> c = new ArrayList<>();
 
-        String sql = "select venMesa, sum(pevQTD*pedPreco) \n"
+        String sql = "select venMesa, sum(pedQTD*proPreco) \n"
                 + "from\n"
-                + " caixa join venda join pedido_venda join pedido \n"
+                + " caixa join venda join pedido join produto \n"
                 + "	where\n"
-                + "    caiCodigo = ven_caiCodigo and pev_venCodigo = venCodigo \n"
-                + "    and pev_pedCodigo = pedCodigo and caiStatus = 'aberto'and venStatus = 'aberta' group by venMesa;";
+                + "    caiCodigo = ven_caiCodigo and ped_venCodigo = venCodigo \n"
+                + "    and ped_proCodigo = proCodigo and caiStatus = 'aberto'and venStatus = 'aberta' group by venMesa;";
         try {
             stmt = connection.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
@@ -202,12 +202,12 @@ public class VendaDAO {
 
     public int getValorMesa(int venda) {
         int total = 0;
-        String sql = "select sum(pevQTD*pedPreco) \n"
+        String sql = "select sum(pedQTD*proPreco) \n"
                 + "from\n"
-                + " caixa join venda join pedido_venda join pedido \n"
+                + " caixa join venda join pedido join produto \n"
                 + "	where\n"
-                + "    caiCodigo = ven_caiCodigo and pev_venCodigo = venCodigo \n"
-                + "    and pev_pedCodigo = pedCodigo and caiStatus = 'aberto'and venStatus = 'aberta'"
+                + "    caiCodigo = ven_caiCodigo and ped_venCodigo = venCodigo \n"
+                + "    and ped_proCodigo = proCodigo and caiStatus = 'aberto'and venStatus = 'aberta'"
                 + " and venCodigo =" + venda + " group by venMesa;";
         try {
             stmt = connection.prepareStatement(sql);
@@ -273,9 +273,9 @@ public class VendaDAO {
     public ArrayList<ProdutosGravados> listarProdutosVendidosCaixa(int caixa) {
         ArrayList<ProdutosGravados> c = new ArrayList<ProdutosGravados>();
 
-        String sql = "SELECT  pedCodigo, pedNome,sum(pevQTD) as unidades ,pedPreco from \n"
-                + "pedido join pedido_venda join venda where venCodigo = pev_venCodigo and pev_pedCodigo = pedCodigo and venStatus = 'fechada' and \n"
-                + "ven_caiCodigo = "+caixa+" group by pedCodigo;";
+        String sql = "SELECT  proCodigo, proNome,sum(pedQTD) as unidades ,proPreco from \n"
+                + "produto join pedido join venda where venCodigo = ped_venCodigo and ped_proCodigo = proCodigo and venStatus = 'fechada' and \n"
+                + "ven_caiCodigo = "+caixa+" group by proCodigo;";
         try {
             stmt = connection.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();

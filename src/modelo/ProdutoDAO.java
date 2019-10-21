@@ -10,9 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -81,8 +78,8 @@ public class ProdutoDAO {
     }
 
     public boolean adicionar(ProdutoBEAN c) {
-        String sql = "INSERT INTO produto (proNome, proPreco, proCusto, proDescricao, proQuantidade)"
-                + " VALUES (?, ?, ?, ?, ?);";
+        String sql = "INSERT INTO produto (proNome, proPreco, proCusto, proDescricao, proArmonizacao,proPreparo,proTipo,proFoto)"
+                + " VALUES (?, ?, ?, ?, ?, ?, ?,?);";
 
         try {
             stmt = connection.prepareStatement(sql);
@@ -91,7 +88,10 @@ public class ProdutoDAO {
             stmt.setFloat(2, c.getPreco());
             stmt.setFloat(3, c.getCusto());
             stmt.setString(4, c.getDescricao());
-            stmt.setInt(5, c.getQuantidade());
+            stmt.setString(5, c.getArmonizacao());
+            stmt.setString(6, c.getPreparo());
+            stmt.setString(7, c.getTipo());
+            stmt.setBytes(8, c.getFoto());
             stmt.execute();
             stmt.close();
             return true;
@@ -100,7 +100,7 @@ public class ProdutoDAO {
         }
     }
 
-    public ArrayList<ProdutoBEAN> listarALl() {
+   public ArrayList<ProdutoBEAN> listarALl() {
         ArrayList<ProdutoBEAN> c = new ArrayList<ProdutoBEAN>();
 
         String sql = "select * from produto;";
@@ -113,32 +113,11 @@ public class ProdutoDAO {
                 ca.setNome(rs.getString(2));
                 ca.setPreco(rs.getFloat(3));
                 ca.setCusto(rs.getFloat(4));
-                ca.setQuantidade(rs.getInt(5));
-                ca.setDescricao(rs.getString(6));
-                c.add(ca);
-            }
-            stmt.close();
-
-        } catch (SQLException e) {
-            throw new RuntimeException();
-        }
-        return c;
-    }
-
-    public ArrayList<Produtos> listarProdutos() {
-        ArrayList<Produtos> c = new ArrayList<Produtos>();
-
-        String sql = "select * from produto;";
-        try {
-            stmt = connection.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                Produtos ca = new Produtos();
-                ca.setCodigo(rs.getInt(1));
-                ca.setNome(rs.getString(2));
-                ca.setPreco(rs.getFloat(3));
-                ca.setDescricao(rs.getString(6));
-                ca.setTipo("produto");
+                ca.setArmonizacao(rs.getString(5));
+                ca.setFoto(rs.getBytes(6));
+                ca.setPreparo(rs.getString(7));
+                ca.setDescricao(rs.getString(8));
+                ca.setTipo(rs.getString(9));
                 c.add(ca);
             }
             stmt.close();
@@ -150,30 +129,34 @@ public class ProdutoDAO {
     }
 
     public ProdutoBEAN localizar(int produto) {
-        ProdutoBEAN c = new ProdutoBEAN();
+        ProdutoBEAN ca = new ProdutoBEAN();
 
         String sql = "select * from produto where proCodigo = " + produto + ";";
         try {
             stmt = connection.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                c.setCodigo(rs.getInt(1));
-                c.setNome(rs.getString(2));
-                c.setPreco(rs.getFloat(3));
-                c.setCusto(rs.getFloat(4));
-                c.setQuantidade(rs.getInt(5));
-                c.setDescricao(rs.getString(6));
+                ca.setCodigo(rs.getInt(1));
+                ca.setNome(rs.getString(2));
+                ca.setPreco(rs.getFloat(3));
+                ca.setCusto(rs.getFloat(4));
+                ca.setArmonizacao(rs.getString(5));
+                ca.setFoto(rs.getBytes(6));
+                ca.setPreparo(rs.getString(7));
+                ca.setDescricao(rs.getString(8));
+                ca.setTipo(rs.getString(9));
             }
             stmt.close();
 
         } catch (SQLException e) {
             throw new RuntimeException();
         }
-        return c;
+        return ca;
     }
 
     public void editar(ProdutoBEAN c) {
-        String sql = "update produto set proNome = ? , proPreco = ? , proCusto = ? , proQuantidade = ?, proDescricao = ? where proCodigo = " + c.getCodigo() + ";";
+        String sql = "update produto set proNome = ? , proPreco = ? , proCusto = ? , proDescricao = ?, proArmonizacao = ?"
+                + ", proPreparo = ? , proTipo = ?, proFoto = ? where proCodigo = " + c.getCodigo() + ";";
 
         try {
             stmt = connection.prepareStatement(sql);
@@ -181,8 +164,11 @@ public class ProdutoDAO {
             stmt.setString(1, c.getNome());
             stmt.setFloat(2, c.getPreco());
             stmt.setFloat(3, c.getCusto());
-            stmt.setInt(4, c.getQuantidade());
-            stmt.setString(5, c.getDescricao());
+            stmt.setString(4, c.getDescricao());
+            stmt.setString(5, c.getArmonizacao());
+            stmt.setString(6, c.getPreparo());
+            stmt.setString(7, c.getTipo());
+            stmt.setBytes(8, c.getFoto());
 
             int l = stmt.executeUpdate();
             stmt.close();
@@ -195,7 +181,29 @@ public class ProdutoDAO {
         }
 
     }
+public ArrayList<Produtos> listarProdutos() {
+        ArrayList<Produtos> c = new ArrayList<Produtos>();
 
+        String sql = "select * from produto;";
+        try {
+            stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                Produtos ca = new Produtos();
+                ca.setCodigo(rs.getInt(1));
+                ca.setNome(rs.getString(2));
+                ca.setPreco(rs.getFloat(3));
+                ca.setDescricao(rs.getString(8));
+                ca.setTipo("pedidos");
+                c.add(ca);
+            }
+            stmt.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+        return c;
+    }
     public void excluir(int cod) {
         String sql = "delete from produto where proCodigo = ? ";
         try {
@@ -207,5 +215,7 @@ public class ProdutoDAO {
             throw new RuntimeException(e);
         }
     }
+
+    
 
 }

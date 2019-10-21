@@ -5,22 +5,19 @@
  */
 package modelo;
 
-import java.sql.Time;
+import java.util.Date;
 
 /**
  *
  * @author Daniel
  */
 public class PedidoBEAN {
-private int codigo;
-private String nome;
-private float preco;
-private float custo;
-private String Armonizacao;
-private byte[] foto;
-private String preparo;
-private String descricao;
-private String tipo;
+    private int codigo;
+    private int produto;
+    private int venda;
+    private String descricao;
+    private Float quantidade;
+    private String hora;
 
     public int getCodigo() {
         return codigo;
@@ -30,52 +27,20 @@ private String tipo;
         this.codigo = codigo;
     }
 
-    public String getNome() {
-        return nome;
+
+    public int getVenda() {
+        return venda;
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setVenda(int venda) {
+        this.venda = venda;
+    }
+    public String getHora() {
+        return hora;
     }
 
-    public float getPreco() {
-        return preco;
-    }
-
-    public void setPreco(float preco) {
-        this.preco = preco;
-    }
-
-    public float getCusto() {
-        return custo;
-    }
-
-    public void setCusto(float custo) {
-        this.custo = custo;
-    }
-
-    public String getArmonizacao() {
-        return Armonizacao;
-    }
-
-    public void setArmonizacao(String Armonizacao) {
-        this.Armonizacao = Armonizacao;
-    }
-
-    public byte[] getFoto() {
-        return foto;
-    }
-
-    public void setFoto(byte[] foto) {
-        this.foto = foto;
-    }
-
-    public String getPreparo() {
-        return preparo;
-    }
-
-    public void setPreparo(String preparo) {
-        this.preparo = preparo;
+    public void setHora(String hora) {
+        this.hora = hora;
     }
 
     public String getDescricao() {
@@ -86,12 +51,21 @@ private String tipo;
         this.descricao = descricao;
     }
 
-    public String getTipo() {
-        return tipo;
+    public Float getQuantidade() {
+        return quantidade;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setQuantidade(Float quantidade) {
+        this.quantidade = quantidade;
     }
 
+    public int getProduto() {
+        return produto;
+    }
+
+    public void setProduto(int produto) {
+        this.produto = produto;
+    }
+    
+    
 }

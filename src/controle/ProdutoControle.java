@@ -6,9 +6,8 @@
 package controle;
 
 import java.util.ArrayList;
-import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JComboBox;
+
 import modelo.ProdutoBEAN;
 import modelo.ProdutoDAO;
 import modelo.Produtos;

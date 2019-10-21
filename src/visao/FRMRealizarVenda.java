@@ -16,7 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
-import modelo.PedidoVendaBEAN;
+import modelo.PedidoBEAN;
 import modelo.Produtos;
 import modelo.VendaAtualBEAN;
 import modelo.VendaBEAN;
@@ -487,7 +487,7 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         CaixaControle c = new CaixaControle();
         if (c.isCaixaAberto()) {
-            PedidoVendaBEAN venda = getDados();
+            PedidoBEAN venda = getDados();
             v.adicionar(venda);
             dispose();
         } else {
@@ -580,10 +580,10 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
         labNumMesa.setText(mesa);
     }
 
-    private PedidoVendaBEAN getDados() {
-        PedidoVendaBEAN venda = new PedidoVendaBEAN();
+    private PedidoBEAN getDados() {
+        PedidoBEAN venda = new PedidoBEAN();
         VendaControle v = new VendaControle();
-        venda.setPedido(Integer.parseInt(lbCodigo.getText()));
+        venda.setProduto(Integer.parseInt(lbCodigo.getText()));
         venda.setHora(getHoraAtual());
         int codvenda = v.getVenda(Integer.parseInt(labNumMesa.getText() + ""));
         if (codvenda != 0) {

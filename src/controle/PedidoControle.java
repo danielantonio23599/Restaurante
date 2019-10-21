@@ -7,8 +7,8 @@ package controle;
 
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
-import modelo.PedidoBEAN;
-import modelo.PedidoDAO;
+import modelo.ProdutoBEAN;
+import modelo.ProdutoDAO;
 import modelo.ProdutoBEAN;
 import modelo.Produtos;
 
@@ -18,7 +18,7 @@ import modelo.Produtos;
  */
 public class PedidoControle {
 
-    private PedidoDAO p = new PedidoDAO();
+    private ProdutoDAO p = new ProdutoDAO();
 
     public DefaultComboBoxModel buscar(String produto) {
         DefaultComboBoxModel modelo = new DefaultComboBoxModel();
@@ -43,16 +43,16 @@ public class PedidoControle {
 
     }
 
-    public ArrayList<PedidoBEAN> listarAll() {
-        return p.listarAll();
+    public ArrayList<ProdutoBEAN> listarAll() {
+        return p.listarALl();
     }
 
-    public String cadastrar(PedidoBEAN f) {
+    public String cadastrar(ProdutoBEAN f) {
         p.adicionar(f);
         return "Cadastro realizado com sucesso!!";
     }
 
-    public String editar(PedidoBEAN f) {
+    public String editar(ProdutoBEAN f) {
         p.editar(f);
         return "Pedido editado com sucesso!!";
     }
@@ -62,12 +62,12 @@ public class PedidoControle {
         return "Exclusão realizado com sucesso!!";
     }
 
-    public PedidoBEAN localizar(int i) {
+    public ProdutoBEAN localizar(int i) {
         return p.localizar(i);
     }
 
     public ArrayList<Produtos> listarPedidos(ArrayList<Produtos> pro) {
-        ArrayList<Produtos> produtos = p.listarPedidos();
+        ArrayList<Produtos> produtos = p.listarProdutos();
         for (Produtos produto : produtos) {
             pro.add(produto);
         }
@@ -75,7 +75,7 @@ public class PedidoControle {
     }
 
     public Produtos buscarUm(String combo) {
-        ArrayList<Produtos> todos = p.listarPedidos();
+        ArrayList<Produtos> todos = p.listarProdutos();
         for (Produtos p : todos) {
             String pro = p.getCodigo() + " : " + p.getNome() + " : R$ " + p.getPreco();
             if (combo.equals(pro)) {

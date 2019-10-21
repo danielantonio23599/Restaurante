@@ -3093,7 +3093,10 @@ public class FRMCaixa extends javax.swing.JFrame {
     }
 
     public void atualizaProdutos() {
-        preencheTabelaProdutos(c.listarProdutosMesa(labNumMesa.getText()));
+        ArrayList<ProdutosGravados> dado = c.listarProdutosMesa(labNumMesa.getText());
+        if (dado != null) {
+            preencheTabelaProdutos(dado);
+        }
     }
 
     private void preencheTabelaProdutos(ArrayList<ProdutosGravados> dados) {

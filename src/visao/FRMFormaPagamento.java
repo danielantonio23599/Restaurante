@@ -13,7 +13,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import modelo.DespesaBEAN;
 import modelo.PagamentoBEAN;
-import modelo.PedidoBEAN;
+import modelo.ProdutoBEAN;
 import util.ManipularImagem;
 
 /**
