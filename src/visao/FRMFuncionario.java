@@ -5,8 +5,9 @@
  */
 package visao;
 
-import controle.CargoControle;
 import controle.FuncionarioControle;
+import controle.SharedP_Control;
+import controleService.ControleCargo;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
@@ -38,6 +39,7 @@ import javax.swing.JDialog;
 import javax.swing.JLayer;
 import javax.swing.JPanel;
 import javax.swing.ProgressMonitor;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -45,7 +47,13 @@ import javax.swing.table.TableRowSorter;
 import modelo.CargoBEAN;
 import modelo.Email;
 import modelo.FuncionarioBEAN;
+import modelo.local.SharedPreferencesBEAN;
 import org.apache.commons.mail.EmailException;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import sync.RestauranteAPI;
+import sync.SyncDefault;
 import util.EnviaEmail;
 import util.WaitLayerUI;
 
@@ -59,7 +67,7 @@ public class FRMFuncionario extends javax.swing.JFrame {
     private DefaultTableModel dTable;
     ArrayList<FuncionarioBEAN> dados;
     ArrayList<CargoBEAN> pegaCargo;
-    CargoControle c = new CargoControle();
+
     FuncionarioControle controle = new FuncionarioControle();
     private int codExcluir = 0;
     private boolean emailEnviado = false;
@@ -70,7 +78,7 @@ public class FRMFuncionario extends javax.swing.JFrame {
     public FRMFuncionario() {
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        pegaCargo = c.listarAll();
+        listarALL();
         prencheCombo();
         setExtendedState(MAXIMIZED_BOTH);
         atualizaTabela();
@@ -86,6 +94,51 @@ public class FRMFuncionario extends javax.swing.JFrame {
         dados = controle.listarAll();
 
         this.preencheTabela(dados);
+    }
+
+    private void listarALL() {
+        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        System.out.println(sh.getFunEmail() + "/" + sh.getFunSenha());
+        final Call<ArrayList<CargoBEAN>> call = api.listarCargos(sh.getFunEmail(), sh.getFunSenha());
+        call.enqueue(new Callback<ArrayList<CargoBEAN>>() {
+            @Override
+            public void onResponse(Call<ArrayList<CargoBEAN>> call, Response<ArrayList<CargoBEAN>> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+                        ArrayList<CargoBEAN> u = response.body();
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                pegaCargo = u;
+                            }
+                        });
+
+                    } else {
+
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<CargoBEAN>> call, Throwable t) {
+                //Servidor fora do ar
+                JOptionPane.showMessageDialog(null, "Login Incorreto erro");
+                System.out.println("Login incorreto");
+
+            }
+        });
+
     }
 
     /**
@@ -971,8 +1024,13 @@ public class FRMFuncionario extends javax.swing.JFrame {
     }
 
     private FuncionarioBEAN getDados() throws ParseException {
-        CargoControle c = new CargoControle();
-        int cargo = c.pegaCodigo(comboCargo.getSelectedItem() + "");
+        int cargo = 0;
+        for (CargoBEAN dado : pegaCargo) {
+            if (dado.getNome().equals(comboCargo.getSelectedItem() + "")) {
+                cargo = dado.getCodigo();
+            }
+        }
+
         DateFormat formatUS = new SimpleDateFormat("dd-mm-yyyy");
         Date date = formatUS.parse(jtfAdm.getText());
         Date date2 = formatUS.parse(jtfNasc.getText());
@@ -999,7 +1057,7 @@ public class FRMFuncionario extends javax.swing.JFrame {
     }
 
     private void limpaCampos() {
-        CargoControle c = new CargoControle();
+       
         comboCargo.setSelectedIndex(0);
         jtfAdm.setText("");
         jtfNasc.setText("");
@@ -1035,11 +1093,11 @@ public class FRMFuncionario extends javax.swing.JFrame {
         jtaEndereco.setText(f.getEndereco());
         jtfNome.setText(f.getNome());
         jtfRG.setText(f.getRG());
-        jtfSalario.setText(f.getSalario()+"");
+        jtfSalario.setText(f.getSalario() + "");
         jpSenha.setText(f.getSenha());
         jtfTelefone.setText(f.getTelefone());
-        jtfUniforme.setText(f.getUniforme()+"");
-        jtfNumCatao.setText(f.getCartao()+"");
+        jtfUniforme.setText(f.getUniforme() + "");
+        jtfNumCatao.setText(f.getCartao() + "");
 
     }
 }

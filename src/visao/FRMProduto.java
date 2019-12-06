@@ -5,7 +5,6 @@
  */
 package visao;
 
-import controle.CargoControle;
 import controle.ProdutoControle;
 import java.text.DateFormat;
 import java.text.ParseException;

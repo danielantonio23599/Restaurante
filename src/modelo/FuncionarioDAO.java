@@ -5,6 +5,7 @@
  */
 package modelo;
 
+import modelo.local.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;

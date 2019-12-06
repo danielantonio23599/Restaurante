@@ -5,15 +5,24 @@
  */
 package visao;
 
-import controle.CargoControle;
+import com.google.gson.Gson;
+import controle.SharedP_Control;
 import java.awt.Image;
 import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import modelo.CargoBEAN;
+import modelo.local.SharedPreferencesBEAN;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import sync.RestauranteAPI;
+import sync.SyncDefault;
+import visao.util.Carregamento;
 
 /**
  *
@@ -23,7 +32,7 @@ public class FRMCargo extends javax.swing.JFrame {
 
     private TableRowSorter<TableModel> tr;
     private DefaultTableModel dTable;
-    CargoControle controle = new CargoControle();
+
     private ArrayList<CargoBEAN> dados;
 
     /**
@@ -66,6 +75,8 @@ public class FRMCargo extends javax.swing.JFrame {
         tabelaCargo = new javax.swing.JTable();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        comboPermicao = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(140, 18, 30));
@@ -207,6 +218,17 @@ public class FRMCargo extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
+        jLabel7.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        jLabel7.setText("*Permição:");
+
+        comboPermicao.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
+        comboPermicao.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ADM", "GERENTE", "GARCOM", "CAIXA" }));
+        comboPermicao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboPermicaoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -220,21 +242,28 @@ public class FRMCargo extends javax.swing.JFrame {
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 965, Short.MAX_VALUE)
                         .addGap(10, 10, 10))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPane2))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(11, 11, 11)
-                                .addComponent(jLabel1)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jtfNome, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addGap(11, 11, 11)
+                                        .addComponent(jLabel1)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jtfNome, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jScrollPane2))))
+                                .addGap(8, 8, 8))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel7)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 415, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(8, 8, 8)
+                                .addComponent(comboPermicao, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,23 +276,27 @@ public class FRMCargo extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jtfNome, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1))
-                        .addGap(86, 86, 86)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(46, 46, 46)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel2)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(72, 72, 72)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(47, 47, 47))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addGap(55, 55, 55)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel3))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(comboPermicao, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel7))
+                        .addGap(92, 92, 92)))
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addContainerGap())
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -301,8 +334,8 @@ public class FRMCargo extends javax.swing.JFrame {
 
     private void btnExcluirjButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirjButton8ActionPerformed
         if (!jtfNome.getText().equals("")) {
-            JOptionPane.showMessageDialog(null, controle.excluir(jtfNome.getText()));
-            atualizaTabela();
+            exluir(jtfNome.getText());
+
             jtfNome.setEditable(true);
 
         } else {
@@ -317,8 +350,9 @@ public class FRMCargo extends javax.swing.JFrame {
             c.setNome(jtfNome.getText());
             c.setAtribuicao(jtaAtribuicao.getText());
             c.setRequisito(jtaRequisitos.getText());
-            JOptionPane.showMessageDialog(null, controle.editar(c));
-            atualizaTabela();
+            c.setPermicao(comboPermicao.getSelectedItem() + "");
+            editar(c);
+
             jtfNome.setEditable(true);
 
         } else {
@@ -333,8 +367,8 @@ public class FRMCargo extends javax.swing.JFrame {
             c.setNome(jtfNome.getText());
             c.setAtribuicao(jtaAtribuicao.getText());
             c.setRequisito(jtaRequisitos.getText());
-            JOptionPane.showMessageDialog(null, controle.cadastrar(c));
-            atualizaTabela();
+            c.setPermicao(comboPermicao.getSelectedItem() + "");
+            cadastrar(c);
             limpaCampos();
 
         } else {
@@ -348,10 +382,14 @@ public class FRMCargo extends javax.swing.JFrame {
 
     private void tabelaCargoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaCargoMouseClicked
         int linha = tabelaCargo.getSelectedRow();
-        prencheCampos(controle.localizarNome((tabelaCargo.getValueAt(linha, 1) + "")));
+        prencheCampos(linha);
         jtfNome.setEditable(false);
 
     }//GEN-LAST:event_tabelaCargoMouseClicked
+
+    private void comboPermicaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboPermicaoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboPermicaoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -414,16 +452,18 @@ public class FRMCargo extends javax.swing.JFrame {
     private void preencheTabela(ArrayList<CargoBEAN> dados) {
         dTable = criaTabela();
         //seta o nome das colunas da tabela
+
         dTable.addColumn("Código");
         dTable.addColumn("Nome");
         dTable.addColumn("Atribuições");
         dTable.addColumn("Requisitos");
+        dTable.addColumn("Permição");
         //pega os dados do ArrayList
 
         //cada célula do arrayList vira uma linha(row) na tabela
         for (CargoBEAN dado : dados) {
             dTable.addRow(new Object[]{dado.getCodigo(), dado.getNome(),
-                dado.getAtribuicao(), dado.getRequisito()});
+                dado.getAtribuicao(), dado.getRequisito(), dado.getPermicao()});
         }
         //set o modelo da tabela
         tabelaCargo.setModel(dTable);
@@ -437,12 +477,14 @@ public class FRMCargo extends javax.swing.JFrame {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnLocalizar1;
+    private javax.swing.JComboBox<String> comboPermicao;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel79;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -476,14 +518,15 @@ public class FRMCargo extends javax.swing.JFrame {
     }
 
     private void atualizaTabela() {
-        dados = controle.listarAll();
-        this.preencheTabela(dados);
+        listarALL();
+
     }
 
-    private void prencheCampos(CargoBEAN c) {
-        jtaAtribuicao.setText(c.getAtribuicao());
-        jtaRequisitos.setText(c.getRequisito());
-        jtfNome.setText(c.getNome());
+    private void prencheCampos(int linha) {
+        jtaAtribuicao.setText(tabelaCargo.getValueAt(linha, 2) + "");
+        jtaRequisitos.setText(tabelaCargo.getValueAt(linha, 3) + "");
+        jtfNome.setText(tabelaCargo.getValueAt(linha, 1) + "");
+        comboPermicao.setSelectedItem(tabelaCargo.getValueAt(linha, 4) + "");
 
     }
 
@@ -491,5 +534,214 @@ public class FRMCargo extends javax.swing.JFrame {
         jtaAtribuicao.setText("");
         jtaRequisitos.setText("");
         jtfNome.setText("");
+        comboPermicao.setSelectedIndex(0);
+    }
+
+    public void cadastrar(CargoBEAN car) {
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                a.setVisible(true);
+            }
+        });
+        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<Void> call = api.insereCargo(new Gson().toJson(car), sh.getFunEmail(), sh.getFunSenha());
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code() == 200) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                                String sucesso = response.headers().get("sucesso");
+                                JOptionPane.showMessageDialog(null, sucesso);
+                                atualizaTabela();
+                            }
+                        });
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                            String sucesso = response.headers().get("sucesso");
+                            JOptionPane.showMessageDialog(null, sucesso);
+                            atualizaTabela();
+                        }
+                    });
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                //Servidor fora do ar
+                System.out.println("Login incorreto");
+
+            }
+        });
+    }
+
+    public void editar(CargoBEAN car) {
+        String cargo = new Gson().toJson(car);
+        System.out.println(cargo);
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                a.setVisible(true);
+            }
+        });
+        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<Void> call = api.atualizaCargo(cargo, sh.getFunEmail(), sh.getFunSenha());
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code() == 200) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                                String sucesso = response.headers().get("sucesso");
+                                JOptionPane.showMessageDialog(null, sucesso);
+                                atualizaTabela();
+                            }
+                        });
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                            String sucesso = response.headers().get("sucesso");
+                            JOptionPane.showMessageDialog(null, sucesso);
+                        }
+                    });
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                //Servidor fora do ar
+                System.out.println("erro");
+
+            }
+        });
+    }
+
+    public void exluir(String car) {
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                a.setVisible(true);
+            }
+        });
+        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<Void> call = api.excluiCargo(car, sh.getFunEmail(), sh.getFunSenha());
+
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.code() == 200) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                                String sucesso = response.headers().get("sucesso");
+                                JOptionPane.showMessageDialog(null, sucesso);
+                                atualizaTabela();
+                            }
+                        });
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                            String sucesso = response.headers().get("sucesso");
+                            JOptionPane.showMessageDialog(null, sucesso);
+
+                        }
+                    });
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                //Servidor fora do ar
+
+                System.out.println("Login incorreto");
+
+            }
+        });
+    }
+
+    private void listarALL() {
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                a.setVisible(true);
+            }
+        });
+        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        System.out.println(sh.getFunEmail() + "/" + sh.getFunSenha());
+        final Call<ArrayList<CargoBEAN>> call = api.listarCargos(sh.getFunEmail(), sh.getFunSenha());
+        call.enqueue(new Callback<ArrayList<CargoBEAN>>() {
+            @Override
+            public void onResponse(Call<ArrayList<CargoBEAN>> call, Response<ArrayList<CargoBEAN>> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+                        ArrayList<CargoBEAN> u = response.body();
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                                preencheTabela(u);
+                            }
+                        });
+
+                    } else {
+
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+
+                        }
+                    });
+
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<CargoBEAN>> call, Throwable t) {
+                //Servidor fora do ar
+                JOptionPane.showMessageDialog(null, "Login Incorreto erro");
+                System.out.println("Login incorreto");
+
+            }
+        });
+
     }
 }

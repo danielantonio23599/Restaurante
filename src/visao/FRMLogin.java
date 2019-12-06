@@ -5,14 +5,31 @@
  */
 package visao;
 
-import controle.CargoControle;
-import controle.ControleLogin;
+import com.mysql.jdbc.log.Log;
+
+import controleService.ControleLogin;
 import controle.SharedP_Control;
+import controleService.ControleCargo;
+import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
 import javax.swing.JOptionPane;
-import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
+import javax.swing.SwingUtilities;
+import modelo.CargoBEAN;
+import modelo.FuncionarioBEAN;
+import modelo.local.SharedPreferencesBEAN;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.http.Headers;
+import sync.RestauranteAPI;
+import sync.SyncDefault;
+import visao.util.AlertDialog;
+import visao.util.Carregamento;
 
 /**
  *
@@ -21,6 +38,7 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 public class FRMLogin extends javax.swing.JFrame {
 
     private ControleLogin c = new ControleLogin();
+    private ControleCargo contCargo = new ControleCargo();
 
     /**
      * Creates new form FRMLogin2
@@ -28,11 +46,10 @@ public class FRMLogin extends javax.swing.JFrame {
     public FRMLogin() {
         initComponents();
         this.setLocationRelativeTo(null);
-
+//
         comboUsuario.setModel(c.buscar(""));
-        AutoCompleteDecorator.decorate(comboUsuario);
 
-        /* comboUsuario.grabFocus();
+        comboUsuario.grabFocus();
         comboUsuario.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
 
             @Override
@@ -75,7 +92,7 @@ public class FRMLogin extends javax.swing.JFrame {
                     }
                 }
             }
-        });*/
+        });
     }
 
     /**
@@ -213,18 +230,15 @@ public class FRMLogin extends javax.swing.JFrame {
 
         if (!comboUsuario.getSelectedItem().equals("")) {
             if (!jpfSenha.getText().equals("")) {
-                int cod = c.login(comboUsuario.getSelectedItem() + "", jpfSenha.getText() + "");
-                if (cod > 0) {
-                    tipoLogin(c.login(comboUsuario.getSelectedItem() + "", jpfSenha.getText() + ""));
-                } else {
-                    JOptionPane.showMessageDialog(null, "Login Incorreto");
-                }
+                fazLogin(comboUsuario.getSelectedItem() + "", jpfSenha.getText());
+
             } else {
                 JOptionPane.showMessageDialog(null, "Insira sua senha");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Insira um email");
         }
+
     }//GEN-LAST:event_btnLoginjButton6ActionPerformed
 
     private void btnLocalizar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocalizar1ActionPerformed
@@ -294,24 +308,20 @@ public class FRMLogin extends javax.swing.JFrame {
     private javax.swing.JPasswordField jpfSenha;
     // End of variables declaration//GEN-END:variables
 //private UJComboBox comboUsuario;
-    public void tipoLogin(int funcionario) {
-        CargoControle c = new CargoControle();
-        String nome = c.listarFuncionario(funcionario);
-        SharedP_Control s = new SharedP_Control();
-        s.inserir(funcionario);
+    public void tipoLogin(String cargo) {
         FRMPrincipal p = new FRMPrincipal();
         FRMPrincipalCaixa p1 = new FRMPrincipalCaixa();
         FRMPrincipalGarcom p2 = new FRMPrincipalGarcom();
         FRMPrincipalGerente p3 = new FRMPrincipalGerente();
 
-        switch (nome) {
+        switch (cargo) {
             case "ADM":
                 p.setVisible(true);
                 break;
             case "CAIXA":
                 p1.setVisible(true);
                 break;
-            case "GARCOM":
+            case "GARÇOM":
                 p2.setVisible(true);
                 break;
             case "GERENTE":
@@ -338,4 +348,69 @@ public class FRMLogin extends javax.swing.JFrame {
         }
         return encontrado;
     }
+
+    private SharedPreferencesBEAN fazLogin(String nomeUsuario, String senha) {
+        Carregamento a = new Carregamento(FRMLogin.this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                a.setVisible(true);
+            }
+        });
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<SharedPreferencesBEAN> call = api.fazLogin(nomeUsuario, senha);
+        SharedPreferencesBEAN u = null;
+        System.out.println("1");
+        call.enqueue(new Callback<SharedPreferencesBEAN>() {
+            @Override
+            public void onResponse(Call<SharedPreferencesBEAN> call, Response<SharedPreferencesBEAN> response) {
+
+                if (response.code() == 200) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+                        SharedPreferencesBEAN u = response.body();
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException ex) {
+                            Logger.getLogger(FRMLogin.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                                c.logIN(u);
+                                tipoLogin(u.getFunCargo());
+
+                            }
+                        });
+
+                    } else {
+                        a.setVisible(false);
+                        JOptionPane.showMessageDialog(null, "Login Incorreto");
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    a.setVisible(false);
+                    JOptionPane.showMessageDialog(null, "Servidor não responde!!");
+
+                    //servidor fora do ar
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<SharedPreferencesBEAN> call, Throwable t) {
+                //Servidor fora do ar
+                a.setVisible(false);
+                JOptionPane.showMessageDialog(null, "Login Incorreto erro");
+                System.out.println("Login incorreto");
+
+            }
+        });
+
+        return u;
+
+    }
+
 }

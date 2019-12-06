@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package modelo;
+package modelo.local;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -20,7 +20,7 @@ public class ConnectionFactory {
     private static ConnectionFactory instance = new ConnectionFactory();
 
     //constante e static - para usar sempre a mesma referência
-    public static final String URL = "jdbc:mysql://localhost:3306/restaurante";
+    public static final String URL = "jdbc:mysql://localhost:3306/restaurante_local";
     public static final String USER = "root"; //nome do usuario
     public static final String PASSWORD = ""; //senha
     public static final String DRIVER_CLASS = "org.gjt.mm.mysql.Driver"; //nome do driver

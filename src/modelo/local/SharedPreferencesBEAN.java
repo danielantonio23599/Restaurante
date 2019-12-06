@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package modelo;
+package modelo.local;
 
 /**
  *
@@ -14,8 +14,9 @@ public class SharedPreferencesBEAN {
     private int funCodigo;
     private String funNome;
     private String funEmail;
-    private int funCargo;
-    private byte[] foto;
+    private String funSenha;
+    private String funCargo;
+    
 
     public int getFunCodigo() {
         return funCodigo;
@@ -41,20 +42,23 @@ public class SharedPreferencesBEAN {
         this.funEmail = funEmail;
     }
 
-    public int getFunCargo() {
+  
+
+    public String getFunSenha() {
+        return funSenha;
+    }
+
+    public void setFunSenha(String funSenha) {
+        this.funSenha = funSenha;
+    }
+
+    public String getFunCargo() {
         return funCargo;
     }
 
-    public void setFunCargo(int funCargo) {
+    public void setFunCargo(String funCargo) {
         this.funCargo = funCargo;
     }
 
-    public byte[] getFoto() {
-        return foto;
-    }
-
-    public void setFoto(byte[] foto) {
-        this.foto = foto;
-    }
     
 }

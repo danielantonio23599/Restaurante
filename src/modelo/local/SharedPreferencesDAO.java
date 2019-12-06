@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package modelo;
+package modelo.local;
 
+import modelo.local.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,27 +18,28 @@ import java.util.ArrayList;
  */
 public class SharedPreferencesDAO {
 
-    private  Connection connection;
+    private Connection connection;
 
-    private  PreparedStatement stmt;
+    private PreparedStatement stmt;
 
     public SharedPreferencesDAO() {
         this.connection = ConnectionFactory.getConnection();
     }
 
-    public  SharedPreferencesBEAN listarALl() {
+    public SharedPreferencesBEAN listarALl() {
         SharedPreferencesBEAN ca = new SharedPreferencesBEAN();
         ca.setFunCodigo(-1);
 
         String sql = "select * from shared_preferences;";
         try {
-            stmt =  connection.prepareStatement(sql);
+            stmt = connection.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 ca.setFunCodigo(rs.getInt(1));
                 ca.setFunNome(rs.getString(2));
                 ca.setFunEmail(rs.getString(3));
-                ca.setFunCargo(rs.getInt(4));
+                ca.setFunSenha(rs.getString(4));
+                ca.setFunCargo(rs.getString(5));
 
             }
             stmt.close();
@@ -48,9 +50,9 @@ public class SharedPreferencesDAO {
         return ca;
     }
 
-    public  void inserir(SharedPreferencesBEAN c) {
+    public void inserir(SharedPreferencesBEAN c) {
 
-        String sql = "INSERT INTO shared_preferences ( funCodigo , funNome , funEmail , funCargo )VALUES (?, ?, ?, ?);";
+        String sql = "INSERT INTO shared_preferences ( funCodigo , funNome , funEmail , funSenha , funCargo )VALUES (?, ?, ?, ?, ?);";
 
         try {
             stmt = connection.prepareStatement(sql);
@@ -58,7 +60,8 @@ public class SharedPreferencesDAO {
             stmt.setInt(1, c.getFunCodigo());
             stmt.setString(2, c.getFunNome());
             stmt.setString(3, c.getFunEmail());
-            stmt.setInt(4, c.getFunCargo());
+            stmt.setString(4, c.getFunSenha());
+            stmt.setString(5, c.getFunCargo());
             stmt.execute();
             stmt.close();
 
@@ -68,7 +71,7 @@ public class SharedPreferencesDAO {
 
     }
 
-    public  void excluir() {
+    public void excluir() {
         String sql = "delete from shared_preferences ; ";
         try {
             stmt = connection.prepareStatement(sql);
@@ -78,4 +81,28 @@ public class SharedPreferencesDAO {
             throw new RuntimeException(e);
         }
     }
+
+    public ArrayList<String> buscar(String email) {
+
+        ArrayList<String> p = new ArrayList<>();
+        String sql = "SELECT funEmail FROM shared_preferences WHERE funEmail LIKE '" + email + "%';";
+
+        try {
+            stmt = connection.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+
+                p.add(rs.getString(1));
+
+            }
+            stmt.close();
+
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+
+        return p;
+
+    }
+
 }

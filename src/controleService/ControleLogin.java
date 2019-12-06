@@ -3,15 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controle;
+package controleService;
 
+import controle.SharedP_Control;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import modelo.FuncionarioBEAN;
-import modelo.FuncionarioDAO;
-import modelo.Produtos;
 import modelo.local.SharedPreferencesBEAN;
 import modelo.local.SharedPreferencesDAO;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import sync.RestauranteAPI;
+import sync.SyncDefault;
 
 /**
  *
@@ -19,15 +24,14 @@ import modelo.local.SharedPreferencesDAO;
  */
 public class ControleLogin {
 
-private FuncionarioDAO f = new FuncionarioDAO();
-    public int login(String email, String senha) {
-        int funcionario = f.Login(email, senha);
-        return funcionario;
+    public void logIN(SharedPreferencesBEAN f) {
+
+        SharedP_Control.inserir(f);
     }
 
-    public DefaultComboBoxModel buscar(String produto) {
+    public DefaultComboBoxModel buscar(String email) {
         DefaultComboBoxModel modelo = new DefaultComboBoxModel();
-        ArrayList<String> pe = f.buscar(produto);
+        ArrayList<String> pe = SharedP_Control.buscar(email);
         for (String p : pe) {
             modelo.addElement(p);
 
@@ -35,5 +39,4 @@ private FuncionarioDAO f = new FuncionarioDAO();
         return modelo;
 
     }
-
 }

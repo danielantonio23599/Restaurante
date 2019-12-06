@@ -28,6 +28,7 @@ public class FuncionarioBEAN {
     private String RG;
     private String senha;
     private int cargo;
+    private String carNome;
     private int cartao;
 
     public int getCartao() {
@@ -128,13 +129,7 @@ public class FuncionarioBEAN {
         this.senha = senha;
     }
 
-    public int getCargo() {
-        return cargo;
-    }
-
-    public void setCargo(int cargo) {
-        this.cargo = cargo;
-    }
+    
 
     public String getDataAdmicao() {
         return dataAdmicao;
@@ -152,10 +147,21 @@ public class FuncionarioBEAN {
         this.dataNacimento = dataNacimento;
     }
 
-   
+    public int getCargo() {
+        return cargo;
+    }
 
-   
+    public void setCargo(int cargo) {
+        this.cargo = cargo;
+    }
 
+    public String getCarNome() {
+        return carNome;
+    }
+
+    public void setCarNome(String carNome) {
+        this.carNome = carNome;
+    }
    
     
 }

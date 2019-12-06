@@ -5,10 +5,12 @@
  */
 package controle;
 
+import java.util.ArrayList;
+import modelo.CargoBEAN;
 import modelo.FuncionarioBEAN;
-import modelo.FuncionarioDAO;
-import modelo.SharedPreferencesBEAN;
-import modelo.SharedPreferencesDAO;
+
+import modelo.local.SharedPreferencesBEAN;
+import modelo.local.SharedPreferencesDAO;
 
 /**
  *
@@ -16,25 +18,28 @@ import modelo.SharedPreferencesDAO;
  */
 public class SharedP_Control {
 
-    private static FuncionarioDAO f = new FuncionarioDAO();
-    private SharedPreferencesDAO sha = new SharedPreferencesDAO();
+    private static SharedPreferencesDAO sha = new SharedPreferencesDAO();
 
-    public void inserir(int funcionario) {
+    public static void inserir(SharedPreferencesBEAN sh) {
         logOFF();
-        SharedPreferencesBEAN s = new SharedPreferencesBEAN();
-        FuncionarioBEAN fun = f.localizar(funcionario);
-        s.setFunCodigo(funcionario);
-        s.setFunNome(fun.getNome());
-        s.setFunEmail(fun.getEmail());
-        s.setFunCargo(fun.getCargo());
-        sha.inserir(s);
+        sha.inserir(sh);
     }
 
-    public SharedPreferencesBEAN listar() {
+    public static SharedPreferencesBEAN listar() {
         return sha.listarALl();
     }
 
-    public void logOFF() {
+    public static void logOFF() {
         sha.excluir();
+    }
+
+    public static void inserCargo(CargoBEAN u) {
+        SharedPreferencesBEAN sh = listar();
+        sh.setFunCargo(u.getNome());
+        inserir(sh);
+    }
+
+    public static ArrayList<String> buscar(String email) {
+        return sha.buscar(email);
     }
 }
