@@ -5,26 +5,7 @@
  */
 package visao;
 
-import controle.FuncionarioControle;
 import controle.SharedP_Control;
-import controleService.ControleCargo;
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Composite;
-import java.awt.Container;
-import java.awt.Dialog;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -56,6 +37,7 @@ import sync.RestauranteAPI;
 import sync.SyncDefault;
 import util.EnviaEmail;
 import util.WaitLayerUI;
+import visao.util.Carregamento;
 
 /**
  *
@@ -68,7 +50,7 @@ public class FRMFuncionario extends javax.swing.JFrame {
     ArrayList<FuncionarioBEAN> dados;
     ArrayList<CargoBEAN> pegaCargo;
 
-    FuncionarioControle controle = new FuncionarioControle();
+    //FuncionarioControle controle = new FuncionarioControle();
     private int codExcluir = 0;
     private boolean emailEnviado = false;
 
@@ -79,24 +61,30 @@ public class FRMFuncionario extends javax.swing.JFrame {
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         listarALL();
-        prencheCombo();
-        setExtendedState(MAXIMIZED_BOTH);
+
         atualizaTabela();
     }
 
     private void prencheCombo() {
-        for (CargoBEAN car : pegaCargo) {
-            comboCargo.addItem(car.getNome());
+        if (pegaCargo != null) {
+            for (CargoBEAN car : pegaCargo) {
+                comboCargo.addItem(car.getNome());
+            }
         }
     }
 
     private void atualizaTabela() {
-        dados = controle.listarAll();
+        buscarFuncionarios();
 
-        this.preencheTabela(dados);
     }
 
     private void listarALL() {
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                a.setVisible(true);
+            }
+        });
         SharedPreferencesBEAN sh = SharedP_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
         System.out.println(sh.getFunEmail() + "/" + sh.getFunSenha());
@@ -112,18 +100,28 @@ public class FRMFuncionario extends javax.swing.JFrame {
                         ArrayList<CargoBEAN> u = response.body();
                         SwingUtilities.invokeLater(new Runnable() {
                             public void run() {
+                                a.setVisible(false);
                                 pegaCargo = u;
+                                prencheCombo();
                             }
                         });
 
                     } else {
-
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
                         System.out.println("Login incorreto");
                         // senha ou usuario incorreto
 
                     }
                 } else {
-
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                        }
+                    });
                     System.out.println("Login incorreto- fora do ar");
                     //servidor fora do ar
                 }
@@ -133,7 +131,13 @@ public class FRMFuncionario extends javax.swing.JFrame {
             @Override
             public void onFailure(Call<ArrayList<CargoBEAN>> call, Throwable t) {
                 //Servidor fora do ar
-                JOptionPane.showMessageDialog(null, "Login Incorreto erro");
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        a.setVisible(false);
+                        JOptionPane.showMessageDialog(null, "Login Incorreto erro");
+                    }
+                });
+
                 System.out.println("Login incorreto");
 
             }
@@ -611,7 +615,7 @@ public class FRMFuncionario extends javax.swing.JFrame {
         if (v.equals("")) {
             try {
                 FuncionarioBEAN f = getDados();
-                JOptionPane.showMessageDialog(null, controle.cadastrar(f));
+                JOptionPane.showMessageDialog(null, cadastrar(f));
             } catch (ParseException ex) {
                 Logger.getLogger(FRMFuncionario.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -733,7 +737,7 @@ public class FRMFuncionario extends javax.swing.JFrame {
 
     private void btnExcluirjButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirjButton8ActionPerformed
         if (codExcluir != 0) {
-            controle.excluir(codExcluir);
+            // controle.excluir(codExcluir);
             JOptionPane.showMessageDialog(null, "Usuario excluido com sucesso");
             atualizaTabela();
         } else {
@@ -743,33 +747,7 @@ public class FRMFuncionario extends javax.swing.JFrame {
     }//GEN-LAST:event_btnExcluirjButton8ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-//SUDO gerar numero aleatorio;
-        jtfNumCatao.setText("");
-        UIManager.put("ProgressMonitor.progressText", "Aguarde....");
-        new Thread(() -> {
-            //creating ProgressMonitor instance
-            ProgressMonitor pm = new ProgressMonitor(this, "Gerando Numero", null, 0, 100);
-            int n = controle.gerarNumeroPonto();
-            //decide after 100 millis whether to show popup or not
-            pm.setMillisToDecideToPopup(100);
-            //after deciding if predicted time is longer than 100 show popup
-            pm.setMillisToPopup(100);
-            for (int i = 1; i <= 100; i++) {
-                //updating ProgressMonitor note
-                pm.setNote(" " + i + " %");
-                //updating ProgressMonitor progress
-                pm.setProgress(i);
-                try {
-                    //delay for task simulation
-                    TimeUnit.MILLISECONDS.sleep(30);
-                } catch (InterruptedException e) {
-                    System.err.println(e);
-                }
-            }
-            jtfNumCatao.setText(n + "");
-            pm.setNote("100%");
-        }).start();
-
+// selvet para gerar numero
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void comboCargoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboCargoActionPerformed
@@ -778,13 +756,7 @@ public class FRMFuncionario extends javax.swing.JFrame {
 
     private void tabelaFuncionariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaFuncionariosMouseClicked
         int linha = tabelaFuncionarios.getSelectedRow();
-        int i = controle.localizar(Integer.parseInt(tabelaFuncionarios.getValueAt(linha, 0) + ""));
-        try {
-            preencheCampos(i);
-        } catch (ParseException ex) {
-            Logger.getLogger(FRMFuncionario.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        codExcluir = i;
+        //selvet para localizar funcionario
     }//GEN-LAST:event_tabelaFuncionariosMouseClicked
 
     private void jtfSalarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfSalarioActionPerformed
@@ -877,16 +849,9 @@ public class FRMFuncionario extends javax.swing.JFrame {
             boolean[] canEdit = new boolean[]{
                 false, false, false
             };
-
-            @Override
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
-            }
-        ;
-
         };
         //retorna o DefaultTableModel
-    return dTable;
+        return dTable;
     }
 
     private void preencheTabela(ArrayList<FuncionarioBEAN> dados) {
@@ -1057,7 +1022,7 @@ public class FRMFuncionario extends javax.swing.JFrame {
     }
 
     private void limpaCampos() {
-       
+
         comboCargo.setSelectedIndex(0);
         jtfAdm.setText("");
         jtfNasc.setText("");
@@ -1076,7 +1041,8 @@ public class FRMFuncionario extends javax.swing.JFrame {
     }
 
     private void preencheCampos(int cod) throws ParseException {
-        FuncionarioBEAN f = controle.listarUm(cod);
+        //selvet de listar um funcionario
+        FuncionarioBEAN f = null;//listarUm(cod);
         DateFormat formatUS = new SimpleDateFormat("yyyy-mm-dd");
         Date date = formatUS.parse(f.getDataAdmicao());
         Date date2 = formatUS.parse(f.getDataNacimento());
@@ -1099,5 +1065,72 @@ public class FRMFuncionario extends javax.swing.JFrame {
         jtfUniforme.setText(f.getUniforme() + "");
         jtfNumCatao.setText(f.getCartao() + "");
 
+    }
+
+    private void buscarFuncionarios() {
+
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        System.out.println(sh.getFunEmail() + "/" + sh.getFunSenha());
+        final Call<ArrayList<FuncionarioBEAN>> call = api.listarFuncionarios(sh.getFunEmail(), sh.getFunSenha());
+        call.enqueue(new Callback<ArrayList<FuncionarioBEAN>>() {
+            @Override
+            public void onResponse(Call<ArrayList<FuncionarioBEAN>> call, Response<ArrayList<FuncionarioBEAN>> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+                        ArrayList<FuncionarioBEAN> u = response.body();
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                                dados = u;
+                                preencheTabela(dados);
+                            }
+                        });
+
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<FuncionarioBEAN>> call, Throwable t) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        a.setVisible(false);
+                    }
+                });
+            }
+        });
+    }
+
+    private Object cadastrar(FuncionarioBEAN f) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

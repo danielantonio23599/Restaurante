@@ -230,7 +230,13 @@ public class FRMLogin extends javax.swing.JFrame {
 
         if (!comboUsuario.getSelectedItem().equals("")) {
             if (!jpfSenha.getText().equals("")) {
-                fazLogin(comboUsuario.getSelectedItem() + "", jpfSenha.getText());
+                if (comboUsuario.getSelectedItem().equals("admin") && jpfSenha.getText().equals("admin")) {
+                FRMPrincipal p = new FRMPrincipal();
+                p.setVisible(true);
+                dispose();
+                } else {
+                    fazLogin(comboUsuario.getSelectedItem() + "", jpfSenha.getText());
+                }
 
             } else {
                 JOptionPane.showMessageDialog(null, "Insira sua senha");

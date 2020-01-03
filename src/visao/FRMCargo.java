@@ -701,8 +701,8 @@ public class FRMCargo extends javax.swing.JFrame {
         call.enqueue(new Callback<ArrayList<CargoBEAN>>() {
             @Override
             public void onResponse(Call<ArrayList<CargoBEAN>> call, Response<ArrayList<CargoBEAN>> response) {
-                System.out.println(response.isSuccessful());
-                if (response.isSuccessful()) {
+                System.out.println(response.code());
+                if (response.code() == 200) {
                     String auth = response.headers().get("auth");
                     if (auth.equals("1")) {
                         System.out.println("Login correto");

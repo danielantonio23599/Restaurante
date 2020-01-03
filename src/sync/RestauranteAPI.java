@@ -70,24 +70,28 @@ public interface RestauranteAPI {
     Call<SharedPreferencesBEAN> fazLogin(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
     @FormUrlEncoded
-    @POST("restaurante_server/ListarCargo")
+    @POST("restaurante_server/ListarCargos")
     Call<ArrayList<CargoBEAN>> listarCargos(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
     @FormUrlEncoded
-    @POST("restaurante_server/ExcluiCargo")
+    @POST("restaurante_server/ExcluirCargo")
     Call<Void> excluiCargo(@Field("cargo") String cargo, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
     @FormUrlEncoded
     @POST("restaurante_server/ListarCargoFuncionario")
-    Call<CargoBEAN> listarCargoFuncionario(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha, @Field("codFuncionario") int cod);
+    Call<CargoBEAN> listarCargoFuncionario(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha, @Field("codFuncionario") String cod);
 
     @FormUrlEncoded
-    @POST("restaurante_server/InsereCargo")
+    @POST("restaurante_server/AdicionarCargo")
     Call<Void> insereCargo(@Field("cargo") String cargo, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
     @FormUrlEncoded
-    @POST("restaurante_server/AtualizaCargo")
+    @POST("restaurante_server/EditarCargo")
     Call<Void> atualizaCargo(@Field("cargo") String cargo, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/ListarFuncionarios")
+    Call<ArrayList<FuncionarioBEAN>> listarFuncionarios(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
     /*
     @FormUrlEncoded

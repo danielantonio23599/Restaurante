@@ -26,7 +26,7 @@ public class ControleCargo {
 
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
         SharedPreferencesBEAN sh = SharedP_Control.listar();
-        final Call<CargoBEAN> call = api.listarCargoFuncionario(sh.getFunEmail(), sh.getFunSenha(), sh.getFunCodigo());
+        final Call<CargoBEAN> call = api.listarCargoFuncionario(sh.getFunEmail(), sh.getFunSenha(), sh.getFunCodigo()+"");
 
         call.enqueue(new Callback<CargoBEAN>() {
             @Override

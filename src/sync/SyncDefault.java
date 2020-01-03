@@ -20,7 +20,7 @@ public class SyncDefault {
  */
     
     public static final Retrofit RETROFIT_RESTAURANTE = new Retrofit.Builder().
-            baseUrl("http://localhost:8089/RestauranteServer/").
+            baseUrl("http://localhost:8080/RestauranteServer/").
             addConverterFactory(GsonConverterFactory.create()).
             build();
 }
