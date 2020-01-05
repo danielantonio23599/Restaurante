@@ -93,6 +93,18 @@ public interface RestauranteAPI {
     @POST("restaurante_server/ListarFuncionarios")
     Call<ArrayList<FuncionarioBEAN>> listarFuncionarios(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
+    @FormUrlEncoded
+    @POST("restaurante_server/ListarFuncionarios")
+    Call<FuncionarioBEAN> listarFuncionario(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha, @Field("funcionario") String cod);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/GerarNumero")
+    Call<Void> gerarNumFunPonto(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/AdicionarFuncionario")
+    Call<Void> insereFuncionario(@Field("funcionario") String cargo, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
     /*
     @FormUrlEncoded
     @POST("diga_api/FazSignin")

@@ -5,6 +5,7 @@
  */
 package visao;
 
+import com.google.gson.Gson;
 import controle.SharedP_Control;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -615,124 +616,17 @@ public class FRMFuncionario extends javax.swing.JFrame {
         if (v.equals("")) {
             try {
                 FuncionarioBEAN f = getDados();
-                JOptionPane.showMessageDialog(null, cadastrar(f));
+                cadastrar(f);
+
             } catch (ParseException ex) {
                 Logger.getLogger(FRMFuncionario.class.getName()).log(Level.SEVERE, null, ex);
             }
             atualizaTabela();
-            UIManager.put("ProgressMonitor.progressText", "Aguarde....");
-            new Thread(() -> {
-                //creating ProgressMonitor instance
-                ProgressMonitor pm = new ProgressMonitor(this, "Enviando e-mail", null, 0, 0);
-
-                //decide after 100 millis whether to show popup or not
-                pm.setMillisToDecideToPopup(100);
-                //after deciding if predicted time is longer than 100 show popup
-                pm.setMillisToPopup(100);
-
-            }).start();
-
-            WaitLayerUI layerUI = new WaitLayerUI();
-            JFrame frame = new JFrame("JLayer With Animated Gif");
-
-            JPanel panel = new JPanel();
-            JLayer<JPanel> jlayer = new JLayer<>(panel, layerUI);
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            // frame.setModal(true);
-            frame.setUndecorated(true);
-            frame.add(jlayer);
-            frame.pack();
-            frame.setLocationRelativeTo(null);
-            frame.setSize(200, 200);
-            frame.setVisible(true);
-            layerUI.start();
-            JDialog dia = new JDialog(frame, "Titulo", true);
-
-            new Thread(() -> {
-                //creating ProgressMonitor instance
-                Email e = this.pegaDadosEmailEX(jtfEmail.getText());
-                if (e == null) {
-                    frame.setVisible(false);
-                    dia.setVisible(false);
-                    JOptionPane.showMessageDialog(null, "Senha nulla");
-
-                } else {
-                    EnviaEmail a = new EnviaEmail();
-                    try {
-                        if (a.enviar(e)) {
-                            frame.setVisible(false);
-                            dia.setVisible(false);
-                            emailEnviado = true;
-                            atualizaTabela();
-                            limpaCampos();
-                        } else {
-                            frame.setVisible(false);
-                            dia.setVisible(false);
-                        }
-                    } catch (EmailException ex) {
-                    }
-                }
-
-            }).start();
-            dia.setUndecorated(true);
-            dia.setModal(true);
-            dia.setVisible(true);
-        } else {
-            JOptionPane.showMessageDialog(null, v);
         }
     }//GEN-LAST:event_btnAdicionarjButton6ActionPerformed
 
     private void btnEditarjButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarjButton7ActionPerformed
-        if (!jtfEmail.getText().equals("")) {
-            if (emailEnviado == false) {
-                WaitLayerUI layerUI = new WaitLayerUI();
-                JFrame frame = new JFrame("JLayer With Animated Gif");
-
-                JPanel panel = new JPanel();
-                JLayer<JPanel> jlayer = new JLayer<>(panel, layerUI);
-                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                // frame.setModal(true);
-                frame.setUndecorated(true);
-                frame.add(jlayer);
-                frame.pack();
-                frame.setLocationRelativeTo(this);
-                frame.setSize(200, 200);
-                frame.setVisible(true);
-                layerUI.start();
-                JDialog dia = new JDialog(frame, "Titulo", true);
-
-                new Thread(() -> {
-                    //creating ProgressMonitor instance
-                    Email e = this.pegaDadosEmailEX(jtfEmail.getText());
-                    if (e == null) {
-                        frame.setVisible(false);
-                        dia.setVisible(false);
-                        JOptionPane.showMessageDialog(null, "Senha nulla");
-
-                    } else {
-                        EnviaEmail a = new EnviaEmail();
-                        try {
-                            if (a.enviar(e)) {
-                                frame.setVisible(false);
-                                dia.setVisible(false);
-                            } else {
-                                frame.setVisible(false);
-                                dia.setVisible(false);
-                            }
-                        } catch (EmailException ex) {
-                        }
-                    }
-
-                }).start();
-                dia.setUndecorated(true);
-                dia.setModal(true);
-                dia.setVisible(true);
-            } else {
-                JOptionPane.showMessageDialog(null, "Email já enviado....");
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "opção invalida");
-        }
+        //reenviar email
     }//GEN-LAST:event_btnEditarjButton7ActionPerformed
 
     private void btnExcluirjButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirjButton8ActionPerformed
@@ -748,6 +642,60 @@ public class FRMFuncionario extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 // selvet para gerar numero
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<Void> call = api.gerarNumFunPonto(sh.getFunEmail(), sh.getFunSenha());
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                                jtfNumCatao.setText(response.headers().get("sucesso"));
+                            }
+                        });
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        a.setVisible(false);
+                    }
+                });
+            }
+        });
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void comboCargoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboCargoActionPerformed
@@ -756,6 +704,7 @@ public class FRMFuncionario extends javax.swing.JFrame {
 
     private void tabelaFuncionariosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabelaFuncionariosMouseClicked
         int linha = tabelaFuncionarios.getSelectedRow();
+
         //selvet para localizar funcionario
     }//GEN-LAST:event_tabelaFuncionariosMouseClicked
 
@@ -1130,7 +1079,66 @@ public class FRMFuncionario extends javax.swing.JFrame {
         });
     }
 
-    private Object cadastrar(FuncionarioBEAN f) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void cadastrar(FuncionarioBEAN f) {
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        System.out.println(sh.getFunEmail() + "/" + sh.getFunSenha());
+        final Call<Void> call = api.insereFuncionario(new Gson().toJson(f), sh.getFunEmail(), sh.getFunSenha());
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                JOptionPane.showMessageDialog(null, response.headers().get("sucesso"));
+                                a.setVisible(false);
+                                atualizaTabela();
+                            }
+                        });
+
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        a.setVisible(false);
+                    }
+                });
+            }
+        });
+
     }
 }
