@@ -7,6 +7,7 @@ package visao;
 
 import controle.PedidoControle;
 import controle.ProdutoControle;
+import controle.SharedP_Control;
 import controle.VendaControle;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -17,9 +18,17 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import modelo.ProdutoBEAN;
 import modelo.Produtos;
 import modelo.ProdutosGravados;
 import modelo.VendaAtualBEAN;
+import modelo.local.SharedPreferencesBEAN;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import sync.RestauranteAPI;
+import sync.SyncDefault;
+import visao.util.Carregamento;
 
 /**
  *
@@ -57,7 +66,7 @@ public class FRMListaProdutos extends javax.swing.JFrame {
                         || evt.getKeyCode() == KeyEvent.VK_6 || evt.getKeyCode() == KeyEvent.VK_7
                         || evt.getKeyCode() == KeyEvent.VK_8 || evt.getKeyCode() == KeyEvent.VK_9) {
                     try {
-                        comboProduto.setModel((ComboBoxModel<String>) p.buscar(Integer.parseInt(cadenaEscrita)));
+                        buscar(cadenaEscrita);
                         System.out.println("entrou");
                         if (comboProduto.getItemCount() > 0) {
                             comboProduto.getEditor().setItem(cadenaEscrita);
@@ -69,7 +78,7 @@ public class FRMListaProdutos extends javax.swing.JFrame {
                     } catch (NumberFormatException ey) {
                     }
                 } else if (evt.getKeyCode() >= 65 && evt.getKeyCode() <= 90 || evt.getKeyCode() >= 96 && evt.getKeyCode() <= 105 || evt.getKeyCode() == 8) {
-                    comboProduto.setModel(p.buscar(cadenaEscrita));
+                    buscar(cadenaEscrita);
                     if (comboProduto.getItemCount() > 0) {
                         comboProduto.getEditor().setItem(cadenaEscrita);
                         comboProduto.showPopup();
@@ -79,8 +88,69 @@ public class FRMListaProdutos extends javax.swing.JFrame {
                     }
                 }
             }
+
         });
-        
+
+    }
+
+    private void buscar(String cadenaEscrita) {
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<DefaultComboBoxModel> call = api.pesquisaProdutos(sh.getFunEmail(), sh.getFunSenha(), cadenaEscrita);
+        call.enqueue(new Callback<DefaultComboBoxModel>() {
+            @Override
+            public void onResponse(Call<DefaultComboBoxModel> call, Response<DefaultComboBoxModel> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+                        DefaultComboBoxModel u = response.body();
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                                comboProduto.setModel((ComboBoxModel<String>) u);
+                            }
+                        });
+
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DefaultComboBoxModel> call, Throwable thrwbl) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        a.setVisible(false);
+                    }
+                });
+            }
+        });
     }
 
     public void atualizaProdutos() {
@@ -537,16 +607,81 @@ public class FRMListaProdutos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botaoPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoPesquisarActionPerformed
-        Produtos pro = p.buscarUm(comboProduto.getSelectedItem() + "");
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<Produtos> call = api.buscarUmProduto(sh.getFunEmail(), sh.getFunSenha(), comboProduto.getSelectedItem() + "");
+        call.enqueue(new Callback<Produtos>() {
+            @Override
+            public void onResponse(Call<Produtos> call, Response<Produtos> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+                        Produtos u = response.body();
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                                if (u != null) {
+                                    FRMRealizarVenda r = new FRMRealizarVenda();
+                                    r.setProdutos(u);
+                                    r.setDados(labMesa.getText() + "");
+                                    r.setVisible(true);
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "NÃO encontrado!!");
+                                }
+                            }
+                        });
+
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Produtos> call, Throwable thrwbl) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        a.setVisible(false);
+                    }
+                });
+            }
+        });
+
+        /*Produtos pro = buscarUm(comboProduto.getSelectedItem() + "");
         if (pro != null) {
             FRMRealizarVenda r = new FRMRealizarVenda();
-            r.setProdutos(pro);            
+            r.setProdutos(pro);
             r.setDados(labMesa.getText() + "");
             r.setVisible(true);
 
         } else {
             JOptionPane.showMessageDialog(null, "NÃO encontrado!!");
-        }
+        }*/
     }//GEN-LAST:event_botaoPesquisarActionPerformed
 
     private void comboProdutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboProdutoActionPerformed
@@ -640,10 +775,10 @@ public class FRMListaProdutos extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new FRMListaProdutos().setVisible(true);
-                
+
             }
         });
-        
+
     }
 
     public void setDados(String mesa) {

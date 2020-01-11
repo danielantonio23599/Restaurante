@@ -134,9 +134,9 @@ public class FRMPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu4);
 
-        jMenu6.setText("Pedido");
+        jMenu6.setText("Produto");
 
-        jMenuItem8.setText("Pedido");
+        jMenuItem8.setText("Produto");
         jMenuItem8.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem8ActionPerformed(evt);
@@ -218,7 +218,7 @@ public class FRMPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem8ActionPerformed
-        FRMPedido p = new FRMPedido();
+        FRMProduto p = new FRMProduto();
         p.setVisible(true);
 
     }//GEN-LAST:event_jMenuItem8ActionPerformed

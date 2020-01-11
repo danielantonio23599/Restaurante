@@ -5,7 +5,12 @@
  */
 package util;
 
+import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -15,6 +20,7 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 /**
@@ -108,6 +114,39 @@ public class ManipularImagem {
 
         }
 
+    }
+
+    public static byte[] imageToByte(Icon icon) {
+        Image image = iconToImage(icon);
+        BufferedImage bi = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
+        Graphics bg = bi.getGraphics();
+        bg.drawImage(image, 0, 0, null);
+        bg.dispose();
+
+        ByteArrayOutputStream buff = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(bi, "JPG", buff);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return buff.toByteArray();
+    }
+
+    public static Image iconToImage(Icon icon) {
+        if (icon instanceof ImageIcon) {
+            return ((ImageIcon) icon).getImage();
+        } else {
+            int w = icon.getIconWidth();
+            int h = icon.getIconHeight();
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            GraphicsDevice gd = ge.getDefaultScreenDevice();
+            GraphicsConfiguration gc = gd.getDefaultConfiguration();
+            BufferedImage image = gc.createCompatibleImage(w, h);
+            Graphics2D g = image.createGraphics();
+            icon.paintIcon(null, g, 0, 0);
+            g.dispose();
+            return image;
+        }
     }
 
 }

@@ -93,12 +93,12 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="jMenu6">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Pedido"/>
+            <Property name="text" type="java.lang.String" value="Produto"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMenuItem8">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Pedido"/>
+                <Property name="text" type="java.lang.String" value="Produto"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem8ActionPerformed"/>

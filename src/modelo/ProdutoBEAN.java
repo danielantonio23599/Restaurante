@@ -16,12 +16,13 @@ private int codigo;
 private String nome;
 private float preco;
 private float custo;
+private float quantidade;
 private String Armonizacao;
 private byte[] foto;
 private String preparo;
 private String descricao;
 private String tipo;
-private int quantidade;
+
 
 
     public int getCodigo() {
@@ -96,14 +97,15 @@ private int quantidade;
         this.tipo = tipo;
     }
 
-    public int getQuantidade() {
+    public float getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(int quantidade) {
+    public void setQuantidade(float quantidade) {
         this.quantidade = quantidade;
     }
 
+   
   
 
 }
