@@ -991,7 +991,7 @@ public class FRMProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_comboTipoItemStateChanged
 
     private void jtfPrecoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfPrecoFocusGained
-        jtfPreco.setText("");
+       
     }//GEN-LAST:event_jtfPrecoFocusGained
 
     private void jtfPrecoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfPrecoKeyPressed

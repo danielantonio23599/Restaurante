@@ -19,6 +19,7 @@ public class CaixaBEAN {
     private float trocoIn;
     private float trocoFin;
     private String status;
+    private int funcionario;
 
     public String getStatus() {
         return status;
@@ -76,5 +77,13 @@ public class CaixaBEAN {
     public void setTrocoFin(float trocoFin) {
         this.trocoFin = trocoFin;
     }  
+
+    public int getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(int funcionario) {
+        this.funcionario = funcionario;
+    }
     
 }

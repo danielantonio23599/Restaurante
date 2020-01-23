@@ -5,6 +5,7 @@
  */
 package visao;
 
+import com.google.gson.Gson;
 import visao.util.Mesa;
 import controle.CaixaControle;
 import controle.DespesaControle;
@@ -12,6 +13,7 @@ import controle.ExcluzaoControle;
 import controle.PagamentoControle;
 import controle.PedidoControle;
 import controle.SangriaControle;
+import controle.SharedP_Control;
 import controle.VendaControle;
 import java.awt.CardLayout;
 import java.awt.GridLayout;
@@ -26,9 +28,11 @@ import java.util.Date;
 import javax.swing.ComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import modelo.Caixa;
 import modelo.CaixaBEAN;
 import modelo.CargoBEAN;
 import modelo.DespesaBEAN;
@@ -38,7 +42,14 @@ import modelo.Produtos;
 import modelo.ProdutosGravados;
 import modelo.SangriaBEAN;
 import modelo.VendaBEAN;
+import modelo.local.SharedPreferencesBEAN;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import sync.RestauranteAPI;
+import sync.SyncDefault;
 import util.Time;
+import visao.util.Carregamento;
 
 /**
  *
@@ -49,9 +60,9 @@ public class FRMCaixa extends javax.swing.JFrame {
     private DefaultTableModel dTable;
     private TableRowSorter<TableModel> tr;
     private ArrayList<DespesaBEAN> dados;
+    private float saldo;
     private ArrayList<PagamentoBEAN> formaPagamentos;
     private ArrayList<DespesaBEAN> despesa = new ArrayList<>();
-    private CaixaControle controleCaixa = new CaixaControle();
     private DespesaControle controle = new DespesaControle();
     private VendaControle c = new VendaControle();
     private ExcluzaoControle exclusaoControl = new ExcluzaoControle();
@@ -2420,32 +2431,21 @@ public class FRMCaixa extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRelatoriosActionPerformed
 
     private void btnAbrirjButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirjButton6ActionPerformed
-        boolean aux = controleCaixa.isCaixaAberto();
-        if (aux == false) {
-            String valor = JOptionPane.showInputDialog("Digite o valor que o caixa começará de TROCO!!!");
-            if (valor != null) {
-                CaixaBEAN c = new CaixaBEAN();
-                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-                Date hora = Calendar.getInstance().getTime(); // Ou qualquer outra forma que tem
-                c.setIn(sdf.format(hora));
-                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-                Date date = new Date();
-                c.setData(dateFormat.format(date));
-                String r = controleCaixa.abrirCaixa(c);
-                if (r.equals("")) {
-                    JOptionPane.showMessageDialog(null, "ERRO!!");
-                } else {
-                    //hoome();
-                    atualizaMesas();
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Valor INVALIDO!!");
-            }
+
+        String valor = JOptionPane.showInputDialog("Digite o valor que o caixa começará de TROCO!!!");
+        if (valor != null) {
+            CaixaBEAN c = new CaixaBEAN();
+            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            Date hora = Calendar.getInstance().getTime(); // Ou qualquer outra forma que tem
+            c.setIn(sdf.format(hora));
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+            Date date = new Date();
+            c.setData(dateFormat.format(date));
+            abrirCaixa(c);
         } else {
-            JOptionPane.showMessageDialog(null, "Caixa já ABERTO!!");
-            //hoome();
-            atualizaMesas();
+            JOptionPane.showMessageDialog(null, "Valor INVALIDO!!");
         }
+
     }//GEN-LAST:event_btnAbrirjButton6ActionPerformed
 
     private void btnFecharjButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharjButton7ActionPerformed
@@ -2473,26 +2473,12 @@ public class FRMCaixa extends javax.swing.JFrame {
 
     private void btnSangriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSangriaActionPerformed
         float sangria = 0;
-        if (controleCaixa.getCaixa() > 0) {
-            String valor = JOptionPane.showInputDialog("Digite o valor que deseja retirar do caixa !");
-            if (!valor.equals("")) {
-                sangria = Float.parseFloat(valor);
-            }
-            float total = controleCaixa.getSaldoAtual();
-            if (sangria > total) {
-                JOptionPane.showMessageDialog(null, "Valor Maior que Saldo Atual");
-            } else {
-                SangriaBEAN s = new SangriaBEAN();
-                s.setValor(sangria);
-                s.setTime(Time.getTime());
-                s.setCaixa(controleCaixa.getCaixa());
-                int reply = JOptionPane.showConfirmDialog(null, "Deseja realmete retirar R$ " + sangria + " do caixa?", "Comfirmação", JOptionPane.YES_NO_OPTION);
-                if (reply == JOptionPane.YES_OPTION) {
-                    sangriaControle.cadastrar(s);
-                    JOptionPane.showMessageDialog(null, "Operação Liberada com Sucesso!!");
-                }
-            }
+
+        String valor = JOptionPane.showInputDialog("Digite o valor que deseja retirar do caixa !");
+        if (!valor.equals("")) {
+            sangria = Float.parseFloat(valor);
         }
+        getSaldoAtual(sangria);
     }//GEN-LAST:event_btnSangriaActionPerformed
 
     private void jtfTotalFiscalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfTotalFiscalActionPerformed
@@ -2751,9 +2737,68 @@ public class FRMCaixa extends javax.swing.JFrame {
             int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
             if (reply == JOptionPane.YES_OPTION) {
                 if (Float.parseFloat(jtfFaturamentoLiquido.getText()) == Float.parseFloat(jtfTroco.getText())) {
-                    controleCaixa.fecharCaixa(Float.parseFloat(jtfTroco.getText()));
-                    JOptionPane.showMessageDialog(null, "Caixa fechado com sucesso!!!");
-                    atualizaTabelaprodusClose();
+
+                    Carregamento a = new Carregamento(this, true);
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+
+                            a.setVisible(true);
+
+                        }
+                    });
+                    SharedPreferencesBEAN sh = SharedP_Control.listar();
+                    RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+                    final Call<Void> call = api.fecharCaixa("" + Float.parseFloat(jtfTroco.getText()), sh.getFunEmail(), sh.getFunSenha());
+                    call.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            System.out.println(response.isSuccessful());
+                            if (response.isSuccessful()) {
+                                String auth = response.headers().get("auth");
+                                if (auth.equals("1")) {
+                                    System.out.println("Login correto");
+
+                                    SwingUtilities.invokeLater(new Runnable() {
+                                        public void run() {
+                                            JOptionPane.showMessageDialog(null, response.headers().get("sucesso"));
+                                            atualizaTabelaprodusClose();
+
+                                            a.setVisible(false);
+
+                                        }
+                                    });
+
+                                } else {
+                                    SwingUtilities.invokeLater(new Runnable() {
+                                        public void run() {
+                                            a.setVisible(false);
+                                        }
+                                    });
+                                    System.out.println("Login incorreto");
+                                    // senha ou usuario incorreto
+
+                                }
+                            } else {
+                                SwingUtilities.invokeLater(new Runnable() {
+                                    public void run() {
+                                        a.setVisible(false);
+                                    }
+                                });
+                                System.out.println("Login incorreto- fora do ar");
+                                //servidor fora do ar
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
+                            SwingUtilities.invokeLater(new Runnable() {
+                                public void run() {
+                                    a.setVisible(false);
+                                }
+                            });
+                        }
+                    });
+
                 } else {
                     JOptionPane.showMessageDialog(null, "Verifique seu troco, incompativel com o seu dinheiro em caixa!!");
                 }
@@ -3203,7 +3248,6 @@ public class FRMCaixa extends javax.swing.JFrame {
     private VendaBEAN getDadosVenda() {
         VendaBEAN venda = new VendaBEAN();
         venda = c.listarVenda(Integer.parseInt(labNumMesa.getText()));
-        venda.setCaixa(controleCaixa.getCaixa());
         venda.setCheckOut(Time.getTime());
         int pag = pagControl.localizar(comboPagamento.getSelectedItem() + "").getCodigo();
         venda.setPagamento(pag);
@@ -3346,14 +3390,15 @@ public class FRMCaixa extends javax.swing.JFrame {
 //relatorio
 
     private void atualizaRelatorio() {
+        float saldo = 0;
         ArrayList<VendaBEAN> vendas = c.listarVendasAbertas();
         preencheTabelaCancelados(exclusaoControl.listarExclusaoCaixa());
         preencheTabelaVenda(vendas);
         preencheTabelaDespesas(controle.listarDespesaDia());
         preencheTabelaSangria(sangriaControle.listarSangriasCaixa());
         lbTotalVendido.setText(c.getTotalVendido() + "");
-        lbSaldo.setText(controleCaixa.getSaldoAtual() + "");
-        jtfCaixa.setText(controleCaixa.getCaixa() + "");
+        // lbSaldo.setText(getSaldoAtual(saldo) + "");
+        //jtfCaixa.setText(controleCaixa.getCaixa() + "");
         lbTotalDespesas.setText(controle.getTotalDespesasCaixa() + "");
         lbTotalSangrias.setText(sangriaControle.getTotalSangriasCaixa() + "");
 
@@ -3513,14 +3558,8 @@ public class FRMCaixa extends javax.swing.JFrame {
     }
 
     private void atualizaTabelaprodusClose() {
-        preencheTabelaProdutosClose(c.listarProdutosVendidosCaixa());
-        preencheTabelaDespesas(controle.listarDespesaDia());
-        jtfFaturamento.setText(controleCaixa.getTotalVendido() + "");
-        jtfSangria.setText(sangriaControle.getTotalSangriasCaixa() + "");
-        jtfDespesas.setText(controle.getTotalDespesasCaixa() + "");
-        jtfFaturamentoLiquido.setText(controleCaixa.getSaldoAtual() + "");
-        lbSaldoCaixa.setText(controleCaixa.getSaldoAtual() + "");
-
+        listarProdutosVendidosCaixa();
+        listarValoresCaixa();
     }
 
     private void preencheTabelaProdutosClose(ArrayList<ProdutosGravados> dados) {
@@ -3542,6 +3581,7 @@ public class FRMCaixa extends javax.swing.JFrame {
 
         tr = new TableRowSorter<TableModel>(dTable);
         tabelaProduClose.setRowSorter(tr);
+        listarDespesaDia();
 
     }
 
@@ -3588,5 +3628,395 @@ public class FRMCaixa extends javax.swing.JFrame {
         if (Float.parseFloat(jtfFaturamentoLiquido.getText()) < troco) {
             JOptionPane.showMessageDialog(null, "Verifique seu troco, incompativel com o seu dinheiro em caixa!!");
         }
+    }
+
+    private void abrirCaixa(CaixaBEAN c) {
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<Void> call = api.abrirCaixa(new Gson().toJson(c), sh.getFunEmail(), sh.getFunSenha());
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                JOptionPane.showMessageDialog(null, response.headers().get("sucesso"));
+                                a.setVisible(false);
+                                //atualizarMesas
+                            }
+                        });
+
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        a.setVisible(false);
+                    }
+                });
+            }
+        });
+    }
+
+    private void getSaldoAtual(Float sangria) {
+
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<Void> call = api.saldoAtualCaixa(sh.getFunEmail(), sh.getFunSenha());
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                saldo = Float.parseFloat(response.headers().get("sucesso"));
+                                a.setVisible(false);
+                                if (saldo == -1) {
+                                    JOptionPane.showMessageDialog(null, "Caixa está Fechado");
+                                } else if (sangria > saldo) {
+                                    JOptionPane.showMessageDialog(null, "Valor Maior que Saldo Atual");
+
+                                } else {
+                                    SangriaBEAN s = new SangriaBEAN();
+                                    s.setValor(sangria);
+                                    s.setTime(Time.getTime());
+                                    //s.setCaixa(controleCaixa.getCaixa());
+                                    int reply = JOptionPane.showConfirmDialog(null, "Deseja realmete retirar R$ " + sangria + " do caixa?", "Comfirmação", JOptionPane.YES_NO_OPTION);
+                                    if (reply == JOptionPane.YES_OPTION) {
+                                        inserirSangria(s);
+                                        JOptionPane.showMessageDialog(null, "Operação Liberada com Sucesso!!");
+                                    }
+                                }
+
+                            }
+                        });
+
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        a.setVisible(false);
+                    }
+                });
+            }
+        });
+
+    }
+
+    private void inserirSangria(SangriaBEAN s) {
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<Void> call = api.inserirSangria(sh.getFunEmail(), sh.getFunSenha(), new Gson().toJson(s));
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                JOptionPane.showMessageDialog(null, response.headers().get("sucesso"));
+                                a.setVisible(false);
+                                //atualizarMesas
+                            }
+                        });
+
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        a.setVisible(false);
+                    }
+                });
+            }
+        });
+    }
+
+    private void listarProdutosVendidosCaixa() {
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<ArrayList<ProdutosGravados>> call = api.listarProdutosVendidos(sh.getFunEmail(), sh.getFunSenha());
+        call.enqueue(new Callback<ArrayList<ProdutosGravados>>() {
+            @Override
+            public void onResponse(Call<ArrayList<ProdutosGravados>> call, Response<ArrayList<ProdutosGravados>> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                ArrayList<ProdutosGravados> u = response.body();
+                                a.setVisible(false);
+                                preencheTabelaProdutosClose(u);
+                                //atualizarMesas
+                            }
+                        });
+
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<ProdutosGravados>> call, Throwable t) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        a.setVisible(false);
+                    }
+                });
+            }
+        });
+    }
+
+    private void listarDespesaDia() {
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<ArrayList<DespesaBEAN>> call = api.listarDespesasDia(sh.getFunEmail(), sh.getFunSenha());
+        call.enqueue(new Callback<ArrayList<DespesaBEAN>>() {
+            @Override
+            public void onResponse(Call<ArrayList<DespesaBEAN>> call, Response<ArrayList<DespesaBEAN>> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                ArrayList<DespesaBEAN> u = response.body();
+                                a.setVisible(false);
+                                preencheTabelaDespesas(u);
+                                //atualizarMesas
+                            }
+                        });
+
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<DespesaBEAN>> call, Throwable t) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        a.setVisible(false);
+                    }
+                });
+            }
+        });
+    }
+
+    private void listarValoresCaixa() {
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<Caixa> call = api.buscarValoresCaixa(sh.getFunEmail(), sh.getFunSenha());
+        call.enqueue(new Callback<Caixa>() {
+            @Override
+            public void onResponse(Call<Caixa> call, Response<Caixa> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                Caixa u = response.body();
+                                a.setVisible(false);
+                                jtfFaturamento.setText(u.getFaturamento() + "");
+                                jtfSangria.setText(u.getSangria() + "");
+                                jtfDespesas.setText(u.getDespesas() + "");
+                                jtfFaturamentoLiquido.setText(u.getSaldo() + "");
+                                lbSaldoCaixa.setText(u.getSaldo() + "");
+                            }
+                        });
+
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Caixa> call, Throwable t) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        a.setVisible(false);
+                    }
+                });
+            }
+        });
     }
 }

@@ -117,10 +117,10 @@ public class VendaControle {
         pro.setNome(ped.localizar(produto).getNome());
         pro.setMotivo(motivo);
         pro.setVenda(venda);
-        pro.setObs(pedido.getDescricao());
+        pro.setObs(pedido.getObservacao());
         pro.setQuantidade(pedido.getQuantidade());
         pro.setTime(Time.getTime());
-        p.excluirProduto(venda, motivo, produto, time);
+      //  p.excluir(;
 
         e.inserirExclusao(pro);
     }

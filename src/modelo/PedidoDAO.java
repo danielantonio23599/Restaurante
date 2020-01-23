@@ -27,19 +27,19 @@ public class PedidoDAO {
     }
 
     public boolean adicionar(PedidoBEAN c) {
-        String sql = "INSERT INTO pedido (ped_proCodigo, ped_venCodigo, pedTime, pedQTD,"
-                + " pedObs,pedImpresso )"
+        String sql = "INSERT INTO pedido (pedTime, pedQTD,"
+                + " pedObs,pedImpresso,ped_proCodigo,ped_venCodigo )"
                 + " VALUES (?, ?, ?, ?, ?, ?);";
 
         try {
             stmt = connection.prepareStatement(sql);
 
-            stmt.setInt(1, c.getProduto());
-            stmt.setInt(2, c.getVenda());
-            stmt.setString(3, c.getHora());
-            stmt.setFloat(4, c.getQuantidade());
-            stmt.setString(5, c.getDescricao());
-            stmt.setString(6, "of");
+            stmt.setString(1, c.getTime());
+            stmt.setFloat(2, c.getQuantidade());
+            stmt.setString(3, c.getObservacao());
+            stmt.setString(4, "of");
+            stmt.setInt(5, c.getProduto());
+            stmt.setInt(6, c.getVenda());
             stmt.execute();
             stmt.close();
             return true;
@@ -51,18 +51,20 @@ public class PedidoDAO {
     public ArrayList<PedidoBEAN> listarAll() {
         ArrayList<PedidoBEAN> c = new ArrayList<PedidoBEAN>();
 
-        String sql = "select * from pedido;";
+        String sql = "select * from pedido where ped_excCodigo !> 0;";
         try {
             stmt = connection.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 PedidoBEAN ca = new PedidoBEAN();
                 ca.setCodigo(rs.getInt(1));
-                ca.setProduto(rs.getInt(2));
-                ca.setVenda(rs.getInt(3));
-                ca.setHora(rs.getString(4));
-                ca.setQuantidade(rs.getFloat(5));
-                ca.setDescricao(rs.getString(6));
+                ca.setTime(rs.getString(2));
+                ca.setQuantidade(rs.getFloat(3));
+                ca.setObservacao(rs.getString(4));
+                ca.setImpresso(rs.getString(5));
+                ca.setExcluzao(rs.getInt(6));
+                ca.setProduto(rs.getInt(7));
+                ca.setVenda(rs.getInt(8));
                 c.add(ca);
             }
             stmt.close();
@@ -79,7 +81,7 @@ public class PedidoDAO {
         String sql = "SELECT ped_venCodigo,ped_proCodigo, proNome,pedQTD, pedTime,venMesa, (proPreco * pedQTD) "
                 + "FROM produto join pedido join venda"
                 + " where"
-                + " venCodigo = ped_venCodigo and ped_proCodigo = proCodigo and pedImpresso = 'of'and venMesa=" + mesa + " and venStatus = 'aberta' ;";
+                + " venCodigo = ped_venCodigo and ped_proCodigo = proCodigo and pedImpresso = 'of'and venMesa=" + mesa + " and venStatus = 'aberta' and ped_excCodigo !> 0;";
         try {
             stmt = connection.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
@@ -108,7 +110,7 @@ public class PedidoDAO {
         String sql = "SELECT ped_venCodigo,ped_proCodigo, proNome,pedQTD, pedTime,venMesa, (proPreco * pedQTD) "
                 + "FROM produto join pedido join venda"
                 + " where"
-                + " venCodigo = ped_venCodigo and ped_proCodigo = proCodigo and venMesa=" + mesa + " and venStatus = 'aberta';";
+                + " venCodigo = ped_venCodigo and ped_proCodigo = proCodigo and venMesa=" + mesa + " and venStatus = 'aberta' and ped_excCodigo !> 0;";
         try {
             stmt = connection.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
@@ -130,20 +132,22 @@ public class PedidoDAO {
         return c;
     }
 
-    public PedidoBEAN localizar(int pedido, int venda, String time) {
+    public PedidoBEAN localizar(int produto, int venda, String time) {
         PedidoBEAN ca = new PedidoBEAN();
 
-        String sql = "select * from pedido where ped_proCodigo = " + pedido + " and ped_venCondigo = " + venda + " and venTime = '" + time + "';";
+        String sql = "select * from pedido where ped_proCodigo = " + produto + " and ped_venCondigo = " + venda + " and pedTime = '" + time + "' and ped_excCodigo !> 0;";
         try {
             stmt = connection.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 ca.setCodigo(rs.getInt(1));
-                ca.setProduto(rs.getInt(2));
-                ca.setVenda(rs.getInt(3));
-                ca.setHora(rs.getString(4));
-                ca.setQuantidade(rs.getFloat(5));
-                ca.setDescricao(rs.getString(6));
+                ca.setTime(rs.getString(2));
+                ca.setQuantidade(rs.getFloat(3));
+                ca.setObservacao(rs.getString(4));
+                ca.setImpresso(rs.getString(5));
+                ca.setExcluzao(rs.getInt(6));
+                ca.setProduto(rs.getInt(7));
+                ca.setVenda(rs.getInt(8));
 
             }
             stmt.close();
@@ -154,9 +158,9 @@ public class PedidoDAO {
         return ca;
     }
 
-    public void transferir(int origem, int pedido, int destino, String time) {
+    public void transferir(int origem, int produto, int destino, String time) {
         String sql = "update pedido set ped_venCodigo = " + destino + "  "
-                + "where ped_proCodigo = " + pedido + " and ped_venCodigo = " + origem + " and pedTime = '" + time + "' ;";
+                + "where ped_proCodigo = " + produto + " and ped_venCodigo = " + origem + " and pedTime = '" + time + "' ;";
 
         try {
             stmt = connection.prepareStatement(sql);
@@ -172,12 +176,11 @@ public class PedidoDAO {
 
     }
 
-    public void excluir(int pedido, int venda) {
-        String sql = "delete from pedido where ped_proCodigo = ? and ped_venCodigo";
+    public void excluir(int codigo, int excluzao) {
+        String sql = "update pedido set ped_excCodigo = " + excluzao + " where pedCodigo = ? ;";
         try {
             stmt = connection.prepareStatement(sql);
-            stmt.setInt(1, pedido);
-            stmt.setInt(2, venda);
+            stmt.setInt(1, codigo);
             stmt.execute();
             stmt.close();
         } catch (SQLException e) {
@@ -202,7 +205,7 @@ public class PedidoDAO {
 
     }
 
-    public void excluirProduto(int venda, String motivo, int produto, String time) {
+    /* public void excluirProduto(int venda, String motivo, int produto, String time) {
         String sql = "delete from pedido where ped_proCodigo = " + produto + " and ped_venCodigo = " + venda + " and pedTime = '" + time + "';";
         try {
             stmt = connection.prepareStatement(sql);
@@ -211,8 +214,7 @@ public class PedidoDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-    }
-
+    }*/
     public int getMesaBalcaoAberta(int caixa) {
         int mesa = 0;
         String sql = "select venMesa from venda where ven_caiCodigo = " + caixa + " and venStatus = 'aberta' and venMesa > 100 ;";

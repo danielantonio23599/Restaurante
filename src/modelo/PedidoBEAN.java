@@ -5,7 +5,9 @@
  */
 package modelo;
 
+import java.sql.Time;
 import java.util.Date;
+
 
 /**
  *
@@ -13,11 +15,13 @@ import java.util.Date;
  */
 public class PedidoBEAN {
     private int codigo;
+    private String time;
+    private Float quantidade;
+    private String observacao;
+    private  String impresso;
+    private int excluzao;
     private int produto;
     private int venda;
-    private String descricao;
-    private Float quantidade;
-    private String hora;
 
     public int getCodigo() {
         return codigo;
@@ -27,28 +31,12 @@ public class PedidoBEAN {
         this.codigo = codigo;
     }
 
-
-    public int getVenda() {
-        return venda;
+    public String getTime() {
+        return time;
     }
 
-    public void setVenda(int venda) {
-        this.venda = venda;
-    }
-    public String getHora() {
-        return hora;
-    }
-
-    public void setHora(String hora) {
-        this.hora = hora;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public Float getQuantidade() {
@@ -59,6 +47,30 @@ public class PedidoBEAN {
         this.quantidade = quantidade;
     }
 
+    public String getObservacao() {
+        return observacao;
+    }
+
+    public void setObservacao(String observacao) {
+        this.observacao = observacao;
+    }
+
+    public String getImpresso() {
+        return impresso;
+    }
+
+    public void setImpresso(String impresso) {
+        this.impresso = impresso;
+    }
+
+    public int getExcluzao() {
+        return excluzao;
+    }
+
+    public void setExcluzao(int excluzao) {
+        this.excluzao = excluzao;
+    }
+
     public int getProduto() {
         return produto;
     }
@@ -66,6 +78,16 @@ public class PedidoBEAN {
     public void setProduto(int produto) {
         this.produto = produto;
     }
+
+    public int getVenda() {
+        return venda;
+    }
+
+    public void setVenda(int venda) {
+        this.venda = venda;
+    }
+
+  
     
     
 }

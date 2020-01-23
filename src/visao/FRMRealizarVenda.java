@@ -584,7 +584,7 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
         PedidoBEAN venda = new PedidoBEAN();
         VendaControle v = new VendaControle();
         venda.setProduto(Integer.parseInt(lbCodigo.getText()));
-        venda.setHora(getHoraAtual());
+        venda.setTime(getHoraAtual());
         int codvenda = v.getVenda(Integer.parseInt(labNumMesa.getText() + ""));
         if (codvenda != 0) {
             venda.setVenda(codvenda);
@@ -592,7 +592,7 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
             venda.setVenda(abrirMesa());
         }
         venda.setQuantidade(Float.parseFloat(jtfQtd.getText() + ""));
-        venda.setDescricao(getListaOBS());
+        venda.setObservacao(getListaOBS());
         return venda;
     }
 

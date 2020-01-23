@@ -3,10 +3,14 @@ package sync;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import modelo.Caixa;
+import modelo.CaixaBEAN;
 import modelo.CargoBEAN;
+import modelo.DespesaBEAN;
 import modelo.FuncionarioBEAN;
 import modelo.ProdutoBEAN;
 import modelo.Produtos;
+import modelo.ProdutosGravados;
 import modelo.local.SharedPreferencesBEAN;
 
 import retrofit2.Call;
@@ -91,5 +95,53 @@ public interface RestauranteAPI {
     @FormUrlEncoded
     @POST("restaurante_server/PesquisaProduto")
     Call<DefaultComboBoxModel> pesquisaProdutos(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha, @Field("produto") String cod);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/AbrirCaixa")
+    Call<Void> abrirCaixa(@Field("caixa") String caixa, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/FeixarCaixa")
+    Call<Void> fecharCaixa(@Field("caixa") String caixa, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/incluirDespesas")
+    Call<Void> incluirDespesas(@Field("despesas") String despesas, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/IsCaixaAberto")
+    Call<Void> isCaixaAberto(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/ListarCaixa")
+    Call<CaixaBEAN> listarCaixa(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/ListarDespesas")
+    Call<ArrayList<DespesaBEAN>> listarDespesas(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/ListarDespesasDia")
+    Call<ArrayList<DespesaBEAN>> listarDespesasDia(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/SaldoAtualCaixa")
+    Call<Void> saldoAtualCaixa(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/TotalVendidoCaixa")
+    Call<Void> totalVendidoCaixa(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/InserirSangria")
+    Call<Void> inserirSangria(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha, @Field("sangria") String sagria);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/ValoresCaixa")
+    Call<Caixa> buscarValoresCaixa(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/ListarProdutosVendidos")
+    Call<ArrayList<ProdutosGravados>> listarProdutosVendidos(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
 }
