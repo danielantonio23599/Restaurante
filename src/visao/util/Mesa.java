@@ -24,7 +24,6 @@ public class Mesa extends javax.swing.JPanel {
     private String valor;
     private FRMVenda venda = null;
     private FRMCaixa caixa;
-    private VendaControle controle;
 
     public void setCorPainel() {
         Color azul = new Color(92,154,195);
@@ -166,7 +165,7 @@ public class Mesa extends javax.swing.JPanel {
     }//GEN-LAST:event_painelMouseEntered
 
     private void painelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_painelMouseClicked
-        controle = new VendaControle();
+
         if (evt.getClickCount() == 2) {
             FRMListaProdutos l = new FRMListaProdutos();
             l.setDados(mesa);

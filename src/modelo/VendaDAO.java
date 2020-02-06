@@ -76,7 +76,7 @@ public class VendaDAO {
                 v.setCaixa(rs.getInt(5));
                 v.setValor(rs.getFloat(6));
                 v.setCusto(rs.getFloat(7));
-                v.setPagamento(rs.getInt(8));
+                v.setPagamento(rs.getString(8));
                 v.setMesa(rs.getInt(9));
                 v.setStatus(rs.getString(10));
 
@@ -239,7 +239,7 @@ public class VendaDAO {
                 v.setCaixa(rs.getInt(5));
                 v.setValor(rs.getFloat(6));
                 v.setCusto(rs.getFloat(7));
-                v.setPagamento(rs.getInt(8));
+                v.setPagamento(rs.getString(8));
                 v.setMesa(rs.getInt(9));
                 v.setStatus(rs.getString(10));
                 vendas.add(v);

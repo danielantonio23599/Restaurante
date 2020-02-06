@@ -16,7 +16,7 @@ public class VendaBEAN {
     private String checkOut;
     private float valor;
     private float custo;
-    private int pagamento;
+    private String pagamento;
     private int caixa;
     private int mesa;
     private String status;
@@ -85,11 +85,11 @@ public class VendaBEAN {
         this.custo = custo;
     }
 
-    public int getPagamento() {
+    public String getPagamento() {
         return pagamento;
     }
 
-    public void setPagamento(int pagamento) {
+    public void setPagamento(String pagamento) {
         this.pagamento = pagamento;
     }
 

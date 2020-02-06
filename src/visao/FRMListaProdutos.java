@@ -38,8 +38,7 @@ public class FRMListaProdutos extends javax.swing.JFrame {
 
     private DefaultTableModel dTable;
     private TableRowSorter<TableModel> tr;
-    private PedidoControle p = new PedidoControle();
-    private VendaControle controle = new VendaControle();
+
 
     /**
      * Creates new form FRMListaProdutos
@@ -56,15 +55,7 @@ public class FRMListaProdutos extends javax.swing.JFrame {
             public void keyReleased(KeyEvent evt) {
 
                 String cadenaEscrita = comboProduto.getEditor().getItem().toString();
-
                 if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-                    botaoPesquisar.hasFocus();
-                }
-                if (evt.getKeyCode() == KeyEvent.VK_0 || evt.getKeyCode() == KeyEvent.VK_1
-                        || evt.getKeyCode() == KeyEvent.VK_2 || evt.getKeyCode() == KeyEvent.VK_3
-                        || evt.getKeyCode() == KeyEvent.VK_4 || evt.getKeyCode() == KeyEvent.VK_5
-                        || evt.getKeyCode() == KeyEvent.VK_6 || evt.getKeyCode() == KeyEvent.VK_7
-                        || evt.getKeyCode() == KeyEvent.VK_8 || evt.getKeyCode() == KeyEvent.VK_9) {
                     try {
                         buscar(cadenaEscrita);
                         System.out.println("entrou");
@@ -76,15 +67,6 @@ public class FRMListaProdutos extends javax.swing.JFrame {
                             comboProduto.addItem(cadenaEscrita);
                         }
                     } catch (NumberFormatException ey) {
-                    }
-                } else if (evt.getKeyCode() >= 65 && evt.getKeyCode() <= 90 || evt.getKeyCode() >= 96 && evt.getKeyCode() <= 105 || evt.getKeyCode() == 8) {
-                    buscar(cadenaEscrita);
-                    if (comboProduto.getItemCount() > 0) {
-                        comboProduto.getEditor().setItem(cadenaEscrita);
-                        comboProduto.showPopup();
-
-                    } else {
-                        comboProduto.addItem(cadenaEscrita);
                     }
                 }
             }
@@ -154,23 +136,10 @@ public class FRMListaProdutos extends javax.swing.JFrame {
     }
 
     public void atualizaProdutos() {
-        preencheTabelaProdutos(controle.listarProdutosMesa(labMesa.getText()));
-        atualizaProdutosNImpressos();
+        listarProdutosMesa(Integer.parseInt(labMesa.getText()));
     }
 
-    private boolean comparar(String cadena) {
-        Object[] lista = comboProduto.getComponents();
-        boolean encontrado = false;
-        for (Object object : lista) {
-            if (cadena.equals(object)) {
-                encontrado = true;
-                break;
-            }
-
-        }
-        return encontrado;
-    }
-
+  
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -192,9 +161,6 @@ public class FRMListaProdutos extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         botaoPesquisar = new javax.swing.JButton();
         comboProduto = new javax.swing.JComboBox<>();
-        jPanel6 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        listaProdutosNImpressos = new javax.swing.JList<>();
         jPanel3 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -323,27 +289,6 @@ public class FRMListaProdutos extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Produtos não impressos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 0, 11))); // NOI18N
-
-        jScrollPane1.setViewportView(listaProdutosNImpressos);
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -353,8 +298,7 @@ public class FRMListaProdutos extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(503, 503, 503)
                         .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -363,13 +307,9 @@ public class FRMListaProdutos extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 247, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(19, 19, 19)))
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 272, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
         );
 
         jTabbedPane1.addTab("Adicionar", jPanel2);
@@ -710,7 +650,7 @@ public class FRMListaProdutos extends javax.swing.JFrame {
             if (tabelaProdutos.isBackgroundSet()) {
                 int produto = Integer.parseInt(tabelaProdutos.getValueAt(tabelaProdutos.getSelectedRow(), 1) + "");
                 String time = tabelaProdutos.getValueAt(tabelaProdutos.getSelectedRow(), 5) + "";
-                controle.transferirProduto(Integer.parseInt(labMesa.getText()), Integer.parseInt(jtfMesaDestino.getText()), produto, time);
+               // controle.transferirProduto(Integer.parseInt(labMesa.getText()), Integer.parseInt(jtfMesaDestino.getText()), produto, time);
                 atualizaProdutos();
             } else {
                 JOptionPane.showMessageDialog(null, "Selecione um produto!!");
@@ -733,7 +673,7 @@ public class FRMListaProdutos extends javax.swing.JFrame {
             if (tabelaProdutosE.isBackgroundSet()) {
                 int produto = Integer.parseInt(tabelaProdutosE.getValueAt(tabelaProdutosE.getSelectedRow(), 1) + "");
                 String time = tabelaProdutosE.getValueAt(tabelaProdutosE.getSelectedRow(), 5) + "";
-                controle.excluirProduto(Integer.parseInt(labMesa.getText()), taMotivo.getText(), produto, time);
+                //controle.excluirProduto(Integer.parseInt(labMesa.getText()), taMotivo.getText(), produto, time);
                 atualizaProdutos();
                 JOptionPane.showMessageDialog(null, "Produto Excluido!!");
             } else {
@@ -783,7 +723,6 @@ public class FRMListaProdutos extends javax.swing.JFrame {
 
     public void setDados(String mesa) {
         labMesa.setText(mesa);
-        atualizaProdutosNImpressos();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -801,11 +740,9 @@ public class FRMListaProdutos extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
@@ -813,23 +750,12 @@ public class FRMListaProdutos extends javax.swing.JFrame {
     private javax.swing.JTextField jtfMesaDestino;
     private javax.swing.JLabel labMesa;
     private javax.swing.JLabel labMesa1;
-    private javax.swing.JList<String> listaProdutosNImpressos;
     private javax.swing.JTextArea taMotivo;
     private javax.swing.JTable tabelaProdutos;
     private javax.swing.JTable tabelaProdutosE;
     // End of variables declaration//GEN-END:variables
 
-    private void atualizaProdutosNImpressos() {
-        DefaultListModel modelo = new DefaultListModel();
-
-        ArrayList<ProdutosGravados> pni = controle.getProdutosNImpressos(Integer.parseInt(labMesa.getText()));
-        if (pni.size() > 0) {
-            for (ProdutosGravados p : pni) {
-                modelo.addElement(p.getCodProduto() + " : " + p.getNome() + " Hora:  " + p.getTime() + ", Quantidade " + p.getQuantidade() + ", R$" + p.getValor());
-            }
-            listaProdutosNImpressos.setModel(modelo);
-        }
-    }
+   
 
     private DefaultTableModel criaTabelaProdutos() {
         //sempre que usar JTable é necessário ter um DefaulttableModel
@@ -876,6 +802,72 @@ public class FRMListaProdutos extends javax.swing.JFrame {
         tr = new TableRowSorter<TableModel>(dTable);
         tabelaProdutos.setRowSorter(tr);
         tabelaProdutosE.setRowSorter(tr);
+
+    }
+     private void listarProdutosMesa(int mesa) {
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<ArrayList<ProdutosGravados>> call = api.listarProdutosMesa(sh.getFunEmail(), sh.getFunSenha(), mesa + "");
+        call.enqueue(new Callback<ArrayList<ProdutosGravados>>() {
+            @Override
+            public void onResponse(Call<ArrayList<ProdutosGravados>> call, Response<ArrayList<ProdutosGravados>> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                ArrayList<ProdutosGravados> u = response.body();
+                                a.setVisible(false);
+                                if (u != null) {
+                                    if (mesa <= 100) {
+                                        preencheTabelaProdutos(u);
+                                    } 
+
+                                }
+                            }
+                        });
+
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<ProdutosGravados>> call, Throwable t) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        a.setVisible(false);
+                    }
+                });
+            }
+        });
 
     }
 }

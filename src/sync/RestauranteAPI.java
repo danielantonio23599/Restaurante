@@ -7,7 +7,9 @@ import modelo.Caixa;
 import modelo.CaixaBEAN;
 import modelo.CargoBEAN;
 import modelo.DespesaBEAN;
+import modelo.ExcluzaoBEAN;
 import modelo.FuncionarioBEAN;
+import modelo.Mesa;
 import modelo.ProdutoBEAN;
 import modelo.Produtos;
 import modelo.ProdutosGravados;
@@ -105,8 +107,12 @@ public interface RestauranteAPI {
     Call<Void> fecharCaixa(@Field("caixa") String caixa, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
     @FormUrlEncoded
-    @POST("restaurante_server/incluirDespesas")
-    Call<Void> incluirDespesas(@Field("despesas") String despesas, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+    @POST("restaurante_server/incluirDespesa")
+    Call<Void> incluirDespesas(@Field("despesa") String despesas, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/ExcluirDespesa")
+    Call<Void> excluiDespesa(@Field("despesa") String cargo, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
     @FormUrlEncoded
     @POST("restaurante_server/IsCaixaAberto")
@@ -129,6 +135,10 @@ public interface RestauranteAPI {
     Call<Void> saldoAtualCaixa(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
     @FormUrlEncoded
+    @POST("restaurante_server/TotalMesa")
+    Call<Void> getValorMesa(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha, @Field("mesa") String mesa);
+
+    @FormUrlEncoded
     @POST("restaurante_server/TotalVendidoCaixa")
     Call<Void> totalVendidoCaixa(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
@@ -143,5 +153,32 @@ public interface RestauranteAPI {
     @FormUrlEncoded
     @POST("restaurante_server/ListarProdutosVendidos")
     Call<ArrayList<ProdutosGravados>> listarProdutosVendidos(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/ListarProdutosMesa")
+    Call<ArrayList<ProdutosGravados>> listarProdutosMesa(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha, @Field("mesa") String mesa);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/GerarMesaBalcao")
+    Call<Void> gerarMesaBalcao(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/incluirDespesaDia")
+    Call<Void> incluirDespesasDia(@Field("despesa") String despesas, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/ListarMesasAbertas")
+    Call<ArrayList<Mesa>> getMesasAbertas(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/ListarFuncionarios")
+    Call<ArrayList<ExcluzaoBEAN>> listarExcluzaoMesa(@Field("nomeUsuario") String nomeUsuario, @Field("mesa") String senha, @Field("senha") String mesa);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/incluirDespesaDia")
+    Call<Void> atualizaVenda(@Field("venda") String venda, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+@FormUrlEncoded
+    @POST("restaurante_server/InserirPedidoMesa")
+    Call<Void> inserirPedidoMesa(@Field("pedido") String pedido, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
 }
