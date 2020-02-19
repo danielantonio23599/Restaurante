@@ -5,12 +5,9 @@
  */
 package visao;
 
-import controle.PedidoControle;
-import controle.ProdutoControle;
+
 import controle.SharedP_Control;
-import controle.VendaControle;
-import java.awt.*;
-import java.awt.event.ActionEvent;
+
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -18,10 +15,10 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import modelo.ProdutoBEAN;
+
 import modelo.Produtos;
 import modelo.ProdutosGravados;
-import modelo.VendaAtualBEAN;
+
 import modelo.local.SharedPreferencesBEAN;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -38,7 +35,6 @@ public class FRMListaProdutos extends javax.swing.JFrame {
 
     private DefaultTableModel dTable;
     private TableRowSorter<TableModel> tr;
-
 
     /**
      * Creates new form FRMListaProdutos
@@ -66,6 +62,7 @@ public class FRMListaProdutos extends javax.swing.JFrame {
                         } else {
                             comboProduto.addItem(cadenaEscrita);
                         }
+                        botaoPesquisar.hasFocus();
                     } catch (NumberFormatException ey) {
                     }
                 }
@@ -139,7 +136,6 @@ public class FRMListaProdutos extends javax.swing.JFrame {
         listarProdutosMesa(Integer.parseInt(labMesa.getText()));
     }
 
-  
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -245,6 +241,11 @@ public class FRMListaProdutos extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/reltorio.png"))); // NOI18N
         jButton1.setText("Imprimir");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jPanel5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Produto", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 0, 11))); // NOI18N
 
@@ -648,10 +649,67 @@ public class FRMListaProdutos extends javax.swing.JFrame {
 
         if (!jtfMesaDestino.getText().equals("")) {
             if (tabelaProdutos.isBackgroundSet()) {
-                int produto = Integer.parseInt(tabelaProdutos.getValueAt(tabelaProdutos.getSelectedRow(), 1) + "");
-                String time = tabelaProdutos.getValueAt(tabelaProdutos.getSelectedRow(), 5) + "";
-               // controle.transferirProduto(Integer.parseInt(labMesa.getText()), Integer.parseInt(jtfMesaDestino.getText()), produto, time);
-                atualizaProdutos();
+                int pedido = Integer.parseInt(tabelaProdutos.getValueAt(tabelaProdutos.getSelectedRow(), 0) + "");
+
+                Carregamento a = new Carregamento(this, true);
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+
+                        a.setVisible(true);
+
+                    }
+                });
+                SharedPreferencesBEAN sh = SharedP_Control.listar();
+                RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+                final Call<Void> call = api.transferiPedido(jtfMesaDestino.getText(), pedido + "", sh.getFunEmail(), sh.getFunSenha());
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        System.out.println(response.isSuccessful());
+                        if (response.isSuccessful()) {
+                            String auth = response.headers().get("auth");
+                            if (auth.equals("1")) {
+                                System.out.println("Login correto");
+
+                                SwingUtilities.invokeLater(new Runnable() {
+                                    public void run() {
+
+                                        a.setVisible(false);
+                                        atualizaProdutos();
+                                        //atualizarMesas
+                                    }
+                                });
+
+                            } else {
+                                SwingUtilities.invokeLater(new Runnable() {
+                                    public void run() {
+                                        a.setVisible(false);
+                                    }
+                                });
+                                System.out.println("Login incorreto");
+                                // senha ou usuario incorreto
+
+                            }
+                        } else {
+                            SwingUtilities.invokeLater(new Runnable() {
+                                public void run() {
+                                    a.setVisible(false);
+                                }
+                            });
+                            System.out.println("Login incorreto- fora do ar");
+                            //servidor fora do ar
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
+                    }
+                });
             } else {
                 JOptionPane.showMessageDialog(null, "Selecione um produto!!");
             }
@@ -671,11 +729,66 @@ public class FRMListaProdutos extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         if (!taMotivo.getText().equals("")) {
             if (tabelaProdutosE.isBackgroundSet()) {
-                int produto = Integer.parseInt(tabelaProdutosE.getValueAt(tabelaProdutosE.getSelectedRow(), 1) + "");
-                String time = tabelaProdutosE.getValueAt(tabelaProdutosE.getSelectedRow(), 5) + "";
-                //controle.excluirProduto(Integer.parseInt(labMesa.getText()), taMotivo.getText(), produto, time);
-                atualizaProdutos();
-                JOptionPane.showMessageDialog(null, "Produto Excluido!!");
+                int pedido = Integer.parseInt(tabelaProdutosE.getValueAt(tabelaProdutosE.getSelectedRow(), 0) + "");
+                Carregamento a = new Carregamento(this, true);
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+
+                        a.setVisible(true);
+
+                    }
+                });
+                SharedPreferencesBEAN sh = SharedP_Control.listar();
+                RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+                final Call<Void> call = api.cancelarPedido(pedido + "", taMotivo.getText(), sh.getFunEmail(), sh.getFunSenha());
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        System.out.println(response.isSuccessful());
+                        if (response.isSuccessful()) {
+                            String auth = response.headers().get("auth");
+                            if (auth.equals("1")) {
+                                System.out.println("Login correto");
+
+                                SwingUtilities.invokeLater(new Runnable() {
+                                    public void run() {
+                                        a.setVisible(false);
+                                        atualizaProdutos();
+                                        JOptionPane.showMessageDialog(null, "Produto Excluido!!");
+                                        //atualizarMesas
+                                    }
+                                });
+
+                            } else {
+                                SwingUtilities.invokeLater(new Runnable() {
+                                    public void run() {
+                                        a.setVisible(false);
+                                    }
+                                });
+                                System.out.println("Login incorreto");
+                                // senha ou usuario incorreto
+
+                            }
+                        } else {
+                            SwingUtilities.invokeLater(new Runnable() {
+                                public void run() {
+                                    a.setVisible(false);
+                                }
+                            });
+                            System.out.println("Login incorreto- fora do ar");
+                            //servidor fora do ar
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
+                    }
+                });
             } else {
                 JOptionPane.showMessageDialog(null, "Selecione um produto!!");
             }
@@ -683,6 +796,10 @@ public class FRMListaProdutos extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Insira uma justificativa!!");
         }
     }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -755,8 +872,6 @@ public class FRMListaProdutos extends javax.swing.JFrame {
     private javax.swing.JTable tabelaProdutosE;
     // End of variables declaration//GEN-END:variables
 
-   
-
     private DefaultTableModel criaTabelaProdutos() {
         //sempre que usar JTable é necessário ter um DefaulttableModel
         DefaultTableModel dTable = new DefaultTableModel() {
@@ -804,7 +919,8 @@ public class FRMListaProdutos extends javax.swing.JFrame {
         tabelaProdutosE.setRowSorter(tr);
 
     }
-     private void listarProdutosMesa(int mesa) {
+
+    private void listarProdutosMesa(int mesa) {
         Carregamento a = new Carregamento(this, true);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -832,7 +948,7 @@ public class FRMListaProdutos extends javax.swing.JFrame {
                                 if (u != null) {
                                     if (mesa <= 100) {
                                         preencheTabelaProdutos(u);
-                                    } 
+                                    }
 
                                 }
                             }

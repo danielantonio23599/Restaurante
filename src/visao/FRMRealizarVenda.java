@@ -6,11 +6,7 @@
 package visao;
 
 import com.google.gson.Gson;
-import controle.CaixaControle;
-import controle.PedidoControle;
-import controle.ProdutoControle;
 import controle.SharedP_Control;
-import controle.VendaControle;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
@@ -21,11 +17,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import modelo.DespesaBEAN;
 import modelo.PedidoBEAN;
 import modelo.Produtos;
-import modelo.VendaAtualBEAN;
-import modelo.VendaBEAN;
 import modelo.local.SharedPreferencesBEAN;
 import retrofit2.Call;
 import retrofit2.Callback;

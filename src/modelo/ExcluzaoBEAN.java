@@ -12,38 +12,10 @@ package modelo;
 public class ExcluzaoBEAN {
 
     private int codigo;
-    private String nome;
     private String motivo;
     private String time;
-    private String obs;
-    private float quantidade;
-    private String funcionario;
-    private int funcionarioC;
-    private int venda;
-
-    public int getFuncionarioC() {
-        return funcionarioC;
-    }
-
-    public void setFuncionarioC(int funcionarioC) {
-        this.funcionarioC = funcionarioC;
-    }
-
-    public String getObs() {
-        return obs;
-    }
-
-    public void setObs(String obs) {
-        this.obs = obs;
-    }
-
-    public float getQuantidade() {
-        return quantidade;
-    }
-
-    public void setQuantidade(float quantidade) {
-        this.quantidade = quantidade;
-    }
+    private String funcionarioN;
+    private int funcionario;
 
     public int getCodigo() {
         return codigo;
@@ -51,22 +23,6 @@ public class ExcluzaoBEAN {
 
     public void setCodigo(int codigo) {
         this.codigo = codigo;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
     }
 
     public String getMotivo() {
@@ -77,20 +33,33 @@ public class ExcluzaoBEAN {
         this.motivo = motivo;
     }
 
-    public String getFuncionario() {
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getFuncionarioN() {
+        return funcionarioN;
+    }
+
+    public void setFuncionarioN(String funcionarioN) {
+        this.funcionarioN = funcionarioN;
+    }
+
+    public int getFuncionario() {
         return funcionario;
     }
 
-    public void setFuncionario(String funcionario) {
+    public void setFuncionario(int funcionario) {
         this.funcionario = funcionario;
     }
 
-    public int getVenda() {
-        return venda;
-    }
+    
 
-    public void setVenda(int venda) {
-        this.venda = venda;
-    }
+ 
 
+    
 }

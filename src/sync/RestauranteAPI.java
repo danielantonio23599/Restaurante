@@ -107,12 +107,16 @@ public interface RestauranteAPI {
     Call<Void> fecharCaixa(@Field("caixa") String caixa, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
     @FormUrlEncoded
-    @POST("restaurante_server/incluirDespesa")
+    @POST("restaurante_server/IncluirDespesa")
     Call<Void> incluirDespesas(@Field("despesa") String despesas, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
     @FormUrlEncoded
     @POST("restaurante_server/ExcluirDespesa")
-    Call<Void> excluiDespesa(@Field("despesa") String cargo, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+    Call<Void> excluiDespesa(@Field("despesa") String despesa, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/RetirarDespesaDia")
+    Call<Void> retirarDespesa(@Field("despesa") String despesa, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
     @FormUrlEncoded
     @POST("restaurante_server/IsCaixaAberto")
@@ -163,7 +167,7 @@ public interface RestauranteAPI {
     Call<Void> gerarMesaBalcao(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
     @FormUrlEncoded
-    @POST("restaurante_server/incluirDespesaDia")
+    @POST("restaurante_server/IncluirDespesaDia")
     Call<Void> incluirDespesasDia(@Field("despesa") String despesas, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
     @FormUrlEncoded
@@ -171,14 +175,31 @@ public interface RestauranteAPI {
     Call<ArrayList<Mesa>> getMesasAbertas(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
     @FormUrlEncoded
-    @POST("restaurante_server/ListarFuncionarios")
-    Call<ArrayList<ExcluzaoBEAN>> listarExcluzaoMesa(@Field("nomeUsuario") String nomeUsuario, @Field("mesa") String senha, @Field("senha") String mesa);
+    @POST("restaurante_server/IsMesasAbertas")
+    Call<Void> isMesasAbertas(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
     @FormUrlEncoded
-    @POST("restaurante_server/incluirDespesaDia")
+    @POST("restaurante_server/ListarExcluzaoMesa")
+    Call<ArrayList<ExcluzaoBEAN>> listarExcluzaoMesa(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha, @Field("mesa") String mesa);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/AtualizaVenda")
     Call<Void> atualizaVenda(@Field("venda") String venda, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
-@FormUrlEncoded
+
+    @FormUrlEncoded
     @POST("restaurante_server/InserirPedidoMesa")
     Call<Void> inserirPedidoMesa(@Field("pedido") String pedido, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/TranferirMesa")
+    Call<Void> transferiMesa(@Field("mesaDestino") String destino, @Field("mesaOrigem") String origem, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/TranferirPedido")
+    Call<Void> transferiPedido(@Field("mesaDestino") String destino, @Field("pedido") String pedido, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/CancelarPedido")
+    Call<Void> cancelarPedido(@Field("pedido") String pedido, @Field("motivo") String motivo, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
 }

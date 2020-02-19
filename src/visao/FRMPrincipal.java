@@ -261,8 +261,7 @@ public class FRMPrincipal extends javax.swing.JFrame {
 
     private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
 
-        FRMVenda v = new FRMVenda();
-        v.setVisible(true);
+ 
     }//GEN-LAST:event_jMenuItem13ActionPerformed
 
     /**

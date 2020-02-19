@@ -5,14 +5,9 @@
  */
 package visao.util;
 
-import controle.VendaControle;
 import java.awt.Color;
-import javax.swing.Icon;
-import javax.swing.JPanel;
-import modelo.VendaAtualBEAN;
 import visao.FRMCaixa;
 import visao.FRMListaProdutos;
-import visao.FRMVenda;
 
 /**
  *
@@ -22,15 +17,14 @@ public class Mesa extends javax.swing.JPanel {
 
     private String mesa;
     private String valor;
-    private FRMVenda venda = null;
     private FRMCaixa caixa;
+    Color azul = new Color(92, 154, 195);
 
     public void setCorPainel() {
-        Color azul = new Color(92,154,195);
+
         painel.setBackground(azul);
-        
+
     }
-    
 
     public FRMCaixa getCaixa() {
         return caixa;
@@ -38,14 +32,6 @@ public class Mesa extends javax.swing.JPanel {
 
     public void setCaixa(FRMCaixa caixa) {
         this.caixa = caixa;
-    }
-
-    public FRMVenda getVenda() {
-        return venda;
-    }
-
-    public void setVenda(FRMVenda venda) {
-        this.venda = venda;
     }
 
     public String getMesa() {
@@ -59,6 +45,10 @@ public class Mesa extends javax.swing.JPanel {
 
     public String getValor() {
         return valor;
+    }
+
+    public Color getCor() {
+        return painel.getBackground();
     }
 
     public void setValor(String valor) {
@@ -167,15 +157,15 @@ public class Mesa extends javax.swing.JPanel {
     private void painelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_painelMouseClicked
 
         if (evt.getClickCount() == 2) {
+
             FRMListaProdutos l = new FRMListaProdutos();
             l.setDados(mesa);
-            l.setVisible(true);       
-            
-        } else if (venda != null) {
-            venda.setNunMesa(mesa);
-        } else {
+            l.setVisible(true);
+
+        } else if (painel.getBackground() == azul) {
+
             caixa.setNunMesa(mesa);
-           // caixa.atualizaProdutos();
+            // caixa.atualizaProdutos();
         }
     }//GEN-LAST:event_painelMouseClicked
 

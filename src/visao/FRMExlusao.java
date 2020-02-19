@@ -5,12 +5,20 @@
  */
 package visao;
 
-import controle.ExcluzaoControle;
+import controle.SharedP_Control;
 import java.util.ArrayList;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import modelo.ExcluzaoBEAN;
+import modelo.local.SharedPreferencesBEAN;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import sync.RestauranteAPI;
+import sync.SyncDefault;
+import visao.util.Carregamento;
 
 /**
  *
@@ -18,7 +26,6 @@ import modelo.ExcluzaoBEAN;
  */
 public class FRMExlusao extends javax.swing.JFrame {
 
-    private ExcluzaoControle exclusaoControl = new ExcluzaoControle();
     private DefaultTableModel dTable;
     private TableRowSorter<TableModel> tr;
 
@@ -122,7 +129,7 @@ public class FRMExlusao extends javax.swing.JFrame {
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel13Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel41)
                     .addComponent(labMesa2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 24, Short.MAX_VALUE))
@@ -222,26 +229,24 @@ private DefaultTableModel criaTabelaProdutosExcluidos() {
     }
 
     public void atualizaProdutosCancelados() {
-        preencheTabelaCancelados(exclusaoControl.listarExclusaoCaixa());
+        listarExclusaoCaixa();
+       
     }
 
     private void preencheTabelaCancelados(ArrayList<ExcluzaoBEAN> dados) {
         dTable = criaTabelaProdutosExcluidos();
         //seta o nome das colunas da tabela
+
         dTable.addColumn("Código");
-        dTable.addColumn("Mesa");
-        dTable.addColumn("Funcionário");
-        dTable.addColumn("Produto");
-        dTable.addColumn("Quantidade");
-        dTable.addColumn("Hora");
-        dTable.addColumn("Observação");
         dTable.addColumn("Motivo");
+        dTable.addColumn("Hora");
+        dTable.addColumn("Funcionario");
 
         //pega os dados do ArrayList
         //cada célula do arrayList vira uma linha(row) na tabela
         for (ExcluzaoBEAN dado : dados) {
-            dTable.addRow(new Object[]{dado.getCodigo(), dado.getVenda(), dado.getFuncionario(),
-                dado.getNome(), dado.getQuantidade(), dado.getTime(), dado.getObs(), dado.getMotivo()
+            dTable.addRow(new Object[]{dado.getCodigo(), dado.getMotivo(), dado.getTime(),
+                dado.getFuncionarioN()
             });
         }
         //set o modelo da tabela
@@ -249,5 +254,66 @@ private DefaultTableModel criaTabelaProdutosExcluidos() {
         tr = new TableRowSorter<TableModel>(dTable);
         tabelaProCancelados.setRowSorter(tr);
 
+    }
+
+    private void listarExclusaoCaixa() {
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<ArrayList<ExcluzaoBEAN>> call = api.listarExcluzaoMesa(sh.getFunEmail(), sh.getFunSenha(), "");
+        call.enqueue(new Callback<ArrayList<ExcluzaoBEAN>>() {
+            @Override
+            public void onResponse(Call<ArrayList<ExcluzaoBEAN>> call, Response<ArrayList<ExcluzaoBEAN>> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                ArrayList<ExcluzaoBEAN> u = response.body();
+                                a.setVisible(false);
+                                 preencheTabelaCancelados(u);
+                            }
+                        });
+
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<ExcluzaoBEAN>> call, Throwable t) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        a.setVisible(false);
+                    }
+                });
+            }
+        });
     }
 }
