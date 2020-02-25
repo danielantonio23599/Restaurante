@@ -6,6 +6,7 @@
 package visao;
 
 import com.mysql.jdbc.log.Log;
+import com.sun.org.apache.bcel.internal.generic.F2D;
 
 import controleService.ControleLogin;
 import controle.SharedP_Control;
@@ -21,7 +22,6 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import modelo.CargoBEAN;
 import modelo.FuncionarioBEAN;
-import modelo.local.SharedPreferencesBEAN;
 import modelo.local.SharedPreferencesEmpresaBEAN;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -29,7 +29,6 @@ import retrofit2.Response;
 import retrofit2.http.Headers;
 import sync.RestauranteAPI;
 import sync.SyncDefault;
-import util.ManipularImagem;
 import visao.util.AlertDialog;
 import visao.util.Carregamento;
 
@@ -37,27 +36,13 @@ import visao.util.Carregamento;
  *
  * @author Daniel
  */
-public class FRMLogin extends javax.swing.JFrame {
+public class FRMLoginEmpresa extends javax.swing.JFrame {
 
     private ControleLogin c = new ControleLogin();
-    private ControleCargo contCargo = new ControleCargo();
 
-    /**
-     * Creates new form FRMLogin2
-     */
-    public FRMLogin() {
+    public FRMLoginEmpresa() {
         initComponents();
         setExtendedState(MAXIMIZED_BOTH);
-        this.setLocationRelativeTo(null);
-        SharedPreferencesEmpresaBEAN e = c.listarEmpresa();
-        if (e.getEmpCodigo() == 0) {
-            FRMLoginEmpresa le = new FRMLoginEmpresa();
-            le.setVisible(true);
-            this.setVisible(false);
-        } else {
-            setDados();
-
-        }
 
     }
 
@@ -70,8 +55,8 @@ public class FRMLogin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        lbFantasia = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jpfSenha = new javax.swing.JPasswordField();
         btnLogin = new javax.swing.JButton();
@@ -81,20 +66,9 @@ public class FRMLogin extends javax.swing.JFrame {
         chekLogado = new javax.swing.JCheckBox();
         lbCadastro = new javax.swing.JLabel();
         jtfUsuario = new javax.swing.JTextField();
-        jPanel4 = new javax.swing.JPanel();
-        lbLogo = new javax.swing.JLabel();
-        lbCadastro1 = new javax.swing.JLabel();
         lbConf = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jPanel2.setLayout(null);
-
-        lbFantasia.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        lbFantasia.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbFantasia.setText("Empresa Logada");
-        jPanel2.add(lbFantasia);
-        lbFantasia.setBounds(10, 10, 490, 100);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -123,25 +97,23 @@ public class FRMLogin extends javax.swing.JFrame {
         lnTitulo.setText("LOGIN");
 
         usu.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
-        usu.setText("Email-Usuario:");
+        usu.setText("Email-Empresa:");
 
         sen.setFont(new java.awt.Font("Times New Roman", 1, 20)); // NOI18N
         sen.setText("Senha:");
 
         chekLogado.setBackground(new java.awt.Color(255, 255, 255));
         chekLogado.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
-        chekLogado.setText("Lembrar-me login");
-        chekLogado.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                chekLogadoActionPerformed(evt);
-            }
-        });
+        chekLogado.setText("Manter-me logado");
 
         lbCadastro.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lbCadastro.setForeground(new java.awt.Color(0, 0, 204));
         lbCadastro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbCadastro.setText("Não possui cadastro, Clique aqui !!");
         lbCadastro.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbCadastroMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 lbCadastroMouseEntered(evt);
             }
@@ -170,79 +142,36 @@ public class FRMLogin extends javax.swing.JFrame {
                         .addGap(57, 57, 57)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lbCadastro, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(chekLogado, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(sen, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jpfSenha)
-                                    .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
-                                    .addComponent(usu, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(14, Short.MAX_VALUE))
+                            .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(sen, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jpfSenha)
+                                .addComponent(btnLogin, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(chekLogado, javax.swing.GroupLayout.DEFAULT_SIZE, 334, Short.MAX_VALUE)
+                                .addComponent(usu, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+                .addGap(32, 32, 32)
                 .addComponent(lnTitulo)
-                .addGap(63, 63, 63)
+                .addGap(60, 60, 60)
                 .addComponent(usu)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(4, 4, 4)
                 .addComponent(jtfUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(11, 11, 11)
+                .addGap(18, 18, 18)
                 .addComponent(sen)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jpfSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(27, 27, 27)
                 .addComponent(chekLogado)
-                .addGap(56, 56, 56)
+                .addGap(47, 47, 47)
                 .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(48, 48, 48)
                 .addComponent(lbCadastro)
                 .addContainerGap(126, Short.MAX_VALUE))
         );
-
-        jPanel2.add(jPanel3);
-        jPanel3.setBounds(720, 40, 460, 620);
-
-        jPanel4.setBackground(new java.awt.Color(204, 204, 204));
-
-        lbLogo.setBackground(new java.awt.Color(255, 255, 255));
-        lbLogo.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        lbLogo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/logotipo4.jpg"))); // NOI18N
-
-        lbCadastro1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
-        lbCadastro1.setForeground(new java.awt.Color(0, 0, 204));
-        lbCadastro1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbCadastro1.setText("Trocar de login....");
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(lbCadastro1, javax.swing.GroupLayout.PREFERRED_SIZE, 472, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                        .addComponent(lbLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addContainerGap())))
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(153, 153, 153)
-                .addComponent(lbLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 350, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(26, 26, 26)
-                .addComponent(lbCadastro1)
-                .addContainerGap(114, Short.MAX_VALUE))
-        );
-
-        jPanel2.add(jPanel4);
-        jPanel4.setBounds(0, 0, 510, 660);
 
         lbConf.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lbConf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/gear.png"))); // NOI18N
@@ -254,55 +183,73 @@ public class FRMLogin extends javax.swing.JFrame {
                 lbConfMouseExited(evt);
             }
         });
-        jPanel2.add(lbConf);
-        lbConf.setBounds(1300, 0, 30, 30);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(1300, 1300, 1300)
+                        .addComponent(lbConf, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(435, 435, 435)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(435, 435, 435)))
+                .addGap(2, 2, 2))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(lbConf, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 1332, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 720, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnLoginjButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginjButton6ActionPerformed
+    private void jpfSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jpfSenhaActionPerformed
+        btnLoginjButton6ActionPerformed(evt);
+    }//GEN-LAST:event_jpfSenhaActionPerformed
 
+    private void btnLoginjButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginjButton6ActionPerformed
         if (!jtfUsuario.getText().equals("")) {
             if (!jpfSenha.getText().equals("")) {
-                if (jtfUsuario.getText().equals("admin") && jpfSenha.getText().equals("admin")) {
-                    FRMPrincipal p = new FRMPrincipal();
-                    p.setVisible(true);
-                    dispose();
-                } else {
-                    fazLogin(jtfUsuario.getText() + "", jpfSenha.getText());
-                }
-
+                fazLogin(jtfUsuario.getText() + "", jpfSenha.getText());
             } else {
                 JOptionPane.showMessageDialog(null, "Insira sua senha");
             }
         } else {
             JOptionPane.showMessageDialog(null, "Insira um email");
         }
-
     }//GEN-LAST:event_btnLoginjButton6ActionPerformed
-
-    private void jpfSenhaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jpfSenhaActionPerformed
-        btnLoginjButton6ActionPerformed(evt);
-    }//GEN-LAST:event_jpfSenhaActionPerformed
-
-    private void lbConfMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbConfMouseEntered
-        lbConf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/gearF.png")));
-    }//GEN-LAST:event_lbConfMouseEntered
-
-    private void lbConfMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbConfMouseExited
-        lbConf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/gear.png")));
-    }//GEN-LAST:event_lbConfMouseExited
 
     private void lbCadastroMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbCadastroMouseEntered
         lbCadastro.setForeground(Color.BLACK);
@@ -312,63 +259,50 @@ public class FRMLogin extends javax.swing.JFrame {
         lbCadastro.setForeground(new Color(0, 0, 204));
     }//GEN-LAST:event_lbCadastroMouseExited
 
+    private void lbConfMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbConfMouseEntered
+        lbConf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/gearF.png")));
+    }//GEN-LAST:event_lbConfMouseEntered
+
+    private void lbConfMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbConfMouseExited
+        lbConf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/gear.png")));
+    }//GEN-LAST:event_lbConfMouseExited
+
+    private void lbCadastroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbCadastroMouseClicked
+        //  mudar para cadastro de empresa
+        FRMPreEmpresa e = new FRMPreEmpresa();
+        e.setVisible(true);
+    }//GEN-LAST:event_lbCadastroMouseClicked
+
     private void jtfUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfUsuarioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfUsuarioActionPerformed
-
-    private void chekLogadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chekLogadoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_chekLogadoActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FRMLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FRMLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FRMLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FRMLogin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
 
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+
             public void run() {
-                new FRMLogin().setVisible(true);
+
+                new FRMLoginEmpresa().setVisible(true);
+
             }
-        });
+        }
+        );
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
     private javax.swing.JCheckBox chekLogado;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPasswordField jpfSenha;
     private javax.swing.JTextField jtfUsuario;
     private javax.swing.JLabel lbCadastro;
-    private javax.swing.JLabel lbCadastro1;
     private javax.swing.JLabel lbConf;
-    private javax.swing.JLabel lbFantasia;
-    private javax.swing.JLabel lbLogo;
     private javax.swing.JLabel lnTitulo;
     private javax.swing.JLabel sen;
     private javax.swing.JLabel usu;
@@ -415,38 +349,39 @@ public class FRMLogin extends javax.swing.JFrame {
         return encontrado;
     }
 
-    private SharedPreferencesBEAN fazLogin(String nomeUsuario, String senha) {
-        Carregamento a = new Carregamento(FRMLogin.this, true);
+    private SharedPreferencesEmpresaBEAN fazLogin(String nomeUsuario, String senha) {
+        Carregamento a = new Carregamento(FRMLoginEmpresa.this, true);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 a.setVisible(true);
             }
         });
-        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<SharedPreferencesBEAN> call = api.fazLogin(nomeUsuario, senha);
-        SharedPreferencesBEAN u = null;
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class
+        );
+        final Call<SharedPreferencesEmpresaBEAN> call = api.fazLoginEmpresa(nomeUsuario, senha);
+        SharedPreferencesEmpresaBEAN u = null;
         System.out.println("1");
-        call.enqueue(new Callback<SharedPreferencesBEAN>() {
+        call.enqueue(new Callback<SharedPreferencesEmpresaBEAN>() {
             @Override
-            public void onResponse(Call<SharedPreferencesBEAN> call, Response<SharedPreferencesBEAN> response) {
-
+            public void onResponse(Call<SharedPreferencesEmpresaBEAN> call, Response<SharedPreferencesEmpresaBEAN> response) {
                 if (response.code() == 200) {
                     String auth = response.headers().get("auth");
                     if (auth.equals("1")) {
                         System.out.println("Login correto");
-                        SharedPreferencesBEAN u = response.body();
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(FRMLogin.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                        SharedPreferencesEmpresaBEAN u = response.body();
                         SwingUtilities.invokeLater(new Runnable() {
                             public void run() {
                                 a.setVisible(false);
-                                if (chekLogado.isSelected()) {
-                                    c.logIN(u);
+                                if (u != null) {
+                                    if (chekLogado.isSelected()) {
+                                        c.logEmpresa(u);
+                                    }
+                                    FRMLogin l = new FRMLogin();
+                                    l.setVisible(true);
+                                    dispose();
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Login Invalido");
                                 }
-                                tipoLogin(u.getFunCargo());
 
                             }
                         });
@@ -468,7 +403,7 @@ public class FRMLogin extends javax.swing.JFrame {
             }
 
             @Override
-            public void onFailure(Call<SharedPreferencesBEAN> call, Throwable t) {
+            public void onFailure(Call<SharedPreferencesEmpresaBEAN> call, Throwable t) {
                 //Servidor fora do ar
                 a.setVisible(false);
                 JOptionPane.showMessageDialog(null, "Login Incorreto erro");
@@ -481,15 +416,4 @@ public class FRMLogin extends javax.swing.JFrame {
 
     }
 
-    private void setDados() {
-        ControleLogin l = new ControleLogin();
-        SharedPreferencesEmpresaBEAN e = l.listarEmpresa();
-        if (e != null) {
-            lbFantasia.setText(e.getEmpFantazia());
-            if (e.getEmpLogo() != null) {
-                ManipularImagem m = new ManipularImagem();
-                m.exibiImagemLabel(e.getEmpLogo(), lbLogo);
-            }
-        }
-    }
 }

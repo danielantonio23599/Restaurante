@@ -14,6 +14,7 @@ import modelo.ProdutoBEAN;
 import modelo.Produtos;
 import modelo.ProdutosGravados;
 import modelo.local.SharedPreferencesBEAN;
+import modelo.local.SharedPreferencesEmpresaBEAN;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -201,5 +202,13 @@ public interface RestauranteAPI {
     @FormUrlEncoded
     @POST("restaurante_server/CancelarPedido")
     Call<Void> cancelarPedido(@Field("pedido") String pedido, @Field("motivo") String motivo, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/AdicionarEmpresa")
+    Call<Void> insereEmpresa(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha,@Field("empresa") String empresa);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/LoginEmpresa")
+    Call<SharedPreferencesEmpresaBEAN> fazLoginEmpresa(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
 }

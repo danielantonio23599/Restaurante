@@ -5,6 +5,7 @@
  */
 package controleService;
 
+import controle.SharedPEmpresa_Control;
 import controle.SharedP_Control;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
@@ -12,6 +13,7 @@ import javax.swing.JOptionPane;
 import modelo.FuncionarioBEAN;
 import modelo.local.SharedPreferencesBEAN;
 import modelo.local.SharedPreferencesDAO;
+import modelo.local.SharedPreferencesEmpresaBEAN;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -25,8 +27,15 @@ import sync.SyncDefault;
 public class ControleLogin {
 
     public void logIN(SharedPreferencesBEAN f) {
-
         SharedP_Control.inserir(f);
+    }
+
+    public void logEmpresa(SharedPreferencesEmpresaBEAN e) {
+        SharedPEmpresa_Control.inserir(e);
+    }
+
+    public SharedPreferencesEmpresaBEAN listarEmpresa() {
+        return SharedPEmpresa_Control.listar();
     }
 
     public DefaultComboBoxModel buscar(String email) {
