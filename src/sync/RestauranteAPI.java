@@ -3,6 +3,7 @@ package sync;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
+import modelo.AdmicaoBEAN;
 import modelo.Caixa;
 import modelo.CaixaBEAN;
 import modelo.CargoBEAN;
@@ -65,7 +66,7 @@ public interface RestauranteAPI {
 
     @FormUrlEncoded
     @POST("restaurante_server/AdicionarFuncionario")
-    Call<Void> insereFuncionario(@Field("funcionario") String cargo, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+    Call<Void> insereFuncionario(@Field("funcionario") String cargo, @Field("empresa") String empresa, @Field("senha") String senha);
 
     @FormUrlEncoded
     @POST("restaurante_server/ExcluirFuncionario")
@@ -205,10 +206,26 @@ public interface RestauranteAPI {
 
     @FormUrlEncoded
     @POST("restaurante_server/AdicionarEmpresa")
-    Call<Void> insereEmpresa(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha,@Field("empresa") String empresa);
+    Call<Void> insereEmpresa(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha, @Field("empresa") String empresa);
 
     @FormUrlEncoded
     @POST("restaurante_server/LoginEmpresa")
     Call<SharedPreferencesEmpresaBEAN> fazLoginEmpresa(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/AdicionarAdmicao")
+    Call<Void> insereAdmicao(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha, @Field("admicao") String admicao);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/AdicionarDemicao")
+    Call<Void> insereDemicao(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha, @Field("demicao") String demicao);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/LocalizarAdmicao")
+    Call<AdmicaoBEAN> localisarAdmicao(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha, @Field("funcionario") String funcionario);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/ExcluirAdmicao")
+    Call<Void> excluirAdmicao(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha, @Field("admicao") String demicao);
 
 }

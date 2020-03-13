@@ -15,8 +15,8 @@ public class SharedPreferencesBEAN {
     private String funNome;
     private String funEmail;
     private String funSenha;
-    private String funCargo;
-    
+    private int funCargo;
+    private String cargo;
 
     public int getFunCodigo() {
         return funCodigo;
@@ -42,8 +42,6 @@ public class SharedPreferencesBEAN {
         this.funEmail = funEmail;
     }
 
-  
-
     public String getFunSenha() {
         return funSenha;
     }
@@ -52,13 +50,20 @@ public class SharedPreferencesBEAN {
         this.funSenha = funSenha;
     }
 
-    public String getFunCargo() {
+    public int getFunCargo() {
         return funCargo;
     }
 
-    public void setFunCargo(String funCargo) {
+    public void setFunCargo(int funCargo) {
         this.funCargo = funCargo;
     }
 
-    
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
+
 }

@@ -12,34 +12,89 @@ import java.util.Date;
  * @author Daniel
  */
 public class FuncionarioBEAN {
+
     private int codigo;
-    private float salario;
-    //private Date dataAdmicao;
-    //private Date dataNacimento;
-    private String dataAdmicao;
+    private String nome;
     private String dataNacimento;
     private String telefone;
-    private String endereco;
-    private String nome;
-    private int uniforme;
+
     private byte[] foto;
     private String email;
     private String CPF;
     private String RG;
     private String senha;
-    private int cargo;
-    private String carNome;
-    private int cartao;
+    private String logradouro;
+    private String bairro;
+    private String complemento;
+    private String numero;
+    private String cidade;
+    private String uf;
+    private String cep;
+    private String status;
 
-    public int getCartao() {
-        return cartao;
+    public String getStatus() {
+        return status;
     }
 
-    public void setCartao(int cartao) {
-        this.cartao = cartao;
+    public void setStatus(String status) {
+        this.status = status;
     }
     
-    
+    public String getLogradouro() {
+        return logradouro;
+    }
+
+    public void setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
+    }
+
+    public String getBairro() {
+        return bairro;
+    }
+
+    public void setBairro(String bairro) {
+        this.bairro = bairro;
+    }
+
+    public String getComplemento() {
+        return complemento;
+    }
+
+    public void setComplemento(String complemento) {
+        this.complemento = complemento;
+    }
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public String getUf() {
+        return uf;
+    }
+
+    public void setUf(String uf) {
+        this.uf = uf;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
 
     public int getCodigo() {
         return codigo;
@@ -47,14 +102,6 @@ public class FuncionarioBEAN {
 
     public void setCodigo(int codigo) {
         this.codigo = codigo;
-    }
-
-    public float getSalario() {
-        return salario;
-    }
-
-    public void setSalario(float salario) {
-        this.salario = salario;
     }
 
     public String getTelefone() {
@@ -65,28 +112,12 @@ public class FuncionarioBEAN {
         this.telefone = telefone;
     }
 
-    public String getEndereco() {
-        return endereco;
-    }
-
-    public void setEndereco(String endereco) {
-        this.endereco = endereco;
-    }
-
     public String getNome() {
         return nome;
     }
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public int getUniforme() {
-        return uniforme;
-    }
-
-    public void setUniforme(int uniforme) {
-        this.uniforme = uniforme;
     }
 
     public byte[] getFoto() {
@@ -129,16 +160,6 @@ public class FuncionarioBEAN {
         this.senha = senha;
     }
 
-    
-
-    public String getDataAdmicao() {
-        return dataAdmicao;
-    }
-
-    public void setDataAdmicao(String dataAdmicao) {
-        this.dataAdmicao = dataAdmicao;
-    }
-
     public String getDataNacimento() {
         return dataNacimento;
     }
@@ -147,21 +168,4 @@ public class FuncionarioBEAN {
         this.dataNacimento = dataNacimento;
     }
 
-    public int getCargo() {
-        return cargo;
-    }
-
-    public void setCargo(int cargo) {
-        this.cargo = cargo;
-    }
-
-    public String getCarNome() {
-        return carNome;
-    }
-
-    public void setCarNome(String carNome) {
-        this.carNome = carNome;
-    }
-   
-    
 }

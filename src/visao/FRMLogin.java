@@ -14,6 +14,7 @@ import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ComboBoxModel;
@@ -130,6 +131,7 @@ public class FRMLogin extends javax.swing.JFrame {
 
         chekLogado.setBackground(new java.awt.Color(255, 255, 255));
         chekLogado.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        chekLogado.setSelected(true);
         chekLogado.setText("Lembrar-me login");
         chekLogado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -142,6 +144,9 @@ public class FRMLogin extends javax.swing.JFrame {
         lbCadastro.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbCadastro.setText("Não possui cadastro, Clique aqui !!");
         lbCadastro.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbCadastroMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 lbCadastroMouseEntered(evt);
             }
@@ -320,6 +325,11 @@ public class FRMLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_chekLogadoActionPerformed
 
+    private void lbCadastroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbCadastroMouseClicked
+        FRMFuncionario f = new FRMFuncionario();
+        f.setVisible(true);
+    }//GEN-LAST:event_lbCadastroMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -374,30 +384,89 @@ public class FRMLogin extends javax.swing.JFrame {
     private javax.swing.JLabel usu;
     // End of variables declaration//GEN-END:variables
 //private UJComboBox comboUsuario;
-    public void tipoLogin(String cargo) {
+    public void tipoLogin(int cargo) {
         FRMPrincipal p = new FRMPrincipal();
         FRMPrincipalCaixa p1 = new FRMPrincipalCaixa();
         FRMPrincipalGarcom p2 = new FRMPrincipalGarcom();
         FRMPrincipalGerente p3 = new FRMPrincipalGerente();
 
-        switch (cargo) {
-            case "ADM":
-                p.setVisible(true);
-                break;
-            case "CAIXA":
-                p1.setVisible(true);
-                break;
-            case "GARÇOM":
-                p2.setVisible(true);
-                break;
-            case "GERENTE":
-                p3.setVisible(true);
-                break;
-            default:
-                p2.setVisible(true);
-                break;
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                a.setVisible(true);
+            }
+        });
+        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        System.out.println(sh.getFunEmail() + "/" + sh.getFunSenha());
+        final Call<ArrayList<CargoBEAN>> call = api.listarCargos(sh.getFunEmail(), sh.getFunSenha());
+        call.enqueue(new Callback<ArrayList<CargoBEAN>>() {
+            @Override
+            public void onResponse(Call<ArrayList<CargoBEAN>> call, Response<ArrayList<CargoBEAN>> response) {
+                System.out.println(response.code());
+                if (response.code() == 200) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+                        ArrayList<CargoBEAN> u = response.body();
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                                for (CargoBEAN c : u) {
+                                    if (c.getCodigo() == cargo) {
+                                        switch (c.getNome()) {
+                                            case "ADM":
+                                                p.setVisible(true);
+                                                break;
+                                            case "CAIXA":
+                                                p1.setVisible(true);
+                                                break;
+                                            case "GARÇOM":
+                                                p2.setVisible(true);
+                                                break;
+                                            case "GERENTE":
+                                                p3.setVisible(true);
+                                                break;
+                                            default:
+                                                p2.setVisible(true);
+                                                break;
 
-        }
+                                        }
+                                    }
+                                }
+
+                            }
+                        });
+
+                    } else {
+
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+
+                        }
+                    });
+
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<CargoBEAN>> call, Throwable t) {
+                //Servidor fora do ar
+                JOptionPane.showMessageDialog(null, "Login Incorreto erro");
+                System.out.println("Login incorreto");
+
+            }
+        });
+
         dispose();
 
     }
@@ -422,7 +491,8 @@ public class FRMLogin extends javax.swing.JFrame {
                 a.setVisible(true);
             }
         });
-        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class
+        );
         final Call<SharedPreferencesBEAN> call = api.fazLogin(nomeUsuario, senha);
         SharedPreferencesBEAN u = null;
         System.out.println("1");
@@ -435,19 +505,18 @@ public class FRMLogin extends javax.swing.JFrame {
                     if (auth.equals("1")) {
                         System.out.println("Login correto");
                         SharedPreferencesBEAN u = response.body();
-                        try {
-                            Thread.sleep(1000);
-                        } catch (InterruptedException ex) {
-                            Logger.getLogger(FRMLogin.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+
                         SwingUtilities.invokeLater(new Runnable() {
                             public void run() {
                                 a.setVisible(false);
-                                if (chekLogado.isSelected()) {
-                                    c.logIN(u);
+                                if (u.getFunCargo() > 0) {
+                                    if (chekLogado.isSelected()) {
+                                        c.logIN(u);
+                                    }
+                                    tipoLogin(u.getFunCargo());
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Usuario ainda não confirmado pela empresa");
                                 }
-                                tipoLogin(u.getFunCargo());
-
                             }
                         });
 
@@ -490,6 +559,11 @@ public class FRMLogin extends javax.swing.JFrame {
                 ManipularImagem m = new ManipularImagem();
                 m.exibiImagemLabel(e.getEmpLogo(), lbLogo);
             }
+        }
+        SharedPreferencesBEAN ll = SharedP_Control.listar();
+        if (ll != null) {
+            jtfUsuario.setText(ll.getFunEmail());
+            jpfSenha.setText(ll.getFunSenha());
         }
     }
 }

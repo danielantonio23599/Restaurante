@@ -101,6 +101,11 @@ public class FRMEmpresa extends javax.swing.JFrame {
         btnCadastrar.setBackground(new java.awt.Color(0, 0, 255));
         btnCadastrar.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         btnCadastrar.setText("Cadastrar");
+        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCadastrarActionPerformed(evt);
+            }
+        });
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 102));
         jPanel1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -565,6 +570,10 @@ public class FRMEmpresa extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_jpSenhaRFocusLost
+
+    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCadastrarActionPerformed
 
     /**
      * @param args the command line arguments

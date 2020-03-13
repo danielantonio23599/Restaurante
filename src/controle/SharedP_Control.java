@@ -35,7 +35,7 @@ public class SharedP_Control {
 
     public static void inserCargo(CargoBEAN u) {
         SharedPreferencesBEAN sh = listar();
-        sh.setFunCargo(u.getNome());
+        sh.setCargo(u.getNome());
         inserir(sh);
     }
 

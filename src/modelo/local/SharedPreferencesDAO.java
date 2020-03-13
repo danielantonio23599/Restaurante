@@ -39,7 +39,7 @@ public class SharedPreferencesDAO {
                 ca.setFunNome(rs.getString(2));
                 ca.setFunEmail(rs.getString(3));
                 ca.setFunSenha(rs.getString(4));
-                ca.setFunCargo(rs.getString(5));
+                ca.setCargo(rs.getString(5));
 
             }
             stmt.close();
@@ -61,7 +61,7 @@ public class SharedPreferencesDAO {
             stmt.setString(2, c.getFunNome());
             stmt.setString(3, c.getFunEmail());
             stmt.setString(4, c.getFunSenha());
-            stmt.setString(5, c.getFunCargo());
+            stmt.setString(5, c.getCargo());
             stmt.execute();
             stmt.close();
 
