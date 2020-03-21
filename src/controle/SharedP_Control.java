@@ -11,6 +11,7 @@ import modelo.FuncionarioBEAN;
 
 import modelo.local.SharedPreferencesBEAN;
 import modelo.local.SharedPreferencesDAO;
+import util.Criptografia;
 
 /**
  *
@@ -26,7 +27,14 @@ public class SharedP_Control {
     }
 
     public static SharedPreferencesBEAN listar() {
-        return sha.listarALl();
+        SharedPreferencesBEAN sh = sha.listarALl();
+        String senha = Criptografia.criptografar(sh.getFunSenha());
+        sh.setFunSenha(senha);
+        return sh;
+    }
+    public static SharedPreferencesBEAN listarLogin() {
+        SharedPreferencesBEAN sh = sha.listarALl();
+        return sh;
     }
 
     public static void logOFF() {

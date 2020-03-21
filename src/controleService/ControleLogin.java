@@ -9,16 +9,9 @@ import controle.SharedPEmpresa_Control;
 import controle.SharedP_Control;
 import java.util.ArrayList;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
-import modelo.FuncionarioBEAN;
 import modelo.local.SharedPreferencesBEAN;
-import modelo.local.SharedPreferencesDAO;
 import modelo.local.SharedPreferencesEmpresaBEAN;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import sync.RestauranteAPI;
-import sync.SyncDefault;
+
 
 /**
  *

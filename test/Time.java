@@ -1,6 +1,10 @@
 
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import visao.FRMLogin;
 
 /*
@@ -15,18 +19,8 @@ import visao.FRMLogin;
 public class Time {
 
     public static void main(String args[]) {
-       try {
-            SimpleDateFormat formatoRetorno = new SimpleDateFormat("dd-MM-yyyy");
-            Date dataBanco = formatoRetorno.parse("11-11-1111");
-            SimpleDateFormat formatoDataBanco = new SimpleDateFormat("yyyy-MM-dd");            
-            
-
-            System.out.println(dataBanco);
-            System.out.println(formatoDataBanco.format(dataBanco));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        System.out.println(Horas.subtraiHoras("11:15","10:20" ));
+       
     }
 
 }

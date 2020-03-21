@@ -991,7 +991,7 @@ public class FRMProduto extends javax.swing.JFrame {
     }//GEN-LAST:event_comboTipoItemStateChanged
 
     private void jtfPrecoFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfPrecoFocusGained
-       
+
     }//GEN-LAST:event_jtfPrecoFocusGained
 
     private void jtfPrecoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfPrecoKeyPressed
@@ -1165,7 +1165,7 @@ public class FRMProduto extends javax.swing.JFrame {
         p.setCusto(Float.parseFloat(jtfCusto.getText() + ""));
         p.setQuantidade(Float.parseFloat(jtfQuantidade.getText() + ""));
         p.setDescricao(jtaDescricao.getText() + "");
-        p.setPreparo(jtfPreparo.getText() + "");
+        p.setPreparo("00:" + jtfPreparo.getText() + ":00");
         p.setArmonizacao(jtaAmonizacao.getText() + "");
         p.setTipo(comboTipo.getSelectedItem() + "");
         if (lbFotoPedido.getIcon() != null) {

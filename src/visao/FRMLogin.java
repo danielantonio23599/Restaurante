@@ -30,6 +30,7 @@ import retrofit2.Response;
 import retrofit2.http.Headers;
 import sync.RestauranteAPI;
 import sync.SyncDefault;
+import util.Criptografia;
 import util.ManipularImagem;
 import visao.util.AlertDialog;
 import visao.util.Carregamento;
@@ -285,7 +286,7 @@ public class FRMLogin extends javax.swing.JFrame {
                     p.setVisible(true);
                     dispose();
                 } else {
-                    fazLogin(jtfUsuario.getText() + "", jpfSenha.getText());
+                    fazLogin(jtfUsuario.getText() + "", Criptografia.criptografar(jpfSenha.getText()));
                 }
 
             } else {
@@ -511,6 +512,7 @@ public class FRMLogin extends javax.swing.JFrame {
                                 a.setVisible(false);
                                 if (u.getFunCargo() > 0) {
                                     if (chekLogado.isSelected()) {
+                                        u.setFunSenha(jpfSenha.getText());
                                         c.logIN(u);
                                     }
                                     tipoLogin(u.getFunCargo());
@@ -560,7 +562,7 @@ public class FRMLogin extends javax.swing.JFrame {
                 m.exibiImagemLabel(e.getEmpLogo(), lbLogo);
             }
         }
-        SharedPreferencesBEAN ll = SharedP_Control.listar();
+        SharedPreferencesBEAN ll = SharedP_Control.listarLogin();
         if (ll != null) {
             jtfUsuario.setText(ll.getFunEmail());
             jpfSenha.setText(ll.getFunSenha());
