@@ -973,7 +973,7 @@ public class FRMCaixa extends javax.swing.JFrame {
             FecharMesaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(FecharMesaLayout.createSequentialGroup()
                 .addComponent(jPanel20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         Principal.add(FecharMesa, "mesa");
@@ -1253,12 +1253,23 @@ public class FRMCaixa extends javax.swing.JFrame {
                 jtfFaturamentoLiquidoActionPerformed(evt);
             }
         });
+        jtfFaturamentoLiquido.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfFaturamentoLiquidoKeyTyped(evt);
+            }
+        });
 
         jLabel357.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel357.setText("Troco:");
 
         jtfTroco.setEditable(false);
         jtfTroco.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jtfTroco.setText("0");
+        jtfTroco.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfTrocoKeyTyped(evt);
+            }
+        });
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Troco"));
 
@@ -1392,6 +1403,12 @@ public class FRMCaixa extends javax.swing.JFrame {
         jLabel17.setText("Total de Troco:");
 
         jtfTotalTroco.setEditable(false);
+        jtfTotalTroco.setText("0");
+        jtfTotalTroco.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jtfTotalTrocoKeyTyped(evt);
+            }
+        });
 
         jtfNota5.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         jtfNota5.setText("0");
@@ -2866,72 +2883,76 @@ public class FRMCaixa extends javax.swing.JFrame {
 //Se o usuário clicar em "Sim" retorna 0 pra variavel reply, se informado não retorna 1
         int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
-            if (Float.parseFloat(jtfFaturamentoLiquido.getText()) == Float.parseFloat(jtfTroco.getText())) {
+            if (!jtfFaturamentoLiquido.getText().equals("") || !jtfTroco.getText().equals("")) {
+                if (Float.parseFloat(jtfFaturamentoLiquido.getText()) == Float.parseFloat(jtfTroco.getText())) {
 
-                Carregamento a = new Carregamento(this, true);
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
+                    Carregamento a = new Carregamento(this, true);
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
 
-                        a.setVisible(true);
+                            a.setVisible(true);
 
-                    }
-                });
-                SharedPreferencesBEAN sh = SharedP_Control.listar();
-                RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-                final Call<Void> call = api.fecharCaixa("" + Float.parseFloat(jtfTroco.getText()), sh.getFunEmail(), sh.getFunSenha());
-                call.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        System.out.println(response.isSuccessful());
-                        if (response.isSuccessful()) {
-                            String auth = response.headers().get("auth");
-                            if (auth.equals("1")) {
-                                System.out.println("Login correto");
+                        }
+                    });
+                    SharedPreferencesBEAN sh = SharedP_Control.listar();
+                    RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+                    final Call<Void> call = api.fecharCaixa("" + Float.parseFloat(jtfTroco.getText()), sh.getFunEmail(), sh.getFunSenha());
+                    call.enqueue(new Callback<Void>() {
+                        @Override
+                        public void onResponse(Call<Void> call, Response<Void> response) {
+                            System.out.println(response.isSuccessful());
+                            if (response.isSuccessful()) {
+                                String auth = response.headers().get("auth");
+                                if (auth.equals("1")) {
+                                    System.out.println("Login correto");
 
-                                SwingUtilities.invokeLater(new Runnable() {
-                                    public void run() {
-                                        JOptionPane.showMessageDialog(null, response.headers().get("sucesso"));
-                                        atualizaTabelaprodusClose();
+                                    SwingUtilities.invokeLater(new Runnable() {
+                                        public void run() {
+                                            JOptionPane.showMessageDialog(null, response.headers().get("sucesso"));
+                                            atualizaTabelaprodusClose();
 
-                                        a.setVisible(false);
+                                            a.setVisible(false);
 
-                                    }
-                                });
+                                        }
+                                    });
 
+                                } else {
+                                    SwingUtilities.invokeLater(new Runnable() {
+                                        public void run() {
+                                            a.setVisible(false);
+                                        }
+                                    });
+                                    System.out.println("Login incorreto");
+                                    // senha ou usuario incorreto
+
+                                }
                             } else {
                                 SwingUtilities.invokeLater(new Runnable() {
                                     public void run() {
                                         a.setVisible(false);
                                     }
                                 });
-                                System.out.println("Login incorreto");
-                                // senha ou usuario incorreto
-
+                                System.out.println("Login incorreto- fora do ar");
+                                //servidor fora do ar
                             }
-                        } else {
+                        }
+
+                        @Override
+                        public void onFailure(Call<Void> call, Throwable t) {
                             SwingUtilities.invokeLater(new Runnable() {
                                 public void run() {
                                     a.setVisible(false);
                                 }
                             });
-                            System.out.println("Login incorreto- fora do ar");
-                            //servidor fora do ar
                         }
-                    }
+                    });
 
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        SwingUtilities.invokeLater(new Runnable() {
-                            public void run() {
-                                a.setVisible(false);
-                            }
-                        });
-                    }
-                });
-
-            } else {
-                JOptionPane.showMessageDialog(null, "Verifique seu troco, incompativel com o seu dinheiro em caixa!!");
+                } else {
+                    JOptionPane.showMessageDialog(null, "Verifique seu troco, incompativel com o seu dinheiro em caixa!!");
+                }
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Preencha todos os campos!!");
         }
     }//GEN-LAST:event_buttonFinalizarActionPerformed
 
@@ -3088,6 +3109,18 @@ public class FRMCaixa extends javax.swing.JFrame {
             buttonFinalizar.requestFocus();
         }
     }//GEN-LAST:event_jtfMoeda1KeyPressed
+
+    private void jtfFaturamentoLiquidoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfFaturamentoLiquidoKeyTyped
+        bloqueaLetras(evt);
+    }//GEN-LAST:event_jtfFaturamentoLiquidoKeyTyped
+
+    private void jtfTrocoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfTrocoKeyTyped
+        bloqueaLetras(evt);
+    }//GEN-LAST:event_jtfTrocoKeyTyped
+
+    private void jtfTotalTrocoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfTotalTrocoKeyTyped
+        bloqueaLetras(evt);
+    }//GEN-LAST:event_jtfTotalTrocoKeyTyped
     private void bloqueaLetras(java.awt.event.KeyEvent evt) {
         String caracteres = "0987654321";
         if (!caracteres.contains(evt.getKeyChar() + "")) {
