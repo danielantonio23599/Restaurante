@@ -5,6 +5,7 @@
  */
 package visao;
 
+import controle.SharedPEmpresa_Control;
 import controle.SharedP_Control;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -16,6 +17,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import modelo.FuncionarioBEAN;
 import modelo.local.SharedPreferencesBEAN;
+import modelo.local.SharedPreferencesEmpresaBEAN;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,7 +44,8 @@ public class FRMFuncionarios extends javax.swing.JFrame {
     }
 
     private void buscarFuncionarios() {
-
+        String email;
+        String senha;
         Carregamento a = new Carregamento(this, true);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -52,9 +55,17 @@ public class FRMFuncionarios extends javax.swing.JFrame {
             }
         });
         SharedPreferencesBEAN sh = SharedP_Control.listar();
+        if (sh.getFunCodigo() == 0) {
+            SharedPreferencesEmpresaBEAN sd = SharedPEmpresa_Control.listar();
+            email = sd.getEmpEmail();
+            senha = sd.getEmpSenha();
+        } else {
+            email = sh.getFunEmail();
+            senha = sh.getFunSenha();
+        }
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        System.out.println(sh.getFunEmail() + "/" + sh.getFunSenha());
-        final Call<ArrayList<FuncionarioBEAN>> call = api.listarFuncionarios(sh.getFunEmail(), sh.getFunSenha());
+       
+        final Call<ArrayList<FuncionarioBEAN>> call = api.listarFuncionarios(email, senha);
         call.enqueue(new Callback<ArrayList<FuncionarioBEAN>>() {
             @Override
             public void onResponse(Call<ArrayList<FuncionarioBEAN>> call, Response<ArrayList<FuncionarioBEAN>> response) {

@@ -6,6 +6,7 @@
 package visao;
 
 import com.mysql.jdbc.log.Log;
+import controle.SharedPEmpresa_Control;
 
 import controleService.ControleLogin;
 import controle.SharedP_Control;
@@ -52,10 +53,11 @@ public class FRMLogin extends javax.swing.JFrame {
         setExtendedState(MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
         SharedPreferencesEmpresaBEAN e = c.listarEmpresa();
-        if (e.getEmpCodigo() == 0) {
+        if (e.getEmpCodigo() == 0) {            
             FRMLoginEmpresa le = new FRMLoginEmpresa();
             le.setVisible(true);
             this.setVisible(false);
+            
         } else {
             setDados();
 
@@ -397,10 +399,10 @@ public class FRMLogin extends javax.swing.JFrame {
                 a.setVisible(true);
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        System.out.println(sh.getFunEmail() + "/" + sh.getFunSenha());
-        final Call<ArrayList<CargoBEAN>> call = api.listarCargos(sh.getFunEmail(), sh.getFunSenha());
+        System.out.println(sh.getEmpEmail() + "/" + sh.getEmpSenha());
+        final Call<ArrayList<CargoBEAN>> call = api.listarCargos(sh.getEmpEmail(), sh.getEmpSenha());
         call.enqueue(new Callback<ArrayList<CargoBEAN>>() {
             @Override
             public void onResponse(Call<ArrayList<CargoBEAN>> call, Response<ArrayList<CargoBEAN>> response) {

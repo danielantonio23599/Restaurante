@@ -28,10 +28,13 @@ public class SharedP_Control {
 
     public static SharedPreferencesBEAN listar() {
         SharedPreferencesBEAN sh = sha.listarALl();
-        String senha = Criptografia.criptografar(sh.getFunSenha());
-        sh.setFunSenha(senha);
+        if (sh.getFunCodigo() != 0) {
+            String senha = Criptografia.criptografar(sh.getFunSenha());
+            sh.setFunSenha(senha);
+        }
         return sh;
     }
+
     public static SharedPreferencesBEAN listarLogin() {
         SharedPreferencesBEAN sh = sha.listarALl();
         return sh;

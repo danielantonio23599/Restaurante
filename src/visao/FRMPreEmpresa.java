@@ -472,7 +472,6 @@ public class FRMPreEmpresa extends javax.swing.JFrame {
 
                     }
                 });
-                SharedPreferencesBEAN sh = SharedP_Control.listar();
                 RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
                 String json = new Gson().toJson(f);
                 System.out.println(json);

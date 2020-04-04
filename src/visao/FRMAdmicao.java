@@ -897,6 +897,12 @@ public class FRMAdmicao extends javax.swing.JFrame {
                         });
 
                     } else {
+                         SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+
+                        }
+                    });
 
                         System.out.println("Login incorreto");
                         // senha ou usuario incorreto
