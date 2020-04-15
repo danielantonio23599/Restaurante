@@ -7,24 +7,15 @@ package visao;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import controle.SharedP_Control;
 import java.awt.Color;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.swing.ImageIcon;
-import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import modelo.EmpresaBEAN;
-import modelo.ProdutoBEAN;
-
-import modelo.local.SharedPreferencesBEAN;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sync.RestauranteAPI;
 import sync.SyncDefault;
-import util.ManipularImagem;
 import util.Time;
 import visao.util.Carregamento;
 

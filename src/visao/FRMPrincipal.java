@@ -49,10 +49,8 @@ public class FRMPrincipal extends javax.swing.JFrame {
         jMenuItem8 = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         jMenuItem9 = new javax.swing.JMenuItem();
-        jMenu8 = new javax.swing.JMenu();
-        jMenuItem10 = new javax.swing.JMenuItem();
         jMenu9 = new javax.swing.JMenu();
-        jMenuItem13 = new javax.swing.JMenuItem();
+        jMenuItem10 = new javax.swing.JMenuItem();
 
         jMenuItem7.setText("jMenuItem7");
 
@@ -167,27 +165,15 @@ public class FRMPrincipal extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu7);
 
-        jMenu8.setText("Pagamento");
+        jMenu9.setText("Vendas");
 
-        jMenuItem10.setText("Forma de pagamento");
+        jMenuItem10.setText("Restaurante");
         jMenuItem10.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem10ActionPerformed(evt);
             }
         });
-        jMenu8.add(jMenuItem10);
-
-        jMenuBar1.add(jMenu8);
-
-        jMenu9.setText("Saida");
-
-        jMenuItem13.setText("Restaurante");
-        jMenuItem13.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem13ActionPerformed(evt);
-            }
-        });
-        jMenu9.add(jMenuItem13);
+        jMenu9.add(jMenuItem10);
 
         jMenuBar1.add(jMenu9);
 
@@ -237,12 +223,6 @@ public class FRMPrincipal extends javax.swing.JFrame {
         p.setVisible(true);
     }//GEN-LAST:event_jMenuItem9ActionPerformed
 
-    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
-        FRMFormaPagamento f = new FRMFormaPagamento();
-        f.setVisible(true);
-
-    }//GEN-LAST:event_jMenuItem10ActionPerformed
-
     private void jMenuItem11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem11ActionPerformed
         String message = "Deseja realmente sair do sistema?";
         String title = "Confirmação";
@@ -268,15 +248,15 @@ public class FRMPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem6ActionPerformed
 
-    private void jMenuItem13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem13ActionPerformed
-
-
-    }//GEN-LAST:event_jMenuItem13ActionPerformed
-
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         FRMFuncionarios f = new FRMFuncionarios();
         f.setVisible(true);
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem10ActionPerformed
+        FRMVendas v = new FRMVendas();
+        v.setVisible(true);
+    }//GEN-LAST:event_jMenuItem10ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -321,14 +301,12 @@ public class FRMPrincipal extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenu jMenu6;
     private javax.swing.JMenu jMenu7;
-    private javax.swing.JMenu jMenu8;
     private javax.swing.JMenu jMenu9;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem10;
     private javax.swing.JMenuItem jMenuItem11;
     private javax.swing.JMenuItem jMenuItem12;
-    private javax.swing.JMenuItem jMenuItem13;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;

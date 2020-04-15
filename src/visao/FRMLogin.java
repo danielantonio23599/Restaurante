@@ -35,6 +35,7 @@ import util.Criptografia;
 import util.ManipularImagem;
 import visao.util.AlertDialog;
 import visao.util.Carregamento;
+import visao.util.FRMConfiguracao;
 
 /**
  *
@@ -52,16 +53,7 @@ public class FRMLogin extends javax.swing.JFrame {
         initComponents();
         setExtendedState(MAXIMIZED_BOTH);
         this.setLocationRelativeTo(null);
-        SharedPreferencesEmpresaBEAN e = c.listarEmpresa();
-        if (e.getEmpCodigo() == 0) {            
-            FRMLoginEmpresa le = new FRMLoginEmpresa();
-            le.setVisible(true);
-            this.setVisible(false);
-            
-        } else {
-            setDados();
-
-        }
+        setDados();
 
     }
 
@@ -218,12 +210,16 @@ public class FRMLogin extends javax.swing.JFrame {
         lbLogo.setBackground(new java.awt.Color(255, 255, 255));
         lbLogo.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         lbLogo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lbLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/logotipo4.jpg"))); // NOI18N
 
         lbCadastro1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
         lbCadastro1.setForeground(new java.awt.Color(0, 0, 204));
         lbCadastro1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lbCadastro1.setText("Trocar de login....");
+        lbCadastro1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbCadastro1MouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -255,6 +251,9 @@ public class FRMLogin extends javax.swing.JFrame {
         lbConf.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lbConf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/gear.png"))); // NOI18N
         lbConf.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbConfMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 lbConfMouseEntered(evt);
             }
@@ -332,6 +331,17 @@ public class FRMLogin extends javax.swing.JFrame {
         FRMFuncionario f = new FRMFuncionario();
         f.setVisible(true);
     }//GEN-LAST:event_lbCadastroMouseClicked
+
+    private void lbConfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbConfMouseClicked
+        FRMConfiguracao c = new FRMConfiguracao();
+        c.setVisible(true);
+    }//GEN-LAST:event_lbConfMouseClicked
+
+    private void lbCadastro1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbCadastro1MouseClicked
+        FRMLoginEmpresa e = new FRMLoginEmpresa();
+        e.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_lbCadastro1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -417,14 +427,14 @@ public class FRMLogin extends javax.swing.JFrame {
                                 a.setVisible(false);
                                 for (CargoBEAN c : u) {
                                     if (c.getCodigo() == cargo) {
-                                        switch (c.getNome()) {
+                                        switch (c.getPermicao()) {
                                             case "ADM":
                                                 p.setVisible(true);
                                                 break;
                                             case "CAIXA":
                                                 p1.setVisible(true);
                                                 break;
-                                            case "GARÇOM":
+                                            case "GARCOM":
                                                 p2.setVisible(true);
                                                 break;
                                             case "GERENTE":
@@ -494,8 +504,7 @@ public class FRMLogin extends javax.swing.JFrame {
                 a.setVisible(true);
             }
         });
-        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class
-        );
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
         final Call<SharedPreferencesBEAN> call = api.fazLogin(nomeUsuario, senha);
         SharedPreferencesBEAN u = null;
         System.out.println("1");

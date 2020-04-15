@@ -6,8 +6,7 @@
 package visao;
 
 import com.google.gson.Gson;
-import controle.PedidoControle;
-import controle.ProdutoControle;
+import controle.SharedPEmpresa_Control;
 import controle.SharedP_Control;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -20,10 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -33,10 +29,9 @@ import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
-import modelo.FuncionarioBEAN;
-import modelo.ProdutoBEAN;
 import modelo.ProdutoBEAN;
 import modelo.local.SharedPreferencesBEAN;
+import modelo.local.SharedPreferencesEmpresaBEAN;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,8 +45,6 @@ import visao.util.Carregamento;
  * @author Daniel
  */
 public class FRMProduto extends javax.swing.JFrame {
-
-    private PedidoControle controle = new PedidoControle();
     private TableRowSorter<TableModel> tr;
     private DefaultTableModel dTable;
     private ArrayList<ProdutoBEAN> dados;
@@ -88,7 +81,6 @@ public class FRMProduto extends javax.swing.JFrame {
         btnAdicionar = new javax.swing.JButton();
         btnEditar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         tpPedido = new javax.swing.JTabbedPane();
@@ -135,45 +127,39 @@ public class FRMProduto extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(0, 153, 102));
 
-        btnLocalizar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnLocalizar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/remove-symbol (2).png"))); // NOI18N
-        btnLocalizar.setText("Voltar");
+        btnLocalizar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnLocalizar.setText("VOLTAR");
         btnLocalizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLocalizarActionPerformed(evt);
             }
         });
 
-        btnAdicionar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnAdicionar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/add.png"))); // NOI18N
-        btnAdicionar.setText("Adicionar");
+        btnAdicionar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnAdicionar.setText("ADICIONAR");
         btnAdicionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAdicionarjButton6ActionPerformed(evt);
             }
         });
 
-        btnEditar.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/edit.png"))); // NOI18N
-        btnEditar.setText("Editar");
+        btnEditar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnEditar.setText("EDITAR");
         btnEditar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditarjButton7ActionPerformed(evt);
             }
         });
 
-        btnExcluir.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        btnExcluir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete.png"))); // NOI18N
-        btnExcluir.setText("Excluir");
+        btnExcluir.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnExcluir.setText("EXCLUIR");
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExcluirjButton8ActionPerformed(evt);
             }
         });
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/logo.png"))); // NOI18N
-
-        jLabel15.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel15.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel15.setText("PEDIDOS");
 
@@ -181,12 +167,11 @@ public class FRMProduto extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel6)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAdicionar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAdicionar, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
                     .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnLocalizar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -196,17 +181,15 @@ public class FRMProduto extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel15)
-                .addGap(26, 26, 26)
-                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnAdicionar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(31, 31, 31)
-                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
-                .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
-                .addComponent(btnLocalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnLocalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -671,10 +654,9 @@ public class FRMProduto extends javax.swing.JFrame {
 
                 }
             });
-            SharedPreferencesBEAN sh = SharedP_Control.listar();
+           SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
             RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-            System.out.println(sh.getFunEmail() + "/" + sh.getFunSenha());
-            final Call<Void> call = api.insereProduto(new Gson().toJson(f), sh.getFunEmail(), sh.getFunSenha());
+            final Call<Void> call = api.insereProduto(new Gson().toJson(f), sh.getEmpEmail(), sh.getEmpSenha());
             call.enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
@@ -1095,7 +1077,6 @@ public class FRMProduto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel43;
     private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
@@ -1312,11 +1293,10 @@ public class FRMProduto extends javax.swing.JFrame {
                 a.setVisible(true);
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class
         );
-        System.out.println(sh.getFunEmail() + "/" + sh.getFunSenha());
-        final Call<ArrayList<ProdutoBEAN>> call = api.listarProdutos(sh.getFunEmail(), sh.getFunSenha());
+        final Call<ArrayList<ProdutoBEAN>> call = api.listarProdutos(sh.getEmpEmail(), sh.getEmpSenha());
         call.enqueue(new Callback<ArrayList<ProdutoBEAN>>() {
             @Override
             public void onResponse(Call<ArrayList<ProdutoBEAN>> call, Response<ArrayList<ProdutoBEAN>> response) {

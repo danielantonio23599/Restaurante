@@ -52,45 +52,6 @@
                 <Property name="text" type="java.lang.String" value="Atualizar"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem4">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Fechar"/>
-              </Properties>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu3">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Financeiro"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem5">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="jMenuItem1"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem6">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="jMenuItem1"/>
-              </Properties>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenu4">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Gr&#xe1;fico"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem7">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Gerar gr&#xe1;fico"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem8">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Gr&#xe1;fico Mensal"/>
-              </Properties>
-            </MenuItem>
           </SubComponents>
         </Menu>
       </SubComponents>
@@ -192,13 +153,13 @@
                   <Component id="btnFechar" min="-2" pref="43" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btnAbrir" min="-2" pref="43" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                  <Component id="btnExcluir1" min="-2" pref="43" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btnRelatorios" min="-2" pref="43" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="btnExcluir1" min="-2" pref="43" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btnReducaoZ" min="-2" pref="43" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="93" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="127" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -358,7 +319,7 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <Component id="jPanel20" min="-2" max="-2" attributes="0"/>
+                      <Component id="jPanel20" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -406,8 +367,9 @@
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Component id="jPanel19" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace pref="30" max="32767" attributes="0"/>
+                                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
                                   <Component id="jPanel21" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="0" pref="105" max="32767" attributes="0"/>
                               </Group>
                               <Component id="jPanel17" max="32767" attributes="0"/>
                           </Group>
@@ -463,7 +425,6 @@
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jPanel4" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -503,14 +464,14 @@
                                       <Group type="102" alignment="1" attributes="0">
                                           <Group type="103" groupAlignment="1" attributes="0">
                                               <Group type="102" attributes="0">
-                                                  <Component id="jButton21" min="-2" pref="137" max="-2" attributes="0"/>
-                                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                                  <Component id="jButton22" min="-2" pref="114" max="-2" attributes="0"/>
-                                              </Group>
-                                              <Group type="102" attributes="0">
                                                   <Component id="jButton20" min="-2" pref="202" max="-2" attributes="0"/>
                                                   <EmptySpace type="separate" max="-2" attributes="0"/>
                                                   <Component id="jButton19" min="-2" pref="177" max="-2" attributes="0"/>
+                                              </Group>
+                                              <Group type="102" attributes="0">
+                                                  <Component id="jButton21" min="-2" pref="137" max="-2" attributes="0"/>
+                                                  <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                                                  <Component id="jButton22" min="-2" pref="134" max="-2" attributes="0"/>
                                               </Group>
                                           </Group>
                                           <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
@@ -544,17 +505,17 @@
                                   <Component id="jPanel7" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                                   <Component id="jPanel8" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="32767" attributes="0"/>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="jButton20" alignment="3" min="-2" pref="58" max="-2" attributes="0"/>
                                       <Component id="jButton19" alignment="3" min="-2" pref="58" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
                                   <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="jButton22" alignment="3" min="-2" pref="48" max="-2" attributes="0"/>
                                       <Component id="jButton21" alignment="3" min="-2" pref="48" max="-2" attributes="0"/>
+                                      <Component id="jButton22" alignment="3" min="-2" pref="48" max="-2" attributes="0"/>
                                   </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
                               </Group>
                           </Group>
                         </DimensionLayout>
@@ -917,8 +878,8 @@
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jScrollPane8" pref="373" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="jScrollPane8" min="-2" pref="359" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="11" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                     </DimensionLayout>
@@ -2124,7 +2085,7 @@
                 </DimensionLayout>
                 <DimensionLayout dim="1">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="127" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="161" max="32767" attributes="0"/>
                   </Group>
                 </DimensionLayout>
               </Layout>
@@ -2189,18 +2150,18 @@
                       <Group type="103" groupAlignment="1" max="-2" attributes="0">
                           <Component id="jPanel14" alignment="0" max="32767" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
-                              <Component id="jButton10" min="-2" pref="253" max="-2" attributes="0"/>
+                              <Component id="btnAtualizar" min="-2" pref="253" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
-                              <Component id="jButton8" min="-2" pref="250" max="-2" attributes="0"/>
+                              <Component id="btnFecharVenda" min="-2" pref="250" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jPanel13" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
-                              <Component id="jButton16" min="-2" pref="256" max="-2" attributes="0"/>
+                              <Component id="btnImprimir" min="-2" pref="256" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="jButton9" min="-2" pref="250" max="-2" attributes="0"/>
+                              <Component id="btnCancelar" min="-2" pref="250" max="-2" attributes="0"/>
                           </Group>
                           <Component id="jPanel1" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
@@ -2213,10 +2174,10 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jButton10" alignment="3" min="-2" pref="73" max="-2" attributes="0"/>
-                          <Component id="jButton8" alignment="3" min="-2" pref="73" max="-2" attributes="0"/>
-                          <Component id="jButton16" alignment="3" min="-2" pref="73" max="-2" attributes="0"/>
-                          <Component id="jButton9" alignment="3" min="-2" pref="73" max="-2" attributes="0"/>
+                          <Component id="btnAtualizar" alignment="3" min="-2" pref="73" max="-2" attributes="0"/>
+                          <Component id="btnFecharVenda" alignment="3" min="-2" pref="73" max="-2" attributes="0"/>
+                          <Component id="btnImprimir" alignment="3" min="-2" pref="73" max="-2" attributes="0"/>
+                          <Component id="btnCancelar" alignment="3" min="-2" pref="73" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
@@ -2279,7 +2240,7 @@
                               <Component id="jLabel42" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jtfTotalFiscal" alignment="3" min="-2" pref="43" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="128" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="162" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -2407,7 +2368,7 @@
                 </Component>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JButton" name="jButton8">
+            <Component class="javax.swing.JButton" name="btnFecharVenda">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="0" green="99" red="0" type="rgb"/>
@@ -2415,13 +2376,13 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="14" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="FECHAR VENDA-(F9)"/>
+                <Property name="text" type="java.lang.String" value="FECHAR VENDA-(ALT+F9)"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton8ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFecharVendaActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton9">
+            <Component class="javax.swing.JButton" name="btnCancelar">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="0" green="0" red="cc" type="rgb"/>
@@ -2429,7 +2390,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="14" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="CANCELAR-(ESC)"/>
+                <Property name="text" type="java.lang.String" value="CANCELAR-(ALT+ESC)"/>
               </Properties>
             </Component>
             <Container class="javax.swing.JPanel" name="jPanel13">
@@ -2473,12 +2434,45 @@
                     <Component class="javax.swing.JTable" name="tabelaProdutosBalcao">
                       <Properties>
                         <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                          <Table columnCount="4" rowCount="4">
-                            <Column editable="true" title="Title 1" type="java.lang.Object"/>
-                            <Column editable="true" title="Title 2" type="java.lang.Object"/>
-                            <Column editable="true" title="Title 3" type="java.lang.Object"/>
-                            <Column editable="true" title="Title 4" type="java.lang.Object"/>
+                          <Table columnCount="5" rowCount="0">
+                            <Column editable="true" title="C&#xf3;digo" type="java.lang.Object"/>
+                            <Column editable="true" title="Nome" type="java.lang.Object"/>
+                            <Column editable="true" title="Quantidade" type="java.lang.Object"/>
+                            <Column editable="true" title="Valor" type="java.lang.Object"/>
+                            <Column editable="true" title="Hora" type="java.lang.Object"/>
                           </Table>
+                        </Property>
+                        <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                          <TableColumnModel selectionModel="0">
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                            <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                              <Title/>
+                              <Editor/>
+                              <Renderer/>
+                            </Column>
+                          </TableColumnModel>
+                        </Property>
+                        <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                          <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                         </Property>
                       </Properties>
                     </Component>
@@ -2486,7 +2480,7 @@
                 </Container>
               </SubComponents>
             </Container>
-            <Component class="javax.swing.JButton" name="jButton10">
+            <Component class="javax.swing.JButton" name="btnAtualizar">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="0" green="99" red="0" type="rgb"/>
@@ -2494,13 +2488,13 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="14" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="ATUALIZAR - (F5)"/>
+                <Property name="text" type="java.lang.String" value="ATUALIZAR - (ALT+F5)"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton10ActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAtualizarActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="jButton16">
+            <Component class="javax.swing.JButton" name="btnImprimir">
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="0" green="99" red="0" type="rgb"/>
@@ -2508,7 +2502,7 @@
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Tahoma" size="14" style="1"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="IMPRIMIR-(F7)"/>
+                <Property name="text" type="java.lang.String" value="IMPRIMIR-(ALT+F7)"/>
               </Properties>
             </Component>
             <Container class="javax.swing.JPanel" name="jPanel1">
@@ -2609,9 +2603,9 @@
                               <Component id="jLabel57" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jtfCaixa" alignment="3" min="-2" pref="29" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
                           <Component id="rolagem" min="-2" pref="524" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Component id="jPanel23" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                           <Component id="jPanel18" max="32767" attributes="0"/>
@@ -2742,7 +2736,7 @@
                     </DimensionLayout>
                     <DimensionLayout dim="1">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <EmptySpace min="0" pref="126" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="160" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
                   </Layout>
@@ -2841,7 +2835,7 @@
 
                               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
                               <SubComponents>
-                                <Component class="javax.swing.JTable" name="tabelaVendas">
+                                <Component class="javax.swing.JTable" name="tabelaVendaFinalizada">
                                   <Properties>
                                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                                       <Font name="Times New Roman" size="12" style="0"/>
@@ -2907,7 +2901,7 @@
                           <Properties>
                             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                               <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                                <TitledBorder title="Produtos Cancelados">
+                                <TitledBorder title="Pedidos Cancelados">
                                   <Font PropertyName="font" name="Tahoma" size="14" style="0"/>
                                 </TitledBorder>
                               </Border>
@@ -3284,7 +3278,7 @@
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace pref="45" max="32767" attributes="0"/>
+                      <EmptySpace pref="79" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="jPanel28" max="32767" attributes="0"/>
                           <Component id="jPanel27" max="32767" attributes="0"/>
@@ -3293,7 +3287,7 @@
                   </Group>
                   <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="0" pref="611" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="645" max="32767" attributes="0"/>
                           <Component id="jPanel15" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>

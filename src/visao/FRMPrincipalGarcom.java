@@ -85,7 +85,7 @@ public class FRMPrincipalGarcom extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu1);
 
-        jMenu9.setText("Saida");
+        jMenu9.setText("Vendas");
 
         jMenuItem5.setText("Restaurante");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
@@ -114,7 +114,8 @@ public class FRMPrincipalGarcom extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-       
+        FRMVendas v = new FRMVendas();
+        v.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed

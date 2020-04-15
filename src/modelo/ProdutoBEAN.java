@@ -22,6 +22,16 @@ private byte[] foto;
 private String preparo;
 private String descricao;
 private String tipo;
+private int empresa;
+
+    public int getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(int empresa) {
+        this.empresa = empresa;
+    }
+
 
 
 

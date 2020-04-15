@@ -96,7 +96,7 @@ public class FRMPrincipalGerente extends javax.swing.JFrame {
         jMenu10.setText("Pontos");
         jMenuBar1.add(jMenu10);
 
-        jMenu9.setText("Saida");
+        jMenu9.setText("Vendas");
 
         jMenuItem5.setText("Restaurante");
         jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
@@ -129,7 +129,8 @@ public class FRMPrincipalGerente extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-     
+        FRMVendas v = new FRMVendas();
+        v.setVisible(true);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**

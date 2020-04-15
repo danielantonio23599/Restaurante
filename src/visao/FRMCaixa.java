@@ -6,21 +6,18 @@
 package visao;
 
 import com.google.gson.Gson;
+import controle.SharedPEmpresa_Control;
 import visao.util.Mesa;
 
 import controle.SharedP_Control;
 
 import java.awt.CardLayout;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -31,20 +28,20 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import modelo.Caixa;
 import modelo.CaixaBEAN;
-import modelo.CargoBEAN;
 import modelo.DespesaBEAN;
 import modelo.ExcluzaoBEAN;
-import modelo.PagamentoBEAN;
 import modelo.Produtos;
 import modelo.ProdutosGravados;
 import modelo.SangriaBEAN;
 import modelo.VendaBEAN;
 import modelo.local.SharedPreferencesBEAN;
+import modelo.local.SharedPreferencesEmpresaBEAN;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import sync.RestauranteAPI;
 import sync.SyncDefault;
+
 import util.Time;
 import visao.util.AlertAbrirCaixa;
 import visao.util.AlertSangria;
@@ -60,9 +57,6 @@ public class FRMCaixa extends javax.swing.JFrame {
     private TableRowSorter<TableModel> tr;
     private float saldoMesa;
     private float saldo;
-    private float mesasAbertas = 0;
-    private ArrayList<DespesaBEAN> despesa = new ArrayList<>();
-
     /**
      * Creates new form FRMCaixa
      */
@@ -70,6 +64,10 @@ public class FRMCaixa extends javax.swing.JFrame {
         initComponents();
         setExtendedState(MAXIMIZED_BOTH);
         mudarTela("index");
+        btnAtualizar.setMnemonic(KeyEvent.VK_F5);
+        btnFecharVenda.setMnemonic(KeyEvent.VK_F9);
+        btnImprimir.setMnemonic(KeyEvent.VK_F7);
+        btnCancelar.setMnemonic(KeyEvent.VK_ESCAPE);
 
         comboProduto.grabFocus();
         comboProduto.getEditor().getEditorComponent().addKeyListener(new KeyAdapter() {
@@ -108,9 +106,9 @@ public class FRMCaixa extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<DefaultComboBoxModel> call = api.pesquisaProdutos(sh.getFunEmail(), sh.getFunSenha(), cadenaEscrita);
+        final Call<DefaultComboBoxModel> call = api.pesquisaProdutos(sh.getEmpEmail(), sh.getEmpSenha(), cadenaEscrita);
         call.enqueue(new Callback<DefaultComboBoxModel>() {
             @Override
             public void onResponse(Call<DefaultComboBoxModel> call, Response<DefaultComboBoxModel> response) {
@@ -356,13 +354,13 @@ public class FRMCaixa extends javax.swing.JFrame {
         jPanel14 = new javax.swing.JPanel();
         botaoPesquisar = new javax.swing.JButton();
         comboProduto = new javax.swing.JComboBox<>();
-        jButton8 = new javax.swing.JButton();
-        jButton9 = new javax.swing.JButton();
+        btnFecharVenda = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         jPanel13 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tabelaProdutosBalcao = new javax.swing.JTable();
-        jButton10 = new javax.swing.JButton();
-        jButton16 = new javax.swing.JButton();
+        btnAtualizar = new javax.swing.JButton();
+        btnImprimir = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         Relatorio = new javax.swing.JPanel();
@@ -379,7 +377,7 @@ public class FRMCaixa extends javax.swing.JFrame {
         rola = new javax.swing.JPanel();
         painelvendas = new javax.swing.JPanel();
         jScrollPane12 = new javax.swing.JScrollPane();
-        tabelaVendas = new javax.swing.JTable();
+        tabelaVendaFinalizada = new javax.swing.JTable();
         jLabel22 = new javax.swing.JLabel();
         lbTotalVendido = new javax.swing.JLabel();
         painelcancelados = new javax.swing.JPanel();
@@ -415,13 +413,6 @@ public class FRMCaixa extends javax.swing.JFrame {
         jMenuItem9 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem5 = new javax.swing.JMenuItem();
-        jMenuItem6 = new javax.swing.JMenuItem();
-        jMenu4 = new javax.swing.JMenu();
-        jMenuItem7 = new javax.swing.JMenuItem();
-        jMenuItem8 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Caixa");
@@ -550,12 +541,12 @@ public class FRMCaixa extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnAbrir, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnExcluir1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
                 .addComponent(btnRelatorios, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(btnExcluir1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(btnReducaoZ, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(93, 93, 93))
+                .addGap(127, 127, 127))
         );
 
         Principal.setBackground(new java.awt.Color(153, 0, 0));
@@ -796,13 +787,13 @@ public class FRMCaixa extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jButton21, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton22, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jButton20, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jButton19, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(jButton19, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addComponent(jButton21, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(38, 38, 38)
+                                .addComponent(jButton22, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(16, 16, 16)))
                 .addContainerGap())
         );
@@ -827,15 +818,15 @@ public class FRMCaixa extends javax.swing.JFrame {
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(34, 34, 34)
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton20, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton19, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(38, 38, 38)
+                .addGap(36, 36, 36)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton22, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton21, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                    .addComponent(jButton21, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton22, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
@@ -851,8 +842,7 @@ public class FRMCaixa extends javax.swing.JFrame {
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel17Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel19.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Produtos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
@@ -883,8 +873,8 @@ public class FRMCaixa extends javax.swing.JFrame {
         jPanel19Layout.setVerticalGroup(
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel19Layout.createSequentialGroup()
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.DEFAULT_SIZE, 373, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 11, Short.MAX_VALUE))
         );
 
         jPanel21.setBackground(new java.awt.Color(204, 204, 204));
@@ -954,8 +944,9 @@ public class FRMCaixa extends javax.swing.JFrame {
                             .addComponent(jtfMesa, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-                        .addComponent(jPanel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanel21, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 105, Short.MAX_VALUE))
                     .addComponent(jPanel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -972,7 +963,7 @@ public class FRMCaixa extends javax.swing.JFrame {
         FecharMesaLayout.setVerticalGroup(
             FecharMesaLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(FecharMesaLayout.createSequentialGroup()
-                .addComponent(jPanel20, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel20, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -1605,7 +1596,7 @@ public class FRMCaixa extends javax.swing.JFrame {
         );
         jPanel25Layout.setVerticalGroup(
             jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 127, Short.MAX_VALUE)
+            .addGap(0, 161, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout CloseLayout = new javax.swing.GroupLayout(Close);
@@ -1765,7 +1756,7 @@ public class FRMCaixa extends javax.swing.JFrame {
                     .addComponent(jLabel40)
                     .addComponent(jLabel42)
                     .addComponent(jtfTotalFiscal, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 128, Short.MAX_VALUE))
+                .addGap(0, 162, Short.MAX_VALUE))
         );
 
         jPanel14.setBorder(javax.swing.BorderFactory.createTitledBorder("Adcionar Produto"));
@@ -1804,30 +1795,27 @@ public class FRMCaixa extends javax.swing.JFrame {
                 .addGap(0, 13, Short.MAX_VALUE))
         );
 
-        jButton8.setBackground(new java.awt.Color(0, 153, 0));
-        jButton8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton8.setText("FECHAR VENDA-(F9)");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
+        btnFecharVenda.setBackground(new java.awt.Color(0, 153, 0));
+        btnFecharVenda.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnFecharVenda.setText("FECHAR VENDA-(ALT+F9)");
+        btnFecharVenda.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
+                btnFecharVendaActionPerformed(evt);
             }
         });
 
-        jButton9.setBackground(new java.awt.Color(204, 0, 0));
-        jButton9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton9.setText("CANCELAR-(ESC)");
+        btnCancelar.setBackground(new java.awt.Color(204, 0, 0));
+        btnCancelar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnCancelar.setText("CANCELAR-(ALT+ESC)");
 
         jPanel13.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Produtos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
         tabelaProdutosBalcao.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Código", "Nome", "Quantidade", "Valor", "Hora"
             }
         ));
         jScrollPane5.setViewportView(tabelaProdutosBalcao);
@@ -1848,18 +1836,18 @@ public class FRMCaixa extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jButton10.setBackground(new java.awt.Color(0, 153, 0));
-        jButton10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton10.setText("ATUALIZAR - (F5)");
-        jButton10.addActionListener(new java.awt.event.ActionListener() {
+        btnAtualizar.setBackground(new java.awt.Color(0, 153, 0));
+        btnAtualizar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnAtualizar.setText("ATUALIZAR - (ALT+F5)");
+        btnAtualizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton10ActionPerformed(evt);
+                btnAtualizarActionPerformed(evt);
             }
         });
 
-        jButton16.setBackground(new java.awt.Color(0, 153, 0));
-        jButton16.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jButton16.setText("IMPRIMIR-(F7)");
+        btnImprimir.setBackground(new java.awt.Color(0, 153, 0));
+        btnImprimir.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnImprimir.setText("IMPRIMIR-(ALT+F7)");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -1890,16 +1878,16 @@ public class FRMCaixa extends javax.swing.JFrame {
                 .addGroup(VendaBalcaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel14, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(VendaBalcaoLayout.createSequentialGroup()
-                        .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnAtualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(7, 7, 7)
-                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnFecharVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(VendaBalcaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(VendaBalcaoLayout.createSequentialGroup()
-                        .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 238, Short.MAX_VALUE))
             .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -1908,10 +1896,10 @@ public class FRMCaixa extends javax.swing.JFrame {
             VendaBalcaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(VendaBalcaoLayout.createSequentialGroup()
                 .addGroup(VendaBalcaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton16, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnAtualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFecharVenda, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnImprimir, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
                 .addGroup(VendaBalcaoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -2000,15 +1988,15 @@ public class FRMCaixa extends javax.swing.JFrame {
         );
         jPanel18Layout.setVerticalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 126, Short.MAX_VALUE)
+            .addGap(0, 160, Short.MAX_VALUE)
         );
 
         rolagem.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 
         painelvendas.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Vendas Finalizadas", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
-        tabelaVendas.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
-        tabelaVendas.setModel(new javax.swing.table.DefaultTableModel(
+        tabelaVendaFinalizada.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
+        tabelaVendaFinalizada.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -2019,7 +2007,7 @@ public class FRMCaixa extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane12.setViewportView(tabelaVendas);
+        jScrollPane12.setViewportView(tabelaVendaFinalizada);
 
         jLabel22.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
         jLabel22.setText("Total:");
@@ -2051,7 +2039,7 @@ public class FRMCaixa extends javax.swing.JFrame {
                     .addComponent(lbTotalVendido, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
-        painelcancelados.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Produtos Cancelados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
+        painelcancelados.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pedidos Cancelados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
         tabelaProCancelados.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         tabelaProCancelados.setModel(new javax.swing.table.DefaultTableModel(
@@ -2252,9 +2240,9 @@ public class FRMCaixa extends javax.swing.JFrame {
                 .addGroup(jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel57)
                     .addComponent(jtfCaixa, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(1, 1, 1)
                 .addComponent(rolagem, javax.swing.GroupLayout.PREFERRED_SIZE, 524, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
                 .addComponent(jPanel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -2499,14 +2487,14 @@ public class FRMCaixa extends javax.swing.JFrame {
                         .addGroup(despesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton27, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
                 .addGroup(despesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel28, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(175, 175, 175))
             .addGroup(despesasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, despesasLayout.createSequentialGroup()
-                    .addGap(0, 611, Short.MAX_VALUE)
+                    .addGap(0, 645, Short.MAX_VALUE)
                     .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
@@ -2542,30 +2530,7 @@ public class FRMCaixa extends javax.swing.JFrame {
         jMenuItem3.setText("Atualizar");
         jMenu2.add(jMenuItem3);
 
-        jMenuItem4.setText("Fechar");
-        jMenu2.add(jMenuItem4);
-
         jMenuBar1.add(jMenu2);
-
-        jMenu3.setText("Financeiro");
-
-        jMenuItem5.setText("jMenuItem1");
-        jMenu3.add(jMenuItem5);
-
-        jMenuItem6.setText("jMenuItem1");
-        jMenu3.add(jMenuItem6);
-
-        jMenuBar1.add(jMenu3);
-
-        jMenu4.setText("Gráfico");
-
-        jMenuItem7.setText("Gerar gráfico");
-        jMenu4.add(jMenuItem7);
-
-        jMenuItem8.setText("Gráfico Mensal");
-        jMenu4.add(jMenuItem8);
-
-        jMenuBar1.add(jMenu4);
 
         setJMenuBar(jMenuBar1);
 
@@ -2692,9 +2657,9 @@ public class FRMCaixa extends javax.swing.JFrame {
 
                 }
             });
-            SharedPreferencesBEAN sh = SharedP_Control.listar();
+            SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
             RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-            final Call<Void> call = api.transferiMesa(mesa, labNumMesa.getText(), sh.getFunEmail(), sh.getFunSenha());
+            final Call<Void> call = api.transferiMesa(mesa, labNumMesa.getText(), sh.getEmpEmail(), sh.getEmpSenha());
             call.enqueue(new Callback<Void>() {
                 @Override
                 public void onResponse(Call<Void> call, Response<Void> response) {
@@ -2822,9 +2787,9 @@ public class FRMCaixa extends javax.swing.JFrame {
         pesquisarProdutos();
     }//GEN-LAST:event_botaoPesquisarActionPerformed
 
-    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
-        atualizar();
-    }//GEN-LAST:event_jButton10ActionPerformed
+    private void btnAtualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtualizarActionPerformed
+        buscarProdutosMesa(jtfNunMesa.getText());
+    }//GEN-LAST:event_btnAtualizarActionPerformed
 
     private void comboProdutoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_comboProdutoKeyPressed
         System.out.println("entrou");
@@ -2834,16 +2799,17 @@ public class FRMCaixa extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_comboProdutoKeyPressed
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+    private void btnFecharVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharVendaActionPerformed
         if (!jtfVenda.getText().equals("")) {
             jtfMesa.setText(jtfNunMesa.getText());
             mudarTela("mesa");
             somarTotal();
+            atualizaProdutos(Integer.parseInt(jtfNunMesa.getText()));
         } else {
             JOptionPane.showMessageDialog(null, "Insira algum produto, o casa já inserido, atualize a venda !");
         }
 
-    }//GEN-LAST:event_jButton8ActionPerformed
+    }//GEN-LAST:event_btnFecharVendaActionPerformed
 
     private void jtfCaixaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfCaixaActionPerformed
         // TODO add your handling code here:
@@ -2894,9 +2860,9 @@ public class FRMCaixa extends javax.swing.JFrame {
 
                         }
                     });
-                    SharedPreferencesBEAN sh = SharedP_Control.listar();
+                    SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
                     RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-                    final Call<Void> call = api.fecharCaixa("" + Float.parseFloat(jtfTroco.getText()), sh.getFunEmail(), sh.getFunSenha());
+                    final Call<Void> call = api.fecharCaixa("" + Float.parseFloat(jtfTroco.getText()), sh.getEmpEmail(), sh.getEmpSenha());
                     call.enqueue(new Callback<Void>() {
                         @Override
                         public void onResponse(Call<Void> call, Response<Void> response) {
@@ -3173,9 +3139,13 @@ public class FRMCaixa extends javax.swing.JFrame {
     private javax.swing.JButton botaoPesquisar;
     private javax.swing.JButton btnAbrir;
     private javax.swing.JButton btnAdicionar1;
+    private javax.swing.JButton btnAtualizar;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnDespesas;
     private javax.swing.JButton btnExcluir1;
     private javax.swing.JButton btnFechar;
+    private javax.swing.JButton btnFecharVenda;
+    private javax.swing.JButton btnImprimir;
     private javax.swing.JButton btnLocalizar1;
     private javax.swing.JButton btnReducaoZ;
     private javax.swing.JButton btnRelatorios;
@@ -3185,13 +3155,11 @@ public class FRMCaixa extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> comboProduto;
     private javax.swing.JPanel despesas;
     private javax.swing.JPanel index;
-    private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
     private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton14;
     private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton19;
@@ -3204,8 +3172,6 @@ public class FRMCaixa extends javax.swing.JFrame {
     private javax.swing.JButton jButton26;
     private javax.swing.JButton jButton27;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -3248,17 +3214,10 @@ public class FRMCaixa extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
-    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JMenuItem jMenuItem6;
-    private javax.swing.JMenuItem jMenuItem7;
-    private javax.swing.JMenuItem jMenuItem8;
     private javax.swing.JMenuItem jMenuItem9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel118;
@@ -3355,7 +3314,7 @@ public class FRMCaixa extends javax.swing.JFrame {
     private javax.swing.JTable tabelaProdutosCancelados;
     private javax.swing.JTable tabelaProdutosF;
     private javax.swing.JTable tabelaSangria;
-    private javax.swing.JTable tabelaVendas;
+    private javax.swing.JTable tabelaVendaFinalizada;
     private javax.swing.ButtonGroup valorgrupo;
     // End of variables declaration//GEN-END:variables
 
@@ -3391,9 +3350,9 @@ public class FRMCaixa extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<ArrayList<modelo.Mesa>> call = api.getMesasAbertas(sh.getFunEmail(), sh.getFunSenha());
+        final Call<ArrayList<modelo.Mesa>> call = api.getMesasAbertas(sh.getEmpEmail(), sh.getEmpSenha());
         call.enqueue(new Callback<ArrayList<modelo.Mesa>>() {
             @Override
             public void onResponse(Call<ArrayList<modelo.Mesa>> call, Response<ArrayList<modelo.Mesa>> response) {
@@ -3508,12 +3467,32 @@ public class FRMCaixa extends javax.swing.JFrame {
         //set o modelo da tabela
         tabelaProdutos.setModel(dTable);
         tabelaProdutosF.setModel(dTable);
-        tabelaProdutosBalcao.setModel(dTable);
         tr = new TableRowSorter<TableModel>(dTable);
         tabelaProdutos.setRowSorter(tr);
         tabelaProdutosF.setRowSorter(tr);
-        tabelaProdutosBalcao.setRowSorter(tr);
 
+    }
+
+    private void preencheTabelaProdutosBalcao(ArrayList<ProdutosGravados> dados) {
+        dTable = criaTabelaProdutos();
+        //seta o nome das colunas da tabela
+        dTable.addColumn("Código");
+        dTable.addColumn("Nome");
+        dTable.addColumn("Quantidade");
+        dTable.addColumn("Valor");
+        dTable.addColumn("Hora");
+        //pega os dados do ArrayList
+        //cada célula do arrayList vira uma linha(row) na tabela
+        if (dados != null) {
+            for (ProdutosGravados dado : dados) {
+                dTable.addRow(new Object[]{dado.getCodProduto(), dado.getNome(),
+                    dado.getQuantidade(), dado.getValor(), dado.getTime()});
+            }
+        }
+        //set o modelo da tabela
+        tabelaProdutosBalcao.setModel(dTable);
+        tr = new TableRowSorter<TableModel>(dTable);
+        tabelaProdutosBalcao.setRowSorter(tr);
     }
 
     private void somarTotal() {
@@ -3575,9 +3554,9 @@ public class FRMCaixa extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<Void> call = api.atualizaVenda(new Gson().toJson(v), sh.getFunEmail(), sh.getFunSenha());
+        final Call<Void> call = api.atualizaVenda(new Gson().toJson(v), sh.getEmpEmail(), sh.getEmpSenha());
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -3637,10 +3616,8 @@ public class FRMCaixa extends javax.swing.JFrame {
 
     // VENDA A BALCA
     private void atualizar() {
-
         // buscar produtos e valor total
-        listarProdutosMesa(Integer.parseInt(jtfNunMesa.getText()));
-
+        buscarProdutosMesa(jtfNunMesa.getText());
     }
 
     private DefaultTableModel criaTabelaProdutosBalcao() {
@@ -3675,9 +3652,9 @@ public class FRMCaixa extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<Produtos> call = api.buscarUmProduto(sh.getFunEmail(), sh.getFunSenha(), comboProduto.getSelectedItem() + "");
+        final Call<Produtos> call = api.buscarUmProduto(sh.getEmpEmail(), sh.getEmpSenha(), comboProduto.getSelectedItem() + "");
         call.enqueue(new Callback<Produtos>() {
             @Override
             public void onResponse(Call<Produtos> call, Response<Produtos> response) {
@@ -3695,10 +3672,12 @@ public class FRMCaixa extends javax.swing.JFrame {
                                     r.setDados(jtfNunMesa.getText() + "");
                                     r.setProdutos(u);
                                     r.setVisible(true);
+
                                 } else {
                                     JOptionPane.showMessageDialog(null, "NÃO encontrado!!");
                                 }
                             }
+
                         });
 
                     } else {
@@ -3732,6 +3711,85 @@ public class FRMCaixa extends javax.swing.JFrame {
             }
         });
 
+    }
+
+    private void buscarProdutosMesa(String mesa) {
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<ArrayList<ProdutosGravados>> call = api.listarProdutosMesa(sh.getEmpEmail(), sh.getEmpSenha(), mesa + "");
+        call.enqueue(new Callback<ArrayList<ProdutosGravados>>() {
+            @Override
+            public void onResponse(Call<ArrayList<ProdutosGravados>> call, Response<ArrayList<ProdutosGravados>> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                ArrayList<ProdutosGravados> u = response.body();
+                                a.setVisible(false);
+                                preencheTabelaProdutosBalcao(u);
+                                if (u != null) {
+                                    jtfVenda.setText(u.get(0).getCodPedidVenda() + "");
+                                    float total = 0;
+                                    for (ProdutosGravados p : u) {
+                                        total += (p.getQuantidade() * p.getValor());
+                                    }
+                                    jtfTotalFiscal.setText(total + "");
+                                } else if (!jtfTotalFiscal.equals("")) {
+                                    limparCampoVendaBalcao();
+                                    gerarMesaBalcao();
+                                }
+                            }
+                        });
+
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<ProdutosGravados>> call, Throwable t) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        a.setVisible(false);
+                    }
+                });
+            }
+        });
+
+    }
+
+    private void limparCampoVendaBalcao() {
+        jtfVenda.setText("0");
+        float total = 0;
+        jtfTotalFiscal.setText(total + "");
     }
 
     private ArrayList<DespesaBEAN> getDespesas() {
@@ -3768,18 +3826,12 @@ public class FRMCaixa extends javax.swing.JFrame {
 //relatorio
 
     private void atualizaRelatorio() {
-        float saldo = 0;
+        listarPedidosCanceladosCaixa();
+        listarDespesaDia();
+        listarSangiaCaixa();
+        listarValoresCaixa();
+        listarVendasFinalizadasCaixa();
 
-        /* ArrayList<VendaBEAN> vendas = c.listarVendasAbertas();
-        preencheTabelaCancelados(exclusaoControl.listarExclusaoCaixa());
-        preencheTabelaVenda(vendas);
-        preencheTabelaDespesas(controle.listarDespesaDia());
-        preencheTabelaSangria(sangriaControle.listarSangriasCaixa());
-        lbTotalVendido.setText(c.getTotalVendido() + "");
-        // lbSaldo.setText(getSaldoAtual(saldo) + "");
-        //jtfCaixa.setText(controleCaixa.getCaixa() + "");
-        lbTotalDespesas.setText(controle.getTotalDespesasCaixa() + "");
-        lbTotalSangrias.setText(sangriaControle.getTotalSangriasCaixa() + "");*/
     }
 
     private DefaultTableModel criaTabelaVenda() {
@@ -3820,22 +3872,24 @@ public class FRMCaixa extends javax.swing.JFrame {
                 dado.getValor(), dado.getPagamento(), dado.getCaixa()});
         }
         //set o modelo da tabela
-        tabelaVendas.setModel(dTable);
-
+        tabelaVendaFinalizada.setModel(dTable);
         tr = new TableRowSorter<TableModel>(dTable);
-        tabelaVendas.setRowSorter(tr);
+        tabelaVendaFinalizada.setRowSorter(tr);
+        float total = 0;
+        for (VendaBEAN dado : dados) {
+            total += dado.getValor();
+        }
+        lbTotalVendido.setText(total + "");
 
     }
 
     private void preencheTabelaCancelados(ArrayList<ExcluzaoBEAN> dados) {
         dTable = criaTabelaProdutosExcluidos();
         //seta o nome das colunas da tabela
-
         dTable.addColumn("Código");
         dTable.addColumn("Motivo");
         dTable.addColumn("Hora");
         dTable.addColumn("Funcionario");
-
         //pega os dados do ArrayList
         //cada célula do arrayList vira uma linha(row) na tabela
         for (ExcluzaoBEAN dado : dados) {
@@ -3871,7 +3925,16 @@ public class FRMCaixa extends javax.swing.JFrame {
         tr = new TableRowSorter<TableModel>(dTable);
         tabelaDespesas.setRowSorter(tr);
         tabelaDesClose.setRowSorter(tr);
+        totalDespesas(dados);
 
+    }
+
+    private void totalDespesas(ArrayList<DespesaBEAN> dados) {
+        float total = 0;
+        for (DespesaBEAN dado : dados) {
+            total += dado.getPreco();
+        }
+        lbTotalDespesas.setText("" + total);
     }
 
     private void preencheTabelaDespesasDia(ArrayList<DespesaBEAN> dados) {
@@ -3883,7 +3946,9 @@ public class FRMCaixa extends javax.swing.JFrame {
                 dado.getNome(), dado.getDescricao(), dado.getPreco()});
 
         }
-
+        tabelaDespesas.setModel(dTable);
+        tr = new TableRowSorter<TableModel>(dTable);
+        tabelaDespesas.setRowSorter(tr);
     }
 
     private void preencheTabelaSangria(ArrayList<SangriaBEAN> dados) {
@@ -3903,7 +3968,19 @@ public class FRMCaixa extends javax.swing.JFrame {
         tabelaSangria.setModel(dTable);
         tr = new TableRowSorter<TableModel>(dTable);
         tabelaSangria.setRowSorter(tr);
+        totalSangria(dados);
+        if (dados.size() > 0) {
+            jtfCaixa.setText(dados.get(0).getCaixa() + "");
+        }
 
+    }
+
+    private void totalSangria(ArrayList<SangriaBEAN> dados) {
+        float total = 0;
+        for (SangriaBEAN dado : dados) {
+            total += dado.getValor();
+        }
+        lbTotalSangrias.setText(total + "");
     }
 
     private DefaultTableModel criaTabelaSangria() {
@@ -4028,11 +4105,12 @@ public class FRMCaixa extends javax.swing.JFrame {
             }
         });
         SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh1 = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
         CaixaBEAN cc = c;
         cc.setFuncionario(sh.getFunCodigo());
         System.out.println("codigo funcionario " + sh.getFunCodigo());
-        final Call<Void> call = api.abrirCaixa(new Gson().toJson(cc), sh.getFunEmail(), sh.getFunSenha());
+        final Call<Void> call = api.abrirCaixa(new Gson().toJson(cc), sh1.getEmpEmail(), sh1.getEmpSenha());
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -4092,9 +4170,9 @@ public class FRMCaixa extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<Void> call = api.saldoAtualCaixa(sh.getFunEmail(), sh.getFunSenha());
+        final Call<Void> call = api.saldoAtualCaixa(sh.getEmpEmail(), sh.getEmpSenha());
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -4170,9 +4248,9 @@ public class FRMCaixa extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<Void> call = api.inserirSangria(sh.getFunEmail(), sh.getFunSenha(), new Gson().toJson(s));
+        final Call<Void> call = api.inserirSangria(sh.getEmpEmail(), sh.getEmpSenha(), new Gson().toJson(s));
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -4231,9 +4309,9 @@ public class FRMCaixa extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<ArrayList<ProdutosGravados>> call = api.listarProdutosVendidos(sh.getFunEmail(), sh.getFunSenha());
+        final Call<ArrayList<ProdutosGravados>> call = api.listarProdutosVendidos(sh.getEmpEmail(), sh.getEmpSenha());
         call.enqueue(new Callback<ArrayList<ProdutosGravados>>() {
             @Override
             public void onResponse(Call<ArrayList<ProdutosGravados>> call, Response<ArrayList<ProdutosGravados>> response) {
@@ -4293,18 +4371,16 @@ public class FRMCaixa extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<ArrayList<DespesaBEAN>> call = api.listarDespesasDia(sh.getFunEmail(), sh.getFunSenha());
+        final Call<ArrayList<DespesaBEAN>> call = api.listarDespesasDia(sh.getEmpEmail(), sh.getEmpSenha());
         call.enqueue(new Callback<ArrayList<DespesaBEAN>>() {
             @Override
             public void onResponse(Call<ArrayList<DespesaBEAN>> call, Response<ArrayList<DespesaBEAN>> response) {
-                System.out.println(response.isSuccessful());
+
                 if (response.isSuccessful()) {
                     String auth = response.headers().get("auth");
                     if (auth.equals("1")) {
-                        System.out.println("Login correto");
-
                         SwingUtilities.invokeLater(new Runnable() {
                             public void run() {
                                 ArrayList<DespesaBEAN> u = response.body();
@@ -4355,9 +4431,9 @@ public class FRMCaixa extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<Caixa> call = api.buscarValoresCaixa(sh.getFunEmail(), sh.getFunSenha());
+        final Call<Caixa> call = api.buscarValoresCaixa(sh.getEmpEmail(), sh.getEmpSenha());
         call.enqueue(new Callback<Caixa>() {
             @Override
             public void onResponse(Call<Caixa> call, Response<Caixa> response) {
@@ -4375,6 +4451,9 @@ public class FRMCaixa extends javax.swing.JFrame {
                                 jtfSangria.setText(u.getSangria() + "");
                                 jtfDespesas.setText(u.getDespesas() + "");
                                 jtfFaturamentoLiquido.setText(u.getSaldo() + "");
+                                lbSaldo.setText(u.getSaldo() + "");
+                                lbTotalVendido.setText(u.getFaturamento() + "");
+                                jtfCaixa.setText(u.getCaixa() + "");
                                 lbSaldoCaixa.setText(u.getSaldo() + "");
                             }
                         });
@@ -4419,9 +4498,9 @@ public class FRMCaixa extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<ArrayList<DespesaBEAN>> call = api.listarDespesas(sh.getFunEmail(), sh.getFunSenha());
+        final Call<ArrayList<DespesaBEAN>> call = api.listarDespesas(sh.getEmpEmail(), sh.getEmpSenha());
         call.enqueue(new Callback<ArrayList<DespesaBEAN>>() {
             @Override
             public void onResponse(Call<ArrayList<DespesaBEAN>> call, Response<ArrayList<DespesaBEAN>> response) {
@@ -4481,9 +4560,9 @@ public class FRMCaixa extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<Void> call = api.gerarMesaBalcao(sh.getFunEmail(), sh.getFunSenha());
+        final Call<Void> call = api.gerarMesaBalcao(sh.getEmpEmail(), sh.getEmpSenha());
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -4498,7 +4577,6 @@ public class FRMCaixa extends javax.swing.JFrame {
                                 String mesa = response.headers().get("sucesso");
                                 a.setVisible(false);
                                 jtfNunMesa.setText(mesa);
-                                atualizar();
                             }
                         });
 
@@ -4543,9 +4621,9 @@ public class FRMCaixa extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<Void> call = api.incluirDespesasDia(new Gson().toJson(des), sh.getFunEmail(), sh.getFunSenha());
+        final Call<Void> call = api.incluirDespesasDia(new Gson().toJson(des), sh.getEmpEmail(), sh.getEmpSenha());
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -4604,9 +4682,9 @@ public class FRMCaixa extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<Void> call = api.excluiDespesa(new Gson().toJson(des), sh.getFunEmail(), sh.getFunSenha());
+        final Call<Void> call = api.excluiDespesa(new Gson().toJson(des), sh.getEmpEmail(), sh.getEmpSenha());
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -4665,9 +4743,9 @@ public class FRMCaixa extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<ArrayList<ProdutosGravados>> call = api.listarProdutosMesa(sh.getFunEmail(), sh.getFunSenha(), mesa + "");
+        final Call<ArrayList<ProdutosGravados>> call = api.listarProdutosMesa(sh.getEmpEmail(), sh.getEmpSenha(), mesa + "");
         call.enqueue(new Callback<ArrayList<ProdutosGravados>>() {
             @Override
             public void onResponse(Call<ArrayList<ProdutosGravados>> call, Response<ArrayList<ProdutosGravados>> response) {
@@ -4682,18 +4760,7 @@ public class FRMCaixa extends javax.swing.JFrame {
                                 ArrayList<ProdutosGravados> u = response.body();
                                 a.setVisible(false);
                                 if (u != null) {
-                                    if (mesa <= 100) {
-                                        preencheTabelaProdutos(u);
-                                    } else {
-                                        preencheTabelaProdutos(u);
-                                        float soma = 0;
-                                        for (ProdutosGravados p : u) {
-                                            soma += (p.getValor() * p.getQuantidade());
-
-                                        }
-                                        jtfTotalFiscal.setText(soma + "");
-                                        jtfVenda.setText(u.get(0).getCodPedidVenda() + "");
-                                    }
+                                    preencheTabelaProdutos(u);
 
                                 }
                             }
@@ -4741,9 +4808,9 @@ public class FRMCaixa extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<Void> call = api.getValorMesa(sh.getFunEmail(), sh.getFunSenha(), mesa + "");
+        final Call<Void> call = api.getValorMesa(sh.getEmpEmail(), sh.getEmpSenha(), mesa + "");
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -4813,9 +4880,9 @@ public class FRMCaixa extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<ArrayList<ExcluzaoBEAN>> call = api.listarExcluzaoMesa(sh.getFunEmail(), sh.getFunSenha(), mesa + "");
+        final Call<ArrayList<ExcluzaoBEAN>> call = api.listarExcluzaoMesa(sh.getEmpEmail(), sh.getEmpSenha(), mesa + "");
         call.enqueue(new Callback<ArrayList<ExcluzaoBEAN>>() {
             @Override
             public void onResponse(Call<ArrayList<ExcluzaoBEAN>> call, Response<ArrayList<ExcluzaoBEAN>> response) {
@@ -4874,10 +4941,10 @@ public class FRMCaixa extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
         System.out.println("codigo " + des.get(0).getCodigo());
-        final Call<Void> call = api.retirarDespesa(new Gson().toJson(des), sh.getFunEmail(), sh.getFunSenha());
+        final Call<Void> call = api.retirarDespesa(new Gson().toJson(des), sh.getEmpEmail(), sh.getEmpSenha());
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -4936,9 +5003,9 @@ public class FRMCaixa extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<Void> call = api.saldoAtualCaixa(sh.getFunEmail(), sh.getFunSenha());
+        final Call<Void> call = api.saldoAtualCaixa(sh.getEmpEmail(), sh.getEmpSenha());
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -4995,9 +5062,9 @@ public class FRMCaixa extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<Void> call = api.isMesasAbertas(sh.getFunEmail(), sh.getFunSenha());
+        final Call<Void> call = api.isMesasAbertas(sh.getEmpEmail(), sh.getEmpSenha());
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -5042,6 +5109,183 @@ public class FRMCaixa extends javax.swing.JFrame {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        a.setVisible(false);
+                    }
+                });
+            }
+        });
+    }
+
+    /*--------------------------------------------------RELATORIO---------------------------------------------------------------------------------------------*/
+    private void listarVendasFinalizadasCaixa() {
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<ArrayList<VendaBEAN>> call = api.listarVendasFinalizadas(sh.getEmpEmail(), sh.getEmpSenha());
+        call.enqueue(new Callback<ArrayList<VendaBEAN>>() {
+            @Override
+            public void onResponse(Call<ArrayList<VendaBEAN>> call, Response<ArrayList<VendaBEAN>> response) {
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                ArrayList<VendaBEAN> u = response.body();
+                                a.setVisible(false);
+                                preencheTabelaVenda(u);
+                            }
+                        });
+
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
+
+                        // senha ou usuario incorreto
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<VendaBEAN>> call, Throwable t) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        a.setVisible(false);
+                        System.out.println("falha");
+                    }
+                });
+            }
+        });
+
+    }
+
+    private void listarPedidosCanceladosCaixa() {
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<ArrayList<ExcluzaoBEAN>> call = api.listarExcluzaoCaixa(sh.getEmpEmail(), sh.getEmpSenha());
+        call.enqueue(new Callback<ArrayList<ExcluzaoBEAN>>() {
+            @Override
+            public void onResponse(Call<ArrayList<ExcluzaoBEAN>> call, Response<ArrayList<ExcluzaoBEAN>> response) {
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                ArrayList<ExcluzaoBEAN> u = response.body();
+                                a.setVisible(false);
+                                preencheTabelaCancelados(u);
+                            }
+                        });
+
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
+
+                        // senha ou usuario incorreto
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<ExcluzaoBEAN>> call, Throwable t) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        a.setVisible(false);
+                    }
+                });
+            }
+        });
+    }
+
+    private void listarSangiaCaixa() {
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<ArrayList<SangriaBEAN>> call = api.listarSangria(sh.getEmpEmail(), sh.getEmpSenha());
+        call.enqueue(new Callback<ArrayList<SangriaBEAN>>() {
+            @Override
+            public void onResponse(Call<ArrayList<SangriaBEAN>> call, Response<ArrayList<SangriaBEAN>> response) {
+
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                ArrayList<SangriaBEAN> u = response.body();
+                                a.setVisible(false);
+                                preencheTabelaSangria(u);
+                            }
+                        });
+
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<SangriaBEAN>> call, Throwable t) {
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
                         a.setVisible(false);

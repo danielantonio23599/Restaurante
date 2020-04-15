@@ -11,7 +11,7 @@ package modelo;
  */
 public class VendaBEAN {
     private int codigo;
-    private String QRcode;
+    private byte[] QRcode;
     private String checkIn;
     private String checkOut;
     private float valor;
@@ -21,22 +21,6 @@ public class VendaBEAN {
     private int mesa;
     private String status;
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }  
-
-    public int getMesa() {
-        return mesa;
-    }
-
-    public void setMesa(int mesa) {
-        this.mesa = mesa;
-    }
-
     public int getCodigo() {
         return codigo;
     }
@@ -45,11 +29,11 @@ public class VendaBEAN {
         this.codigo = codigo;
     }
 
-    public String getQRcode() {
+    public byte[] getQRcode() {
         return QRcode;
     }
 
-    public void setQRcode(String QRcode) {
+    public void setQRcode(byte[] QRcode) {
         this.QRcode = QRcode;
     }
 
@@ -68,6 +52,24 @@ public class VendaBEAN {
     public void setCheckOut(String checkOut) {
         this.checkOut = checkOut;
     }
+
+    public int getMesa() {
+        return mesa;
+    }
+
+    public void setMesa(int mesa) {
+        this.mesa = mesa;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+   
 
     public float getValor() {
         return valor;
@@ -101,9 +103,4 @@ public class VendaBEAN {
         this.caixa = caixa;
     }
 
-   
-
-    
-    
-    
 }

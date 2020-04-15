@@ -6,27 +6,13 @@
 package visao;
 
 import com.google.gson.Gson;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-import controle.DespesaControle;
+
 import controle.SharedP_Control;
-import java.awt.Checkbox;
-import java.awt.Container;
-import java.awt.FlowLayout;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import static javax.swing.GroupLayout.Alignment.CENTER;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
-import javax.swing.table.TableRowSorter;
 import modelo.DespesaBEAN;
-import modelo.FuncionarioBEAN;
 import modelo.local.SharedPreferencesBEAN;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,11 +29,6 @@ public class FRMDespesa extends javax.swing.JFrame {
 
     private DefaultTableModel dTable;
     private ArrayList<DespesaBEAN> dados;
-    private ArrayList<DespesaBEAN> dadosIncluir = new ArrayList<>();
-    private float valor = 00.00f;
-
-    private DespesaControle controle = new DespesaControle();
-
     /**
      * Creates new form FRMDespesa
      */

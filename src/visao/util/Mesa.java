@@ -17,7 +17,7 @@ public class Mesa extends javax.swing.JPanel {
 
     private String mesa;
     private String valor;
-    private FRMCaixa caixa;
+    private FRMCaixa caixa = null;
     Color azul = new Color(92, 154, 195);
 
     public void setCorPainel() {
@@ -98,6 +98,11 @@ public class Mesa extends javax.swing.JPanel {
 
         jLabel72.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel72.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/restaurante.png"))); // NOI18N
+        jLabel72.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel72MouseClicked(evt);
+            }
+        });
 
         labValor.setBackground(new java.awt.Color(255, 255, 255));
         labValor.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -163,11 +168,16 @@ public class Mesa extends javax.swing.JPanel {
             l.setVisible(true);
 
         } else if (painel.getBackground() == azul) {
-
-            caixa.setNunMesa(mesa);
+            if (caixa != null) {
+                caixa.setNunMesa(mesa);
+            }
             // caixa.atualizaProdutos();
         }
     }//GEN-LAST:event_painelMouseClicked
+
+    private void jLabel72MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel72MouseClicked
+        painelMouseClicked(evt);
+    }//GEN-LAST:event_jLabel72MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

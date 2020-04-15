@@ -6,6 +6,7 @@
 package visao;
 
 import com.google.gson.Gson;
+import controle.SharedPEmpresa_Control;
 import controle.SharedP_Control;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -19,7 +20,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import modelo.PedidoBEAN;
 import modelo.Produtos;
-import modelo.local.SharedPreferencesBEAN;
+import modelo.local.SharedPreferencesEmpresaBEAN;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -80,9 +81,9 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<DefaultComboBoxModel> call = api.pesquisaProdutos(sh.getFunEmail(), sh.getFunSenha(), cadenaEscrita);
+        final Call<DefaultComboBoxModel> call = api.pesquisaProdutos(sh.getEmpEmail(), sh.getEmpSenha(), cadenaEscrita);
         call.enqueue(new Callback<DefaultComboBoxModel>() {
             @Override
             public void onResponse(Call<DefaultComboBoxModel> call, Response<DefaultComboBoxModel> response) {
@@ -515,9 +516,9 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<Produtos> call = api.buscarUmProduto(sh.getFunEmail(), sh.getFunSenha(), comboProduto.getSelectedItem() + "");
+        final Call<Produtos> call = api.buscarUmProduto(sh.getEmpEmail(), sh.getEmpSenha(), comboProduto.getSelectedItem() + "");
         call.enqueue(new Callback<Produtos>() {
             @Override
             public void onResponse(Call<Produtos> call, Response<Produtos> response) {
@@ -584,9 +585,9 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<Void> call = api.inserirPedidoMesa(new Gson().toJson(venda), sh.getFunEmail(), sh.getFunSenha());
+        final Call<Void> call = api.inserirPedidoMesa(new Gson().toJson(venda), sh.getEmpEmail(), sh.getEmpSenha());
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {

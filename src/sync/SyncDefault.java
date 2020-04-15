@@ -1,26 +1,30 @@
 package sync;
 
-
+import controle.ServidorControl;
+import modelo.local.ServidorBEAN;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-
-
 
 /**
  * Created by itzda on 07/06/2018.
  */
-
 public class SyncDefault {
 
-    /* public static final Retrofit RETROFIT_DIGA = new Retrofit.Builder().
-             baseUrl("http://diga-servidor-diga-servidor.7e14.starter-us-west-2.openshiftapps.com").
-             addConverterFactory(GsonConverterFactory.create()).
-             build();
- */
-    
+    private static String ip = "localhost";
+    private String url;
     public static final Retrofit RETROFIT_RESTAURANTE = new Retrofit.Builder().
-            baseUrl("http://localhost:8089/RestauranteServer/").
+            baseUrl(getUrl()).
             addConverterFactory(GsonConverterFactory.create()).
             build();
+    public static String getUrl() {
+        ServidorBEAN ser = ServidorControl.listar();
+       ip = ser.getIp();
+        if (!ip.equals("")) {
+            System.out.println(ip);
+            return "http://" + ip + ":8089/RestauranteServer/";
+        } else {
+            System.out.println("localhost");
+            return "http://localhost:8089/RestauranteServer/";
+        }
+    }
 }

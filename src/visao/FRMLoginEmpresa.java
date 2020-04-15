@@ -5,32 +5,18 @@
  */
 package visao;
 
-import com.mysql.jdbc.log.Log;
-import com.sun.org.apache.bcel.internal.generic.F2D;
-
 import controleService.ControleLogin;
-import controle.SharedP_Control;
-import controleService.ControleCargo;
 import java.awt.Color;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.ComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import modelo.CargoBEAN;
-import modelo.FuncionarioBEAN;
 import modelo.local.SharedPreferencesEmpresaBEAN;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Headers;
 import sync.RestauranteAPI;
 import sync.SyncDefault;
-import visao.util.AlertDialog;
 import visao.util.Carregamento;
+import visao.util.FRMConfiguracao;
 
 /**
  *
@@ -176,6 +162,9 @@ public class FRMLoginEmpresa extends javax.swing.JFrame {
         lbConf.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         lbConf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/gear.png"))); // NOI18N
         lbConf.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbConfMouseClicked(evt);
+            }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 lbConfMouseEntered(evt);
             }
@@ -276,6 +265,11 @@ public class FRMLoginEmpresa extends javax.swing.JFrame {
     private void jtfUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfUsuarioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfUsuarioActionPerformed
+
+    private void lbConfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbConfMouseClicked
+        FRMConfiguracao c = new FRMConfiguracao();
+        c.setVisible(true);
+    }//GEN-LAST:event_lbConfMouseClicked
 
     /**
      * @param args the command line arguments

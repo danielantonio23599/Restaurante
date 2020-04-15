@@ -6,6 +6,7 @@
 package visao;
 
 
+import controle.SharedPEmpresa_Control;
 import controle.SharedP_Control;
 
 import java.awt.event.KeyAdapter;
@@ -18,8 +19,7 @@ import javax.swing.table.TableRowSorter;
 
 import modelo.Produtos;
 import modelo.ProdutosGravados;
-
-import modelo.local.SharedPreferencesBEAN;
+import modelo.local.SharedPreferencesEmpresaBEAN;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -81,9 +81,9 @@ public class FRMListaProdutos extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<DefaultComboBoxModel> call = api.pesquisaProdutos(sh.getFunEmail(), sh.getFunSenha(), cadenaEscrita);
+        final Call<DefaultComboBoxModel> call = api.pesquisaProdutos(sh.getEmpEmail(), sh.getEmpSenha(), cadenaEscrita);
         call.enqueue(new Callback<DefaultComboBoxModel>() {
             @Override
             public void onResponse(Call<DefaultComboBoxModel> call, Response<DefaultComboBoxModel> response) {
@@ -556,9 +556,9 @@ public class FRMListaProdutos extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<Produtos> call = api.buscarUmProduto(sh.getFunEmail(), sh.getFunSenha(), comboProduto.getSelectedItem() + "");
+        final Call<Produtos> call = api.buscarUmProduto(sh.getEmpEmail(), sh.getEmpSenha(), comboProduto.getSelectedItem() + "");
         call.enqueue(new Callback<Produtos>() {
             @Override
             public void onResponse(Call<Produtos> call, Response<Produtos> response) {
@@ -659,9 +659,9 @@ public class FRMListaProdutos extends javax.swing.JFrame {
 
                     }
                 });
-                SharedPreferencesBEAN sh = SharedP_Control.listar();
+                SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
                 RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-                final Call<Void> call = api.transferiPedido(jtfMesaDestino.getText(), pedido + "", sh.getFunEmail(), sh.getFunSenha());
+                final Call<Void> call = api.transferiPedido(jtfMesaDestino.getText(), pedido + "", sh.getEmpEmail(), sh.getEmpSenha());
                 call.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
@@ -738,9 +738,9 @@ public class FRMListaProdutos extends javax.swing.JFrame {
 
                     }
                 });
-                SharedPreferencesBEAN sh = SharedP_Control.listar();
+                SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
                 RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-                final Call<Void> call = api.cancelarPedido(pedido + "", taMotivo.getText(), sh.getFunEmail(), sh.getFunSenha());
+                final Call<Void> call = api.cancelarPedido(pedido + "", taMotivo.getText(), sh.getEmpEmail(), sh.getEmpSenha());
                 call.enqueue(new Callback<Void>() {
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
@@ -929,9 +929,9 @@ public class FRMListaProdutos extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<ArrayList<ProdutosGravados>> call = api.listarProdutosMesa(sh.getFunEmail(), sh.getFunSenha(), mesa + "");
+        final Call<ArrayList<ProdutosGravados>> call = api.listarProdutosMesa(sh.getEmpEmail(), sh.getEmpSenha(), mesa + "");
         call.enqueue(new Callback<ArrayList<ProdutosGravados>>() {
             @Override
             public void onResponse(Call<ArrayList<ProdutosGravados>> call, Response<ArrayList<ProdutosGravados>> response) {

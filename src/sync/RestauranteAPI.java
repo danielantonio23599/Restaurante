@@ -14,6 +14,8 @@ import modelo.Mesa;
 import modelo.ProdutoBEAN;
 import modelo.Produtos;
 import modelo.ProdutosGravados;
+import modelo.SangriaBEAN;
+import modelo.VendaBEAN;
 import modelo.local.SharedPreferencesBEAN;
 import modelo.local.SharedPreferencesEmpresaBEAN;
 
@@ -105,7 +107,7 @@ public interface RestauranteAPI {
     Call<Void> abrirCaixa(@Field("caixa") String caixa, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
     @FormUrlEncoded
-    @POST("restaurante_server/FeixarCaixa")
+    @POST("restaurante_server/FecharCaixa")
     Call<Void> fecharCaixa(@Field("caixa") String caixa, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
     @FormUrlEncoded
@@ -185,6 +187,10 @@ public interface RestauranteAPI {
     Call<ArrayList<ExcluzaoBEAN>> listarExcluzaoMesa(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha, @Field("mesa") String mesa);
 
     @FormUrlEncoded
+    @POST("restaurante_server/ListarExcluzaoCaixa")
+    Call<ArrayList<ExcluzaoBEAN>> listarExcluzaoCaixa(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
     @POST("restaurante_server/AtualizaVenda")
     Call<Void> atualizaVenda(@Field("venda") String venda, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
@@ -227,5 +233,13 @@ public interface RestauranteAPI {
     @FormUrlEncoded
     @POST("restaurante_server/ExcluirAdmicao")
     Call<Void> excluirAdmicao(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha, @Field("admicao") String demicao);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/ListarVendaFinalizadaCaixa")
+    Call<ArrayList<VendaBEAN>> listarVendasFinalizadas(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/ListarSangria")
+    Call<ArrayList<SangriaBEAN>> listarSangria(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
 }

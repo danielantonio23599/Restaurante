@@ -5,6 +5,7 @@
  */
 package visao;
 
+import controle.SharedPEmpresa_Control;
 import controle.SharedP_Control;
 import java.util.ArrayList;
 import javax.swing.SwingUtilities;
@@ -13,6 +14,7 @@ import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
 import modelo.ExcluzaoBEAN;
 import modelo.local.SharedPreferencesBEAN;
+import modelo.local.SharedPreferencesEmpresaBEAN;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -28,6 +30,12 @@ public class FRMExlusao extends javax.swing.JFrame {
 
     private DefaultTableModel dTable;
     private TableRowSorter<TableModel> tr;
+    private int mesa;
+
+    public void setMesa(int mesa) {
+        this.mesa = mesa;
+    }
+    
 
     /**
      * Creates new form FRMExlusao
@@ -58,7 +66,7 @@ public class FRMExlusao extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
-        painelcancelados.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Produtos Cancelados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
+        painelcancelados.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Pedidos Cancelados", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 14))); // NOI18N
 
         tabelaProCancelados.setFont(new java.awt.Font("Times New Roman", 0, 12)); // NOI18N
         tabelaProCancelados.setModel(new javax.swing.table.DefaultTableModel(
@@ -83,10 +91,10 @@ public class FRMExlusao extends javax.swing.JFrame {
         painelcancelados.setLayout(painelcanceladosLayout);
         painelcanceladosLayout.setHorizontalGroup(
             painelcanceladosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, painelcanceladosLayout.createSequentialGroup()
-                .addContainerGap(62, Short.MAX_VALUE)
+            .addGroup(painelcanceladosLayout.createSequentialGroup()
+                .addGap(68, 68, 68)
                 .addComponent(jScrollPane13, javax.swing.GroupLayout.PREFERRED_SIZE, 461, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(47, 47, 47))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
         painelcanceladosLayout.setVerticalGroup(
             painelcanceladosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -98,7 +106,7 @@ public class FRMExlusao extends javax.swing.JFrame {
         jPanel13.setBackground(new java.awt.Color(255, 153, 0));
 
         jLabel41.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel41.setText("PRODUTOS CANCELADOS");
+        jLabel41.setText("PEDIDOS CANCELADOS");
 
         labMesa2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
 
@@ -117,7 +125,7 @@ public class FRMExlusao extends javax.swing.JFrame {
         jPanel13Layout.setHorizontalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel13Layout.createSequentialGroup()
-                .addGap(104, 104, 104)
+                .addGap(162, 162, 162)
                 .addComponent(jLabel41)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(labMesa2, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -265,9 +273,9 @@ private DefaultTableModel criaTabelaProdutosExcluidos() {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<ArrayList<ExcluzaoBEAN>> call = api.listarExcluzaoMesa(sh.getFunEmail(), sh.getFunSenha(), "");
+        final Call<ArrayList<ExcluzaoBEAN>> call = api.listarExcluzaoMesa(sh.getEmpEmail(), sh.getEmpSenha(), mesa+"");
         call.enqueue(new Callback<ArrayList<ExcluzaoBEAN>>() {
             @Override
             public void onResponse(Call<ArrayList<ExcluzaoBEAN>> call, Response<ArrayList<ExcluzaoBEAN>> response) {
