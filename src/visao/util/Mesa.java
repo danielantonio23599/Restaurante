@@ -8,6 +8,7 @@ package visao.util;
 import java.awt.Color;
 import visao.FRMCaixa;
 import visao.FRMListaProdutos;
+import visao.FRMVendas;
 
 /**
  *
@@ -18,6 +19,16 @@ public class Mesa extends javax.swing.JPanel {
     private String mesa;
     private String valor;
     private FRMCaixa caixa = null;
+    private FRMVendas vendas;
+
+    public FRMVendas getVendas() {
+        return vendas;
+    }
+
+    public void setVendas(FRMVendas vendas) {
+        this.vendas = vendas;
+    }
+
     Color azul = new Color(92, 154, 195);
 
     public void setCorPainel() {
@@ -170,6 +181,8 @@ public class Mesa extends javax.swing.JPanel {
         } else if (painel.getBackground() == azul) {
             if (caixa != null) {
                 caixa.setNunMesa(mesa);
+            } else {
+            vendas.setNunMesa(mesa);
             }
             // caixa.atualizaProdutos();
         }

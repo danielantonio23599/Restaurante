@@ -57,6 +57,7 @@ public class FRMCaixa extends javax.swing.JFrame {
     private TableRowSorter<TableModel> tr;
     private float saldoMesa;
     private float saldo;
+
     /**
      * Creates new form FRMCaixa
      */
@@ -198,6 +199,16 @@ public class FRMCaixa extends javax.swing.JFrame {
         DefaultTableModel dTable = (DefaultTableModel) tabelaDespesasDia.getModel();
         //retorna o DefaultTableModel
         return dTable;
+    }
+
+    public void limpaTabelaProdutos() {
+        dTable = criaTabelaProdutos();
+        while (dTable.getRowCount() > 0) {
+            dTable.removeRow(0);
+        }
+        tabelaProdutos.setModel(dTable);
+        tr = new TableRowSorter<TableModel>(dTable);
+        tabelaProdutos.setRowSorter(tr);
     }
 
     public void limpaTabelaDesDia() {
@@ -1393,7 +1404,6 @@ public class FRMCaixa extends javax.swing.JFrame {
         jLabel17.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel17.setText("Total de Troco:");
 
-        jtfTotalTroco.setEditable(false);
         jtfTotalTroco.setText("0");
         jtfTotalTroco.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -2634,7 +2644,9 @@ public class FRMCaixa extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
+        limpaTabelaProdutos();
         atualizaMesas();
+
     }//GEN-LAST:event_jButton15ActionPerformed
 
     private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
@@ -2954,20 +2966,78 @@ public class FRMCaixa extends javax.swing.JFrame {
 
     private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
         ArrayList<DespesaBEAN> des = getDespesas();
-        getSaldoAtualCaixa();
-        float total = 0;
-        if (des.size() > 0) {
-            for (DespesaBEAN de : des) {
-                total += de.getPreco();
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+
+                a.setVisible(true);
+
             }
-            if (total <= saldo) {
-                adicionarDespesaDia(des);
-            } else {
-                JOptionPane.showMessageDialog(null, "Saldo INSSUFICIENTE!!");
+        });
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<Void> call = api.saldoAtualCaixa(sh.getEmpEmail(), sh.getEmpSenha());
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                System.out.println(response.code());
+                if (response.code() == 200) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                saldo = Float.parseFloat(response.headers().get("sucesso"));
+                                a.setVisible(false);
+                                System.out.println(saldo);
+                                float total = 0;
+                                if (des.size() > 0) {
+                                    for (DespesaBEAN de : des) {
+                                        total += de.getPreco();
+                                    }
+                                    if (total <= saldo) {
+                                        adicionarDespesaDia(des);
+                                    } else {
+                                        JOptionPane.showMessageDialog(null, "Saldo INSSUFICIENTE!!");
+                                    }
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Nenhuma despesa selecionada!!");
+                                }
+                            }
+                        });
+
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
             }
-        } else {
-            JOptionPane.showMessageDialog(null, "Nenhuma despesa selecionada!!");
-        }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        a.setVisible(false);
+                    }
+                });
+            }
+        });
+
     }//GEN-LAST:event_jButton12ActionPerformed
 
     private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
@@ -3946,9 +4016,9 @@ public class FRMCaixa extends javax.swing.JFrame {
                 dado.getNome(), dado.getDescricao(), dado.getPreco()});
 
         }
-        tabelaDespesas.setModel(dTable);
+        tabelaDespesasDia.setModel(dTable);
         tr = new TableRowSorter<TableModel>(dTable);
-        tabelaDespesas.setRowSorter(tr);
+        tabelaDespesasDia.setRowSorter(tr);
     }
 
     private void preencheTabelaSangria(ArrayList<SangriaBEAN> dados) {
@@ -5019,6 +5089,7 @@ public class FRMCaixa extends javax.swing.JFrame {
                             public void run() {
                                 saldo = Float.parseFloat(response.headers().get("sucesso"));
                                 a.setVisible(false);
+                                System.out.println(saldo);
                             }
                         });
 

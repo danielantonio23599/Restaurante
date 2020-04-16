@@ -173,7 +173,7 @@ public class FRMExlusao extends javax.swing.JFrame {
     }//GEN-LAST:event_tabelaProCanceladosMouseClicked
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
@@ -275,7 +275,7 @@ private DefaultTableModel criaTabelaProdutosExcluidos() {
         });
         SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<ArrayList<ExcluzaoBEAN>> call = api.listarExcluzaoMesa(sh.getEmpEmail(), sh.getEmpSenha(), mesa+"");
+        final Call<ArrayList<ExcluzaoBEAN>> call = api.listarExcluzaoCaixa(sh.getEmpEmail(), sh.getEmpSenha());
         call.enqueue(new Callback<ArrayList<ExcluzaoBEAN>>() {
             @Override
             public void onResponse(Call<ArrayList<ExcluzaoBEAN>> call, Response<ArrayList<ExcluzaoBEAN>> response) {

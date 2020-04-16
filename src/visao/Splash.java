@@ -59,9 +59,11 @@ public class Splash extends javax.swing.JFrame {
                     if (auth.equals("1")) {
                         System.out.println("Login correto");
                         CaixaBEAN c = response.body();
-                        if (c.getData().equals(data)) {
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Data de abertura de caixa diferente da atual, favor fechar o caixa atual antes de usá-lo!!");
+                        if (c.getCodigo() > 0) {
+                            if (c.getData().equals(data)) {
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Data de abertura de caixa diferente da atual, favor fechar o caixa atual antes de usá-lo!!");
+                            }
                         }
                         FRMLogin l = new FRMLogin();
                         l.setVisible(true);
