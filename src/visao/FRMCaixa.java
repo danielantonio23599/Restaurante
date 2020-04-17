@@ -2566,20 +2566,221 @@ public class FRMCaixa extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRelatoriosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRelatoriosActionPerformed
-        mudarTela("Relatorio");
-        atualizaRelatorio();
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<Void> call = api.isCaixaAberto(sh.getEmpEmail(), sh.getEmpSenha());
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+                        String sucesso = response.headers().get("sucesso");
+                        int cod = Integer.parseInt(sucesso);
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+
+                            }
+                        });
+                        if (cod > 0) {
+                            mudarTela("Relatorio");
+                            atualizaRelatorio();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Caixa fechado, favor abri-lo primeiro");
+                        }
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                System.out.println("Login incorreto- erro");
+                SwingUtilities.invokeLater(new Runnable() {
+
+                    public void run() {
+                        a.setVisible(false);
+
+                    }
+                });
+            }
+        });
+
+
     }//GEN-LAST:event_btnRelatoriosActionPerformed
 
     private void btnAbrirjButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirjButton6ActionPerformed
-        AlertAbrirCaixa a = new AlertAbrirCaixa();
-        a.setC(this);
-        a.setVisible(true);
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<Void> call = api.isCaixaAberto(sh.getEmpEmail(), sh.getEmpSenha());
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+                        String sucesso = response.headers().get("sucesso");
+                        int cod = Integer.parseInt(sucesso);
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+
+                            }
+                        });
+                        if (cod > 0) {
+                            JOptionPane.showMessageDialog(null, "Caixa já aberto");
+
+                        } else {
+                            AlertAbrirCaixa a = new AlertAbrirCaixa();
+                            a.setC(FRMCaixa.this);
+                            a.setVisible(true);
+                        }
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                System.out.println("Login incorreto- erro");
+                SwingUtilities.invokeLater(new Runnable() {
+
+                    public void run() {
+                        a.setVisible(false);
+
+                    }
+                });
+            }
+        });
+
 
     }//GEN-LAST:event_btnAbrirjButton6ActionPerformed
 
 
     private void btnFecharjButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharjButton7ActionPerformed
-        getMesasAbertas();
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<Void> call = api.isCaixaAberto(sh.getEmpEmail(), sh.getEmpSenha());
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+                        String sucesso = response.headers().get("sucesso");
+                        int cod = Integer.parseInt(sucesso);
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+
+                            }
+                        });
+                        if (cod > 0) {
+                            getMesasAbertas();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Caixa fechado, favor abri-lo primeiro");
+                        }
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                System.out.println("Login incorreto- erro");
+                SwingUtilities.invokeLater(new Runnable() {
+
+                    public void run() {
+                        a.setVisible(false);
+
+                    }
+                });
+            }
+        });
+
+
     }//GEN-LAST:event_btnFecharjButton7ActionPerformed
 
     private void btnReducaoZjButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReducaoZjButton8ActionPerformed
@@ -2587,9 +2788,73 @@ public class FRMCaixa extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReducaoZjButton8ActionPerformed
 
     private void btnLocalizar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocalizar1ActionPerformed
-        mudarTela("fiscal");
-        gerarMesaBalcao();
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                a.setVisible(true);
 
+            }
+        });
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<Void> call = api.isCaixaAberto(sh.getEmpEmail(), sh.getEmpSenha());
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+                        String sucesso = response.headers().get("sucesso");
+                        int cod = Integer.parseInt(sucesso);
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+
+                            }
+                        });
+                        if (cod > 0) {
+                            mudarTela("fiscal");
+                            gerarMesaBalcao();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Caixa fechado, favor abri-lo primeiro");
+                        }
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                System.out.println("Login incorreto- erro");
+                SwingUtilities.invokeLater(new Runnable() {
+
+                    public void run() {
+                        a.setVisible(false);
+
+                    }
+                });
+            }
+        });
 
     }//GEN-LAST:event_btnLocalizar1ActionPerformed
 
@@ -2599,10 +2864,74 @@ public class FRMCaixa extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDespesasActionPerformed
 
     private void btnSangriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSangriaActionPerformed
-        float sangria = 0;
-        AlertSangria a = new AlertSangria();
-        a.setC(this);
-        a.setVisible(true);
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<Void> call = api.isCaixaAberto(sh.getEmpEmail(), sh.getEmpSenha());
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+                        String sucesso = response.headers().get("sucesso");
+                        int cod = Integer.parseInt(sucesso);
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+
+                            }
+                        });
+                        if (cod > 0) {
+                            AlertSangria a = new AlertSangria();
+                            a.setC(FRMCaixa.this);
+                            a.setVisible(true);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Caixa fechado, favor abri-lo primeiro");
+                        }
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                System.out.println("Login incorreto- erro");
+                SwingUtilities.invokeLater(new Runnable() {
+
+                    public void run() {
+                        a.setVisible(false);
+
+                    }
+                });
+            }
+        });
 
 
     }//GEN-LAST:event_btnSangriaActionPerformed
@@ -2624,7 +2953,73 @@ public class FRMCaixa extends javax.swing.JFrame {
     }//GEN-LAST:event_jtfNota2ActionPerformed
 
     private void btnAdicionar1jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionar1jButton6ActionPerformed
-        atualizaMesas();
+        Carregamento a = new Carregamento(this, true);
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                a.setVisible(true);
+
+            }
+        });
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<Void> call = api.isCaixaAberto(sh.getEmpEmail(), sh.getEmpSenha());
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                System.out.println(response.isSuccessful());
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+                        String sucesso = response.headers().get("sucesso");
+                        int cod = Integer.parseInt(sucesso);
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+
+                            }
+                        });
+                        if (cod > 0) {
+                            atualizaMesas();
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Caixa fechado, favor abri-lo primeiro");
+                        }
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+
+                            }
+                        });
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+
+                        }
+                    });
+                    System.out.println("Login incorreto- fora do ar");
+                    //servidor fora do ar
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                System.out.println("Login incorreto- erro");
+                SwingUtilities.invokeLater(new Runnable() {
+
+                    public void run() {
+                        a.setVisible(false);
+
+                    }
+                });
+            }
+        });
+
     }//GEN-LAST:event_btnAdicionar1jButton6ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

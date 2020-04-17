@@ -36,7 +36,6 @@ public class ControleLogin {
         ArrayList<String> pe = SharedP_Control.buscar(email);
         for (String p : pe) {
             modelo.addElement(p);
-
         }
         return modelo;
 

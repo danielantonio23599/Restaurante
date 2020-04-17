@@ -8,6 +8,7 @@ import modelo.Caixa;
 import modelo.CaixaBEAN;
 import modelo.CargoBEAN;
 import modelo.DespesaBEAN;
+import modelo.EmpresaBEAN;
 import modelo.ExcluzaoBEAN;
 import modelo.FuncionarioBEAN;
 import modelo.Mesa;
@@ -68,7 +69,7 @@ public interface RestauranteAPI {
 
     @FormUrlEncoded
     @POST("restaurante_server/AdicionarFuncionario")
-    Call<Void> insereFuncionario(@Field("funcionario") String cargo, @Field("empresa") String empresa, @Field("senha") String senha);
+    Call<Void> insereFuncionario(@Field("funcionario") String cargo, @Field("nomeUsuario") String empresa, @Field("senha") String senha);
 
     @FormUrlEncoded
     @POST("restaurante_server/ExcluirFuncionario")
@@ -88,7 +89,7 @@ public interface RestauranteAPI {
 
     @FormUrlEncoded
     @POST("restaurante_server/ExcluirProduto")
-    Call<Void> excluiProduto(@Field("produto") String cargo, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+    Call<Void> excluiProduto(@Field("produto") String produto, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
     @FormUrlEncoded
     @POST("restaurante_server/ListarProduto")
@@ -212,7 +213,7 @@ public interface RestauranteAPI {
 
     @FormUrlEncoded
     @POST("restaurante_server/AdicionarEmpresa")
-    Call<Void> insereEmpresa(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha, @Field("empresa") String empresa);
+    Call<Void> insereEmpresa(@Field("empresa") String empresa);
 
     @FormUrlEncoded
     @POST("restaurante_server/LoginEmpresa")
@@ -241,5 +242,13 @@ public interface RestauranteAPI {
     @FormUrlEncoded
     @POST("restaurante_server/ListarSangria")
     Call<ArrayList<SangriaBEAN>> listarSangria(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/ListarEmpresa")
+    Call<EmpresaBEAN> listarEmpresa(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+
+    @FormUrlEncoded
+    @POST("restaurante_server/EditarEmpresa")
+    Call<Void> atualizaEmpresa(@Field("empresa") String empresa, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
 }

@@ -70,7 +70,8 @@ public class Splash extends javax.swing.JFrame {
                         dispose();
 
                     } else {
-
+                        FRMLoginEmpresa le = new FRMLoginEmpresa();
+                        le.setVisible(true);
                         dispose();
                         System.out.println("Login incorreto");
                         // senha ou usuario incorreto

@@ -20,6 +20,23 @@ public class CaixaBEAN {
     private float trocoFin;
     private String status;
     private int funcionario;
+    private int empresa;
+
+    public int getFuncionario() {
+        return funcionario;
+    }
+
+    public void setFuncionario(int funcionario) {
+        this.funcionario = funcionario;
+    }
+
+    public int getEmpresa() {
+        return empresa;
+    }
+
+    public void setEmpresa(int empresa) {
+        this.empresa = empresa;
+    }
 
     public String getStatus() {
         return status;
@@ -77,13 +94,4 @@ public class CaixaBEAN {
     public void setTrocoFin(float trocoFin) {
         this.trocoFin = trocoFin;
     }  
-
-    public int getFuncionario() {
-        return funcionario;
-    }
-
-    public void setFuncionario(int funcionario) {
-        this.funcionario = funcionario;
-    }
-    
 }

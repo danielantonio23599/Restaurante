@@ -866,6 +866,7 @@ public class FRMAdmicao extends javax.swing.JFrame {
     }
 
     private void preencheComboCargos() {
+        comboCargo.removeAllItems();
         Carregamento a = new Carregamento(this, true);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {

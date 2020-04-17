@@ -366,8 +366,9 @@ public class FRMLoginEmpresa extends javax.swing.JFrame {
                             public void run() {
                                 a.setVisible(false);
                                 if (u != null) {
+                                    c.logEmpresa(u);
                                     if (chekLogado.isSelected()) {
-                                        c.logEmpresa(u);
+                                        
                                     }
                                     FRMLogin l = new FRMLogin();
                                     l.setVisible(true);

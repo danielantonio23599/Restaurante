@@ -535,7 +535,6 @@ public class FRMFuncionario extends javax.swing.JFrame {
             FuncionarioBEAN f = null;
             f = getDados();
             cadastrar(f);
-            limpaCampos();
 
         } else {
             JOptionPane.showMessageDialog(null, v);
@@ -821,8 +820,6 @@ public class FRMFuncionario extends javax.swing.JFrame {
         painelFuncionario.setSelectedIndex(1);
 
     }*/
-
- 
     private void cadastrar(FuncionarioBEAN f) {
         Carregamento a = new Carregamento(this, true);
         SwingUtilities.invokeLater(new Runnable() {
@@ -849,6 +846,7 @@ public class FRMFuncionario extends javax.swing.JFrame {
                             public void run() {
                                 JOptionPane.showMessageDialog(null, response.headers().get("sucesso"));
                                 a.setVisible(false);
+                                limpaCampos();
 
                             }
                         });

@@ -45,6 +45,7 @@ import visao.util.Carregamento;
  * @author Daniel
  */
 public class FRMProduto extends javax.swing.JFrame {
+
     private TableRowSorter<TableModel> tr;
     private DefaultTableModel dTable;
     private ArrayList<ProdutoBEAN> dados;
@@ -82,6 +83,7 @@ public class FRMProduto extends javax.swing.JFrame {
         btnEditar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
+        btnLocalizar1 = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         tpPedido = new javax.swing.JTabbedPane();
         jPanel5 = new javax.swing.JPanel();
@@ -128,7 +130,7 @@ public class FRMProduto extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(0, 153, 102));
 
         btnLocalizar.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnLocalizar.setText("VOLTAR");
+        btnLocalizar.setText("LIMPAR CAMPOS");
         btnLocalizar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnLocalizarActionPerformed(evt);
@@ -161,7 +163,15 @@ public class FRMProduto extends javax.swing.JFrame {
 
         jLabel15.setFont(new java.awt.Font("Times New Roman", 1, 48)); // NOI18N
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel15.setText("PEDIDOS");
+        jLabel15.setText("PRODUTOS");
+
+        btnLocalizar1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnLocalizar1.setText("VOLTAR");
+        btnLocalizar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLocalizar1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -174,7 +184,8 @@ public class FRMProduto extends javax.swing.JFrame {
                     .addComponent(btnAdicionar, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
                     .addComponent(btnEditar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnExcluir, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnLocalizar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnLocalizar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnLocalizar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -189,6 +200,8 @@ public class FRMProduto extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addComponent(btnExcluir, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(27, 27, 27)
+                .addComponent(btnLocalizar1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(28, 28, 28)
                 .addComponent(btnLocalizar, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -242,7 +255,7 @@ public class FRMProduto extends javax.swing.JFrame {
         jLabel44.setText("Tipo:");
 
         comboTipo.setFont(new java.awt.Font("Times New Roman", 0, 18)); // NOI18N
-        comboTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Selecione o Local de Fabricação--", "Cozinha", "Bar" }));
+        comboTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Selecione o Local de Fabricação--", "Cozinha", "Bar", "Balcão" }));
         comboTipo.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 comboTipoItemStateChanged(evt);
@@ -638,7 +651,8 @@ public class FRMProduto extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnLocalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocalizarActionPerformed
-        dispose();
+        limpaCampos();
+        atualizaTabela();
     }//GEN-LAST:event_btnLocalizarActionPerformed
 
     private void btnAdicionarjButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdicionarjButton6ActionPerformed
@@ -654,7 +668,7 @@ public class FRMProduto extends javax.swing.JFrame {
 
                 }
             });
-           SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
+            SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
             RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
             final Call<Void> call = api.insereProduto(new Gson().toJson(f), sh.getEmpEmail(), sh.getEmpSenha());
             call.enqueue(new Callback<Void>() {
@@ -670,6 +684,7 @@ public class FRMProduto extends javax.swing.JFrame {
                                 public void run() {
                                     JOptionPane.showMessageDialog(null, response.headers().get("sucesso"));
                                     a.setVisible(false);
+                                    limpaCampos();
                                     atualizaTabela();
                                 }
                             });
@@ -1025,6 +1040,10 @@ public class FRMProduto extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfPreparoKeyPressed
 
+    private void btnLocalizar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocalizar1ActionPerformed
+        dispose();
+    }//GEN-LAST:event_btnLocalizar1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1066,6 +1085,7 @@ public class FRMProduto extends javax.swing.JFrame {
     private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnLocalizar;
+    private javax.swing.JButton btnLocalizar1;
     private javax.swing.JComboBox<String> comboTipo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel15;
