@@ -33,7 +33,7 @@ public interface RestauranteAPI {
     // Servlets para testes no servidor local
     @FormUrlEncoded
     @POST("restaurante_server/FazLogin")
-    Call<SharedPreferencesBEAN> fazLogin(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
+    Call<SharedPreferencesBEAN> fazLogin(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha, @Field("empresa") String empresa);
 
     @FormUrlEncoded
     @POST("restaurante_server/ListarCargos")

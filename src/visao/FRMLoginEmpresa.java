@@ -353,11 +353,12 @@ public class FRMLoginEmpresa extends javax.swing.JFrame {
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
         final Call<SharedPreferencesEmpresaBEAN> call = api.fazLoginEmpresa(nomeUsuario, senha);
         SharedPreferencesEmpresaBEAN u = null;
-        System.out.println("1");
         call.enqueue(new Callback<SharedPreferencesEmpresaBEAN>() {
             @Override
             public void onResponse(Call<SharedPreferencesEmpresaBEAN> call, Response<SharedPreferencesEmpresaBEAN> response) {
-                if (response.code() == 200) {
+               
+                System.out.println(response);
+                if (response.isSuccessful()) {
                     String auth = response.headers().get("auth");
                     if (auth.equals("1")) {
                         System.out.println("Login correto");

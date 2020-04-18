@@ -54,18 +54,12 @@ public class FRMFuncionarios extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
-        if (sh.getFunCodigo() == 0) {
-            SharedPreferencesEmpresaBEAN sd = SharedPEmpresa_Control.listar();
-            email = sd.getEmpEmail();
-            senha = sd.getEmpSenha();
-        } else {
-            email = sh.getFunEmail();
-            senha = sh.getFunSenha();
-        }
+
+        SharedPreferencesEmpresaBEAN sd = SharedPEmpresa_Control.listar();
+
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-       
-        final Call<ArrayList<FuncionarioBEAN>> call = api.listarFuncionarios(email, senha);
+
+        final Call<ArrayList<FuncionarioBEAN>> call = api.listarFuncionarios(sd.getEmpEmail(), sd.getEmpSenha());
         call.enqueue(new Callback<ArrayList<FuncionarioBEAN>>() {
             @Override
             public void onResponse(Call<ArrayList<FuncionarioBEAN>> call, Response<ArrayList<FuncionarioBEAN>> response) {

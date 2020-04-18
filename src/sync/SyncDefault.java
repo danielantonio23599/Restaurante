@@ -21,10 +21,10 @@ public class SyncDefault {
        ip = ser.getIp();
         if (!ip.equals("")) {
             System.out.println(ip);
-            return "http://" + ip + ":8089/RestauranteServer/";
+            return "http://" + ip + ":8080/";
         } else {
             System.out.println("localhost");
-            return "http://localhost:8089/RestauranteServer/";
+            return "http://localhost:8080/";
         }
     }
 }

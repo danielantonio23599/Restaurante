@@ -57,10 +57,10 @@ public class FRMAdmicao extends javax.swing.JFrame {
 
             }
         });
-        SharedPreferencesBEAN sh = SharedP_Control.listar();
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
         System.out.println(jtfCodigo.getText());
-        final Call<AdmicaoBEAN> call = api.localisarAdmicao(sh.getFunEmail(), sh.getFunSenha(), jtfCodigo.getText());
+        final Call<AdmicaoBEAN> call = api.localisarAdmicao(sh.getEmpEmail(), sh.getEmpSenha(), jtfCodigo.getText());
         call.enqueue(new Callback<AdmicaoBEAN>() {
             @Override
             public void onResponse(Call<AdmicaoBEAN> call, Response<AdmicaoBEAN> response) {

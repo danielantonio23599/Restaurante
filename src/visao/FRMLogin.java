@@ -505,7 +505,8 @@ public class FRMLogin extends javax.swing.JFrame {
             }
         });
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<SharedPreferencesBEAN> call = api.fazLogin(nomeUsuario, senha);
+        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
+        final Call<SharedPreferencesBEAN> call = api.fazLogin(nomeUsuario, senha, sh.getEmpCodigo() + "");
         SharedPreferencesBEAN u = null;
         System.out.println("1");
         call.enqueue(new Callback<SharedPreferencesBEAN>() {

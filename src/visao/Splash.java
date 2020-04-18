@@ -25,7 +25,7 @@ import visao.util.FRMConfiguracao;
  *
  * @author Daniel
  */
-public class Splash extends javax.swing.JFrame {
+public final class Splash extends javax.swing.JFrame {
 
     /**
      * Creates new form Splash
@@ -33,15 +33,28 @@ public class Splash extends javax.swing.JFrame {
     public Splash() {
         initComponents();
         setLocationRelativeTo(null);
-        SharedPreferencesEmpresaBEAN e = SharedPEmpresa_Control.listar();
-        if (e.getEmpCodigo() == 0) {
-            FRMLoginEmpresa le = new FRMLoginEmpresa();
-            le.setVisible(true);
-            dispose();
+        onBackgroud();
 
-        } else {
-            listarCaixa();
-        }
+    }
+
+    private void onBackgroud() {
+        Runnable r = new Runnable() {
+            public void run() {
+                SharedPreferencesEmpresaBEAN e = SharedPEmpresa_Control.listar();
+                if (e.getEmpCodigo() == 0) {
+                    FRMLoginEmpresa le = new FRMLoginEmpresa();
+                    le.setVisible(true);
+                    finalizar();
+
+                } else {
+                    //FRMLogin l = new FRMLogin();
+                    //l.setVisible(true);
+                    listarCaixa();
+                }
+            }
+        };
+        new Thread(r).start();
+
     }
 
     public void listarCaixa() {
@@ -95,6 +108,11 @@ public class Splash extends javax.swing.JFrame {
     private void configurar() {
         FRMConfiguracao conf = new FRMConfiguracao();
         conf.setVisible(true);
+        dispose();
+    }
+
+    private void finalizar() {
+        this.setVisible(false);
         dispose();
     }
 
