@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import modelo.CargoBEAN;
 import modelo.local.SharedPreferencesEmpresaDAO;
 import modelo.local.SharedPreferencesEmpresaBEAN;
+import util.Criptografia;
 
 /**
  *
@@ -23,6 +24,16 @@ public class SharedPEmpresa_Control {
     }
 
     public static SharedPreferencesEmpresaBEAN listar() {
+        SharedPreferencesEmpresaDAO sha = new SharedPreferencesEmpresaDAO();
+        SharedPreferencesEmpresaBEAN sh = sha.listar();
+        if (sh.getEmpCodigo() != 0) {
+            String senha = Criptografia.criptografar(sh.getEmpSenha());
+            sh.setEmpSenha(senha);
+        }
+        return sh;
+    }
+
+    public static SharedPreferencesEmpresaBEAN listarLogin() {
         SharedPreferencesEmpresaDAO sha = new SharedPreferencesEmpresaDAO();
         return sha.listar();
     }

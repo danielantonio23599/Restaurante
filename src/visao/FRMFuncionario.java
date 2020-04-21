@@ -37,6 +37,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sync.RestauranteAPI;
 import sync.SyncDefault;
+import util.Criptografia;
 import util.EnviaEmail;
 import util.Time;
 import util.WaitLayerUI;
@@ -773,7 +774,7 @@ public class FRMFuncionario extends javax.swing.JFrame {
         f.setUf(jtfUF.getText());
         f.setNome(jtfNome.getText() + "");
         f.setRG(jtfRG.getText() + "");
-        f.setSenha(jpSenha.getText() + "");
+        f.setSenha(Criptografia.criptografar(jpSenha.getText() + ""));
         f.setTelefone(jtfTelefone.getText() + "");
 
         return f;

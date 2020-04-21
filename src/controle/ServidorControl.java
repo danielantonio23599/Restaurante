@@ -15,6 +15,7 @@ import modelo.local.ServidorDAO;
 public class ServidorControl {
 
     public static void inserir(ServidorBEAN s) {
+        logOFF();
         ServidorDAO d = new ServidorDAO();
         d.inserir(s);
     }

@@ -91,7 +91,9 @@ public final class Splash extends javax.swing.JFrame {
 
                     }
                 } else {
-                    configurar();
+                    FRMLoginEmpresa le = new FRMLoginEmpresa();
+                    le.setVisible(true);
+                    dispose();
                     System.out.println("Login incorreto- fora do ar");
                     //servidor fora do ar
                 }
@@ -99,8 +101,10 @@ public final class Splash extends javax.swing.JFrame {
 
             @Override
             public void onFailure(Call<CaixaBEAN> call, Throwable t) {
-
-                dispose();
+                JOptionPane.showMessageDialog(null, "Verifique o ip do servidor ");
+                FRMLogin l = new FRMLogin();
+                l.setVisible(true);
+                finalizar();
             }
         });
     }

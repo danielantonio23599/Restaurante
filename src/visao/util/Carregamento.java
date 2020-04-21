@@ -21,11 +21,10 @@ public class Carregamento extends javax.swing.JDialog {
         initComponents();
         setLocationRelativeTo(null);
         this.getRootPane().setOpaque(false);
-        this.getContentPane ().setBackground (new Color (0, 0, 0, 0));
-        this.setBackground (new Color (0, 0, 0, 0));
+        this.getContentPane().setBackground(new Color(0, 0, 0, 0));
+        this.setBackground(new Color(0, 0, 0, 0));
     }
 
-   
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

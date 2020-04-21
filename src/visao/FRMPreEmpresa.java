@@ -20,6 +20,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sync.RestauranteAPI;
 import sync.SyncDefault;
+import util.Criptografia;
 import util.ManipularImagem;
 import util.Time;
 import visao.util.Carregamento;
@@ -705,7 +706,7 @@ public class FRMPreEmpresa extends javax.swing.JFrame {
         e.setCidade(jtfCidade.getText());
         e.setCep(jtfCEP.getText());
         e.setUf(jtfUF.getText());
-        e.setSenha(jpSenha.getText());
+        e.setSenha(Criptografia.criptografar(jpSenha.getText()));
         String data = Time.getData();
         String data2 = Time.adicionarMeses(1);
         e.setDataCadastro(data);
@@ -716,7 +717,7 @@ public class FRMPreEmpresa extends javax.swing.JFrame {
         e.setNomeResp("");
         e.setDataFundacao(data);
         e.setDataCadastro(data);
-        
+
         e.setTipo("");
         return e;
     }

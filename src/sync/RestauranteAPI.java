@@ -80,6 +80,10 @@ public interface RestauranteAPI {
     Call<Void> insereProduto(@Field("produto") String cargo, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 
     @FormUrlEncoded
+    @POST("restaurante_server/AtualizaQuantidadeProduto")
+    Call<Void> auteraQuantidadeProduto(@Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha, @Field("quantidade") String quantidade, @Field("produto") String proCodigo);
+
+    @FormUrlEncoded
     @POST("restaurante_server/AtualizaProduto")
     Call<Void> atualizaProduto(@Field("produto") String cargo, @Field("nomeUsuario") String nomeUsuario, @Field("senha") String senha);
 

@@ -22,6 +22,8 @@ public class FRMConfiguracao extends javax.swing.JFrame {
     public FRMConfiguracao() {
         initComponents();
         this.setLocationRelativeTo(null);
+        ServidorBEAN  s = ServidorControl.listar();
+        jtfIP.setText(s.getIp());
     }
 
     /**

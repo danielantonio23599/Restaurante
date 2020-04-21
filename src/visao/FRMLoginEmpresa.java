@@ -15,6 +15,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sync.RestauranteAPI;
 import sync.SyncDefault;
+import util.Criptografia;
 import visao.util.Carregamento;
 import visao.util.FRMConfiguracao;
 
@@ -52,7 +53,7 @@ public class FRMLoginEmpresa extends javax.swing.JFrame {
         chekLogado = new javax.swing.JCheckBox();
         lbCadastro = new javax.swing.JLabel();
         jtfUsuario = new javax.swing.JTextField();
-        lbConf = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -159,17 +160,10 @@ public class FRMLoginEmpresa extends javax.swing.JFrame {
                 .addContainerGap(126, Short.MAX_VALUE))
         );
 
-        lbConf.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        lbConf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/gear.png"))); // NOI18N
-        lbConf.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lbConfMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                lbConfMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                lbConfMouseExited(evt);
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/gear.png"))); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -178,22 +172,22 @@ public class FRMLoginEmpresa extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(1300, 1300, 1300)
-                        .addComponent(lbConf, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(435, 435, 435)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(435, 435, 435)))
-                .addGap(2, 2, 2))
+                .addGap(435, 435, 435)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(394, 394, 394)
+                .addComponent(jButton1)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addComponent(lbConf, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(22, 22, 22)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton1)))
                 .addContainerGap())
         );
 
@@ -248,14 +242,6 @@ public class FRMLoginEmpresa extends javax.swing.JFrame {
         lbCadastro.setForeground(new Color(0, 0, 204));
     }//GEN-LAST:event_lbCadastroMouseExited
 
-    private void lbConfMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbConfMouseEntered
-        lbConf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/gearF.png")));
-    }//GEN-LAST:event_lbConfMouseEntered
-
-    private void lbConfMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbConfMouseExited
-        lbConf.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/gear.png")));
-    }//GEN-LAST:event_lbConfMouseExited
-
     private void lbCadastroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbCadastroMouseClicked
         //  mudar para cadastro de empresa
         FRMPreEmpresa e = new FRMPreEmpresa();
@@ -266,10 +252,10 @@ public class FRMLoginEmpresa extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfUsuarioActionPerformed
 
-    private void lbConfMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbConfMouseClicked
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         FRMConfiguracao c = new FRMConfiguracao();
         c.setVisible(true);
-    }//GEN-LAST:event_lbConfMouseClicked
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -290,13 +276,13 @@ public class FRMLoginEmpresa extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
     private javax.swing.JCheckBox chekLogado;
+    private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPasswordField jpfSenha;
     private javax.swing.JTextField jtfUsuario;
     private javax.swing.JLabel lbCadastro;
-    private javax.swing.JLabel lbConf;
     private javax.swing.JLabel lnTitulo;
     private javax.swing.JLabel sen;
     private javax.swing.JLabel usu;
@@ -351,12 +337,12 @@ public class FRMLoginEmpresa extends javax.swing.JFrame {
             }
         });
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<SharedPreferencesEmpresaBEAN> call = api.fazLoginEmpresa(nomeUsuario, senha);
+        final Call<SharedPreferencesEmpresaBEAN> call = api.fazLoginEmpresa(nomeUsuario, Criptografia.criptografar(senha));
         SharedPreferencesEmpresaBEAN u = null;
         call.enqueue(new Callback<SharedPreferencesEmpresaBEAN>() {
             @Override
             public void onResponse(Call<SharedPreferencesEmpresaBEAN> call, Response<SharedPreferencesEmpresaBEAN> response) {
-               
+
                 System.out.println(response);
                 if (response.isSuccessful()) {
                     String auth = response.headers().get("auth");
@@ -367,9 +353,10 @@ public class FRMLoginEmpresa extends javax.swing.JFrame {
                             public void run() {
                                 a.setVisible(false);
                                 if (u != null) {
+                                    u.setEmpSenha(senha);
                                     c.logEmpresa(u);
                                     if (chekLogado.isSelected()) {
-                                        
+
                                     }
                                     FRMLogin l = new FRMLogin();
                                     l.setVisible(true);

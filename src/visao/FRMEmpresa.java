@@ -28,6 +28,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sync.RestauranteAPI;
 import sync.SyncDefault;
+import util.Criptografia;
 import util.ManipularImagem;
 import util.Time;
 import visao.util.Carregamento;
@@ -784,7 +785,7 @@ public class FRMEmpresa extends javax.swing.JFrame {
         e.setCidade(jtfCidade.getText());
         e.setCep(jtfCEP.getText());
         e.setUf(jtfUF.getText());
-        e.setSenha(jpSenha.getText());
+        e.setSenha(Criptografia.criptografar(jpSenha.getText()));
         String data = Time.getData();
         String data2 = Time.adicionarMeses(1);
         e.setDataCadastro(data);
@@ -944,6 +945,7 @@ public class FRMEmpresa extends javax.swing.JFrame {
     }
 
     private void setCampos(EmpresaBEAN e) {
+        SharedPreferencesEmpresaBEAN emp = SharedPEmpresa_Control.listarLogin();
         jtfRazaoS.setText(e.getRazaoSocial());
         jtfFantazia.setText(e.getFantazia());
         jtfCNPJ.setText(e.getCnpj());
@@ -957,8 +959,8 @@ public class FRMEmpresa extends javax.swing.JFrame {
         jtfCidade.setText(e.getCidade());
         jtfCEP.setText(e.getCep());
         jtfUF.setText(e.getUf());
-        jpSenha.setText(e.getSenha());
-        jpSenhaR.setText(e.getSenha());
+        jpSenha.setText(emp.getEmpSenha());
+        jpSenhaR.setText(emp.getEmpSenha());
         jtfNomeRes.setText(e.getNomeResp());
         jtfDataF.setText(Time.formataDataBR(e.getDataFundacao()));
         ManipularImagem m = new ManipularImagem();
