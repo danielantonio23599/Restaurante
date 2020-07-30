@@ -150,7 +150,7 @@ public class FRMAdmicao extends javax.swing.JFrame {
         jPanel7 = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder(""));

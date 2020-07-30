@@ -16,11 +16,40 @@ public class VendaBEAN {
     private String checkOut;
     private float valor;
     private float custo;
+    private float desconto;
     private String pagamento;
     private int caixa;
     private int mesa;
     private String status;
+     private int entrega;
+    private int cliente;
 
+    public int getEntrega() {
+        return entrega;
+    }
+
+    public void setEntrega(int entrega) {
+        this.entrega = entrega;
+    }
+
+    public int getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(int cliente) {
+        this.cliente = cliente;
+    }
+    
+
+    public float getDesconto() {
+        return desconto;
+    }
+
+    public void setDesconto(float desconto) {
+        this.desconto = desconto;
+    }
+
+    
     public int getCodigo() {
         return codigo;
     }

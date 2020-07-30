@@ -169,7 +169,7 @@ public class FRMFuncionarios extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         tabelaFuncionarios = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
 
         jPanel7.setBackground(new java.awt.Color(0, 153, 102));

@@ -124,7 +124,6 @@ public class FRMProduto extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Pedido");
         setBackground(new java.awt.Color(204, 0, 0));
-        setUndecorated(true);
         setSize(new java.awt.Dimension(0, 0));
 
         jPanel2.setBackground(new java.awt.Color(0, 153, 102));
@@ -268,6 +267,11 @@ public class FRMProduto extends javax.swing.JFrame {
             public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent evt) {
             }
             public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent evt) {
+            }
+        });
+        comboTipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboTipoActionPerformed(evt);
             }
         });
 
@@ -1044,6 +1048,10 @@ public class FRMProduto extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_btnLocalizar1ActionPerformed
 
+    private void comboTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboTipoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_comboTipoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1137,15 +1145,17 @@ public class FRMProduto extends javax.swing.JFrame {
         if (jtfCusto.getText().equals("")) {
             retorno += ", Custo";
         }
-        if (jtaAmonizacao.getText().equals("")) {
-            retorno += ", Armonização";
-        }
-        if (jtaDescricao.getText().equals("")) {
-            retorno += ", Descrição";
+        if (comboTipo.getSelectedItem().equals("Cozinha")) {
+            if (jtaAmonizacao.getText().equals("")) {
+                retorno += ", Armonização";
+            }
+            if (jtaDescricao.getText().equals("")) {
+                retorno += ", Descrição";
 
-        }
-        if (jtfPreparo.getText().equals("")) {
-            retorno += ", Preparo";
+            }
+            if (jtfPreparo.getText().equals("")) {
+                retorno += ", Preparo";
+            }
         }
         if (comboTipo.getSelectedIndex() == 0) {
             retorno += ", Tipo";
@@ -1171,7 +1181,7 @@ public class FRMProduto extends javax.swing.JFrame {
         p.setTipo(comboTipo.getSelectedItem() + "");
         if (lbFotoPedido.getIcon() != null) {
             p.setFoto(ManipularImagem.getImgBytes(imagem2));
-        } else if (cod != 0) {
+        } else if (labFoto.getIcon() != null) {
             p.setFoto(ManipularImagem.imageToByte(labFoto.getIcon()));
         } else {
             p.setFoto(null);
@@ -1227,6 +1237,7 @@ public class FRMProduto extends javax.swing.JFrame {
         labDes.setText("");
         labPreco.setText("");
         labPreparo.setText("");
+        lbFotoPedido.setText("Click para adicionar uma foto");
 
     }
 

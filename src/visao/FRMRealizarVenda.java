@@ -11,6 +11,7 @@ import controle.SharedP_Control;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import javax.swing.ComboBoxModel;
@@ -36,6 +37,25 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
 
     DefaultListModel modelo = new DefaultListModel();
     private Produtos produto;
+    private FRMCaixa c;
+    private FRMListaProdutos lp;
+    private ArrayList<Produtos> produtos = new ArrayList<Produtos>();
+
+    public FRMCaixa getC() {
+        return c;
+    }
+
+    public void setC(FRMCaixa c) {
+        this.c = c;
+    }
+
+    public FRMListaProdutos getLp() {
+        return lp;
+    }
+
+    public void setLp(FRMListaProdutos lp) {
+        this.lp = lp;
+    }
 
     /**
      * Creates new form FRMRealizarVenda
@@ -73,6 +93,12 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
     }
 
     private void buscar(String cadenaEscrita) {
+        if (cadenaEscrita.length() > 4) {
+            cadenaEscrita = cadenaEscrita.substring(4, 10);
+            System.out.println(cadenaEscrita);
+        } else {
+            System.out.println("menor que 4");
+        }
         Carregamento a = new Carregamento(this, true);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -83,20 +109,27 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
         });
         SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<DefaultComboBoxModel> call = api.pesquisaProdutos(sh.getEmpEmail(), sh.getEmpSenha(), cadenaEscrita);
-        call.enqueue(new Callback<DefaultComboBoxModel>() {
+        final Call<ArrayList<Produtos>> call = api.buscarProdutos(sh.getEmpEmail(), sh.getEmpSenha(), cadenaEscrita);
+        call.enqueue(new Callback<ArrayList<Produtos>>() {
             @Override
-            public void onResponse(Call<DefaultComboBoxModel> call, Response<DefaultComboBoxModel> response) {
+            public void onResponse(Call<ArrayList<Produtos>> call, Response<ArrayList<Produtos>> response) {
                 System.out.println(response.isSuccessful());
                 if (response.isSuccessful()) {
                     String auth = response.headers().get("auth");
                     if (auth.equals("1")) {
                         System.out.println("Login correto");
-                        DefaultComboBoxModel u = response.body();
+                        ArrayList<Produtos> u = response.body();
                         SwingUtilities.invokeLater(new Runnable() {
                             public void run() {
                                 a.setVisible(false);
-                                comboProduto.setModel((ComboBoxModel<String>) u);
+                                if (u.size() > 0) {
+                                    setCombo(u);
+                                    produtos = u;
+                                } else {
+                                    System.out.println("retorno zerado");
+                                    comboProduto.removeAllItems();
+                                    produtos.clear();
+                                }
                             }
                         });
 
@@ -122,7 +155,7 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
             }
 
             @Override
-            public void onFailure(Call<DefaultComboBoxModel> call, Throwable thrwbl) {
+            public void onFailure(Call<ArrayList<Produtos>> call, Throwable thrwbl) {
                 SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
                         a.setVisible(false);
@@ -130,6 +163,27 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
                 });
             }
         });
+    }
+
+    public void setCombo(ArrayList<Produtos> pp) {
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+        if (pp.size() > 0) {
+            for (Produtos p : pp) {
+                modelo.addElement(p.getCodigo() + " : " + p.getNome() + " : R$ " + p.getPreco());
+            }
+            comboProduto.setModel((ComboBoxModel<String>) modelo);
+            comboProduto.showPopup();
+            if (pp.size() == 1) {
+                System.out.println("buscar");
+
+                setProdutos(pp.get(comboProduto.getSelectedIndex()));
+                setDados(labNumMesa.getText() + "");
+
+            }
+            //setProdutos(pp.get(comboProduto.getSelectedIndex()));
+        } else {
+            System.out.println("Retorno vasio");
+        }
     }
 
     /**
@@ -148,7 +202,6 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
         labNumMesa = new javax.swing.JLabel();
         btnSalvar = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        botaoPesquisar = new javax.swing.JButton();
         comboProduto = new javax.swing.JComboBox<>();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -223,13 +276,6 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Produto", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 0, 14))); // NOI18N
 
-        botaoPesquisar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/loupe.png"))); // NOI18N
-        botaoPesquisar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                botaoPesquisarActionPerformed(evt);
-            }
-        });
-
         comboProduto.setEditable(true);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -239,17 +285,13 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addComponent(comboProduto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(botaoPesquisar)
-                .addGap(19, 19, 19))
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(botaoPesquisar, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE)
-                    .addComponent(comboProduto))
+                .addComponent(comboProduto, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
@@ -507,74 +549,6 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
         jtfObs.setText("");
     }//GEN-LAST:event_btnadicionarActionPerformed
 
-    private void botaoPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botaoPesquisarActionPerformed
-        Carregamento a = new Carregamento(this, true);
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-
-                a.setVisible(true);
-
-            }
-        });
-        SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
-        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<Produtos> call = api.buscarUmProduto(sh.getEmpEmail(), sh.getEmpSenha(), comboProduto.getSelectedItem() + "");
-        call.enqueue(new Callback<Produtos>() {
-            @Override
-            public void onResponse(Call<Produtos> call, Response<Produtos> response) {
-                System.out.println(response.isSuccessful());
-                if (response.isSuccessful()) {
-                    String auth = response.headers().get("auth");
-                    if (auth.equals("1")) {
-                        System.out.println("Login correto");
-                        Produtos u = response.body();
-                        SwingUtilities.invokeLater(new Runnable() {
-                            public void run() {
-                                a.setVisible(false);
-                                if (u != null) {
-                                    dispose();
-                                    FRMRealizarVenda r = new FRMRealizarVenda();
-                                    r.setProdutos(u);
-                                    r.setDados(labNumMesa.getText());
-                                    r.setVisible(true);
-                                } else {
-                                    JOptionPane.showMessageDialog(null, "NÃO encontrado!!");
-                                }
-                            }
-                        });
-
-                    } else {
-                        SwingUtilities.invokeLater(new Runnable() {
-                            public void run() {
-                                a.setVisible(false);
-                            }
-                        });
-                        System.out.println("Login incorreto");
-                        // senha ou usuario incorreto
-
-                    }
-                } else {
-                    SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                            a.setVisible(false);
-                        }
-                    });
-                    System.out.println("Login incorreto- fora do ar");
-                    //servidor fora do ar
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Produtos> call, Throwable thrwbl) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        a.setVisible(false);
-                    }
-                });
-            }
-        });
-    }//GEN-LAST:event_botaoPesquisarActionPerformed
-
     private void btnSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalvarActionPerformed
         PedidoBEAN venda = getDados();
         Carregamento a = new Carregamento(this, true);
@@ -596,8 +570,23 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
                     String auth = response.headers().get("auth");
                     if (auth.equals("1")) {
                         System.out.println("Login correto");
+                        String sucesso = response.headers().get("sucesso");
+                        String msg;
+                        if (sucesso.equals("-1")) {
+                            msg = "Produto com Saldo 0";
+                        } else {
+                            msg = "Sucesso";
+                        }
                         SwingUtilities.invokeLater(new Runnable() {
                             public void run() {
+                                if (c != null) {
+                                    c.atualizar();
+                                } else {
+                                    System.out.println("atualizar");
+                                    lp.atualizaProdutos();
+                                }
+                                JOptionPane.showMessageDialog(null, msg);
+
                                 dispose();
                             }
                         });
@@ -670,7 +659,6 @@ public class FRMRealizarVenda extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton botaoPesquisar;
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnSalvar;
     private javax.swing.JButton btnadicionar;

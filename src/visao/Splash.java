@@ -18,6 +18,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import sync.RestauranteAPI;
 import sync.SyncDefault;
+import util.Criptografia;
 import util.Time;
 import visao.util.FRMConfiguracao;
 
@@ -26,42 +27,99 @@ import visao.util.FRMConfiguracao;
  * @author Daniel
  */
 public final class Splash extends javax.swing.JFrame {
-
+private ControleLogin c = new ControleLogin();
     /**
      * Creates new form Splash
      */
     public Splash() {
         initComponents();
         setLocationRelativeTo(null);
-        onBackgroud();
+             onBackgroud();
 
     }
 
     private void onBackgroud() {
         Runnable r = new Runnable() {
             public void run() {
-                SharedPreferencesEmpresaBEAN e = SharedPEmpresa_Control.listar();
+                SharedPreferencesEmpresaBEAN e = SharedPEmpresa_Control.listarLogin();
                 if (e.getEmpCodigo() == 0) {
                     FRMLoginEmpresa le = new FRMLoginEmpresa();
                     le.setVisible(true);
                     finalizar();
 
                 } else {
-                    //FRMLogin l = new FRMLogin();
-                    //l.setVisible(true);
+                    atualizarEmpresa(e.getEmpEmail(), e.getEmpSenha());
                     listarCaixa();
                 }
             }
+
         };
         new Thread(r).start();
 
+    }
+
+    private void atualizarEmpresa(String email, String senha) {
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        final Call<SharedPreferencesEmpresaBEAN> call = api.fazLoginEmpresa(email, Criptografia.criptografar(senha));
+        SharedPreferencesEmpresaBEAN u = null;
+        call.enqueue(new Callback<SharedPreferencesEmpresaBEAN>() {
+            @Override
+            public void onResponse(Call<SharedPreferencesEmpresaBEAN> call, Response<SharedPreferencesEmpresaBEAN> response) {
+
+                System.out.println(response);
+                if (response.isSuccessful()) {
+                    String auth = response.headers().get("auth");
+                    if (auth.equals("1")) {
+                        System.out.println("Login correto");
+                        SharedPreferencesEmpresaBEAN u = response.body();
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                if (u != null) {
+                                    u.setEmpSenha(senha);
+                                    c.logEmpresa(u);
+                                } else {
+                                    JOptionPane.showMessageDialog(null, "Login Invalido");
+                                }
+
+                            }
+                        });
+
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Login Incorreto");
+                        System.out.println("Login incorreto");
+                        // senha ou usuario incorreto
+
+                    }
+                } else {
+
+                    JOptionPane.showMessageDialog(null, "Servidor não responde!!");
+
+                    //servidor fora do ar
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<SharedPreferencesEmpresaBEAN> call, Throwable t) {
+                //Servidor fora do ar
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                               JOptionPane.showMessageDialog(null, " erro");
+
+                            }
+                        });
+
+                System.out.println(t.getMessage());
+
+            }
+        });
     }
 
     public void listarCaixa() {
         CaixaBEAN c = null;
         String data = Time.getData();
         SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
-        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+       RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
         final Call<CaixaBEAN> call = api.listarCaixa(sh.getEmpEmail(), sh.getEmpSenha());
         call.enqueue(new Callback<CaixaBEAN>() {
             @Override
@@ -101,7 +159,7 @@ public final class Splash extends javax.swing.JFrame {
 
             @Override
             public void onFailure(Call<CaixaBEAN> call, Throwable t) {
-                JOptionPane.showMessageDialog(null, "Verifique o ip do servidor ");
+                System.out.println(t.getMessage());
                 FRMLogin l = new FRMLogin();
                 l.setVisible(true);
                 finalizar();

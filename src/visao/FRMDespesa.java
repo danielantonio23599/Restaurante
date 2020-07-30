@@ -29,6 +29,11 @@ public class FRMDespesa extends javax.swing.JFrame {
 
     private DefaultTableModel dTable;
     private ArrayList<DespesaBEAN> dados;
+     private FRMCaixa c;
+
+    public void setC(FRMCaixa c) {
+        this.c = c;
+    }
     /**
      * Creates new form FRMDespesa
      */
@@ -59,10 +64,9 @@ public class FRMDespesa extends javax.swing.JFrame {
         botaoAdicionarDespesa = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Despesas");
         setBackground(new java.awt.Color(204, 204, 204));
-        setUndecorated(true);
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -275,7 +279,11 @@ public class FRMDespesa extends javax.swing.JFrame {
                         SwingUtilities.invokeLater(new Runnable() {
                             public void run() {
                                 JOptionPane.showMessageDialog(null, response.headers().get("sucesso"));
+                                 if (c != null) {
+                                    c.listarDespesaDia();
+                                }
                                 a.setVisible(false);
+
                                 dispose();
                             }
                         });

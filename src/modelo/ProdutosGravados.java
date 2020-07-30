@@ -10,6 +10,7 @@ package modelo;
  * @author Daniel
  */
 public class ProdutosGravados {
+    private int codVenda;
     private int codProduto;
     private int codPedidVenda;
     private String nome;
@@ -17,6 +18,14 @@ public class ProdutosGravados {
     private String time;
     private int mesa;
     private Float valor;
+
+    public int getCodVenda() {
+        return codVenda;
+    }
+
+    public void setCodVenda(int codVenda) {
+        this.codVenda = codVenda;
+    }
 
     public int getCodProduto() {
         return codProduto;

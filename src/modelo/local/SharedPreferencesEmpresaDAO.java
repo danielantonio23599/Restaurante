@@ -30,7 +30,7 @@ public class SharedPreferencesEmpresaDAO {
 
         String sql = "select * from shared_preferences_empresa;";
         try {
-            stmt = connection.prepareStatement(sql);
+            PreparedStatement stmt = (PreparedStatement) connection.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 ca.setEmpCodigo(rs.getInt(1));

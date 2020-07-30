@@ -15,6 +15,16 @@ public class Produtos {
     private float preco;
     private String descricao;
     private String tipo;
+    private float quantidade;
+
+    public float getQuantidade() {
+        return quantidade;
+    }
+
+    public void setQuantidade(float quantidade) {
+        this.quantidade = quantidade;
+    }
+    
 
     public String getDescricao() {
         return descricao;

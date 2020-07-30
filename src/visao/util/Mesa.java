@@ -171,10 +171,14 @@ public class Mesa extends javax.swing.JPanel {
     }//GEN-LAST:event_painelMouseEntered
 
     private void painelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_painelMouseClicked
-
-        if (evt.getClickCount() == 2) {
+        if (evt.getClickCount() >= 2) {
 
             FRMListaProdutos l = new FRMListaProdutos();
+            if (caixa != null) {
+                l.setCaixa(caixa);
+            } else {
+                l.setVendas(vendas);
+            }
             l.setDados(mesa);
             l.setVisible(true);
 
@@ -182,7 +186,7 @@ public class Mesa extends javax.swing.JPanel {
             if (caixa != null) {
                 caixa.setNunMesa(mesa);
             } else {
-            vendas.setNunMesa(mesa);
+                vendas.setNunMesa(mesa);
             }
             // caixa.atualizaProdutos();
         }

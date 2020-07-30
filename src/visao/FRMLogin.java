@@ -566,12 +566,12 @@ public class FRMLogin extends javax.swing.JFrame {
 
     }
 
-    private void setDados() {
+     private void setDados() {
         ControleLogin l = new ControleLogin();
         SharedPreferencesEmpresaBEAN e = l.listarEmpresa();
         if (e != null) {
             lbFantasia.setText(e.getEmpFantazia());
-            if (e.getEmpLogo() != null) {
+            if (e.getEmpLogo() !=null) {
                 ManipularImagem m = new ManipularImagem();
                 m.exibiImagemLabel(e.getEmpLogo(), lbLogo);
             }
