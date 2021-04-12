@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import modelo.CaixaBEAN;
+import util.Time;
 import visao.FRMCaixa;
 
 /**
@@ -162,12 +163,8 @@ public class AlertAbrirCaixa extends javax.swing.JFrame {
             setValor(valor);
             CaixaBEAN c = new CaixaBEAN();
             c.setTrocoIn(valor);
-            SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-            Date hora = Calendar.getInstance().getTime(); // Ou qualquer outra forma que tem
-            c.setIn(sdf.format(hora));
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-            Date date = new Date();
-            c.setData(dateFormat.format(date));
+            c.setIn(Time.getTime());
+            c.setData(Time.getData());
             this.c.abrirCaixa(c);
             dispose();
         } else {

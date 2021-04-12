@@ -1,19 +1,26 @@
 
 import controle.SharedPEmpresa_Control;
-import java.awt.Desktop;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Connection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
 import javax.swing.JOptionPane;
 
 import javax.swing.SwingUtilities;
 import modelo.local.ConnectionF;
 import modelo.local.SharedPreferencesEmpresaBEAN;
-import net.sf.jasperreports.engine.JasperPrint;
 import okhttp3.ResponseBody;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.printing.PDFPageable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,6 +29,7 @@ import sync.RestauranteAPI;
 import sync.SyncDefault;
 import util.GeradorRelatorio;
 import util.SalvaDownload;
+import visao.util.AlertVenda;
 import visao.util.Carregamento;
 
 /*
@@ -96,7 +104,7 @@ public class FRMRelatorio extends javax.swing.JFrame {
             }
         });
 
-        final Call<ResponseBody> call = api.geraRelatorioProduto(sh.getEmpEmail(), sh.getEmpSenha(), "3.0");
+        final Call<ResponseBody> call = api.geraRelatorioProduto(sh.getEmpEmail(), sh.getEmpSenha(), "12.0");
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -107,15 +115,36 @@ public class FRMRelatorio extends javax.swing.JFrame {
                     if (auth.equals("1")) {
                         String nome = response.headers().get("nome");
                         if (!nome.equals("0")) {
-                            boolean writtenToDisk = SalvaDownload.writeResponseBodyToDisk(response.body(), nome);
-                            System.out.println("Login correto");
+                            File arquivo = SalvaDownload.writeResponseBodyToDisk(response.body(), nome);
+                            PDDocument documento = null;
                             SwingUtilities.invokeLater(new Runnable() {
                                 public void run() {
                                     a.setVisible(false);
 
                                 }
                             });
-                            System.out.println("file download was a success? " + writtenToDisk);
+                            try {
+                                documento = PDDocument.load(arquivo);
+
+                                PrintService servico = PrintServiceLookup.lookupDefaultPrintService();
+
+                                PrinterJob job = PrinterJob.getPrinterJob();
+                                job.setPageable(new PDFPageable(documento));
+
+                                try {
+                                    job.setPrintService(servico);
+                                } catch (PrinterException ex) {
+                                    Logger.getLogger(FRMRelatorio.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+
+                                job.print();
+                                documento.close();
+                            } catch (IOException ex) {
+                                Logger.getLogger(FRMRelatorio.class.getName()).log(Level.SEVERE, null, ex);
+                            } catch (PrinterException ex) {
+                                Logger.getLogger(FRMRelatorio.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            System.out.println("file download was a success? " + arquivo);
                         } else {
                             SwingUtilities.invokeLater(new Runnable() {
                                 public void run() {

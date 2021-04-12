@@ -6,6 +6,7 @@
 package visao;
 
 import controle.SharedPEmpresa_Control;
+import java.io.File;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import modelo.local.SharedPreferencesEmpresaBEAN;
@@ -494,7 +495,7 @@ public class FRMPrincipalGerente extends javax.swing.JFrame {
                     if (auth.equals("1")) {
                         String nome = response.headers().get("nome");
                         if (!nome.equals("0")) {
-                            boolean writtenToDisk = SalvaDownload.writeResponseBodyToDisk(response.body(), nome);
+                            File writtenToDisk = SalvaDownload.writeResponseBodyToDisk(response.body(), nome);
                             System.out.println("Login correto");
                             SwingUtilities.invokeLater(new Runnable() {
                                 public void run() {
@@ -571,7 +572,7 @@ public class FRMPrincipalGerente extends javax.swing.JFrame {
                     if (auth.equals("1")) {
                         String nome = response.headers().get("nome");
                         if (!nome.equals("0")) {
-                            boolean writtenToDisk = SalvaDownload.writeResponseBodyToDisk(response.body(), nome);
+                            File writtenToDisk = SalvaDownload.writeResponseBodyToDisk(response.body(), nome);
                             System.out.println("Login correto");
                             SwingUtilities.invokeLater(new Runnable() {
                                 public void run() {

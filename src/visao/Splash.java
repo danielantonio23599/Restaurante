@@ -27,14 +27,16 @@ import visao.util.FRMConfiguracao;
  * @author Daniel
  */
 public final class Splash extends javax.swing.JFrame {
-private ControleLogin c = new ControleLogin();
+
+    private ControleLogin c = new ControleLogin();
+
     /**
      * Creates new form Splash
      */
     public Splash() {
         initComponents();
         setLocationRelativeTo(null);
-             onBackgroud();
+        onBackgroud();
 
     }
 
@@ -102,12 +104,12 @@ private ControleLogin c = new ControleLogin();
             @Override
             public void onFailure(Call<SharedPreferencesEmpresaBEAN> call, Throwable t) {
                 //Servidor fora do ar
-                        SwingUtilities.invokeLater(new Runnable() {
-                            public void run() {
-                               JOptionPane.showMessageDialog(null, " erro");
+                SwingUtilities.invokeLater(new Runnable() {
+                    public void run() {
+                        JOptionPane.showMessageDialog(null, " erro");
 
-                            }
-                        });
+                    }
+                });
 
                 System.out.println(t.getMessage());
 
@@ -117,9 +119,9 @@ private ControleLogin c = new ControleLogin();
 
     public void listarCaixa() {
         CaixaBEAN c = null;
-        String data = Time.getData();
+        String data = Time.formataDataBR(Time.getData());
         SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
-       RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+        RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
         final Call<CaixaBEAN> call = api.listarCaixa(sh.getEmpEmail(), sh.getEmpSenha());
         call.enqueue(new Callback<CaixaBEAN>() {
             @Override
@@ -131,6 +133,7 @@ private ControleLogin c = new ControleLogin();
                         System.out.println("Login correto");
                         CaixaBEAN c = response.body();
                         if (c.getCodigo() > 0) {
+                            System.out.println(c.getData() + "|" + data);
                             if (c.getData().equals(data)) {
                             } else {
                                 JOptionPane.showMessageDialog(null, "Data de abertura de caixa diferente da atual, favor fechar o caixa atual antes de usá-lo!!");

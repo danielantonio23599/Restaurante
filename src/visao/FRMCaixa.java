@@ -13,12 +13,21 @@ import controle.SharedP_Control;
 import controleService.ControleLogin;
 
 import java.awt.CardLayout;
+import java.awt.Desktop;
 import java.awt.GridLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
 import javax.swing.ComboBoxModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
@@ -39,6 +48,8 @@ import modelo.VendaBEAN;
 import modelo.local.SharedPreferencesBEAN;
 import modelo.local.SharedPreferencesEmpresaBEAN;
 import okhttp3.ResponseBody;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.printing.PDFPageable;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,6 +59,7 @@ import util.ManipularImagem;
 import util.SalvaDownload;
 
 import util.Time;
+import util.Numeros;
 import visao.util.AlertAbrirCaixa;
 import visao.util.AlertSangria;
 import visao.util.Carregamento;
@@ -212,16 +224,6 @@ public class FRMCaixa extends javax.swing.JFrame {
 
     }
 
-    public void limpaTabelaProdutos() {
-        dTable = criaTabelaProdutos();
-        while (dTable.getRowCount() > 0) {
-            dTable.removeRow(0);
-        }
-        tabelaProdutos.setModel(dTable);
-        tr = new TableRowSorter<TableModel>(dTable);
-        tabelaProdutos.setRowSorter(tr);
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -298,8 +300,6 @@ public class FRMCaixa extends javax.swing.JFrame {
         jLabel356 = new javax.swing.JLabel();
         labCliente = new javax.swing.JLabel();
         labGarcom = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tabelaProdutos = new javax.swing.JTable();
         jButton17 = new javax.swing.JButton();
         jButton18 = new javax.swing.JButton();
         Close = new javax.swing.JPanel();
@@ -1149,16 +1149,6 @@ public class FRMCaixa extends javax.swing.JFrame {
         labGarcom.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         labGarcom.setText("Siclano");
 
-        tabelaProdutos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Codigo", "Nome", "Preço", "Quantidade", "Hora"
-            }
-        ));
-        jScrollPane3.setViewportView(tabelaProdutos);
-
         jButton17.setFont(new java.awt.Font("Times New Roman", 1, 18)); // NOI18N
         jButton17.setText("Cup.Finscal");
 
@@ -1174,11 +1164,6 @@ public class FRMCaixa extends javax.swing.JFrame {
         jPanel16.setLayout(jPanel16Layout);
         jPanel16Layout.setHorizontalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel16Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 744, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
             .addGroup(jPanel16Layout.createSequentialGroup()
                 .addComponent(jButton13, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -1204,6 +1189,9 @@ public class FRMCaixa extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(labGarcom, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(19, 19, 19))
+            .addGroup(jPanel16Layout.createSequentialGroup()
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 1017, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1228,9 +1216,7 @@ public class FRMCaixa extends javax.swing.JFrame {
                         .addComponent(jButton14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButton17, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(30, 30, 30)
-                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 562, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 562, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 562, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -1241,7 +1227,7 @@ public class FRMCaixa extends javax.swing.JFrame {
             .addGroup(HomeLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, 1059, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(207, 207, 207))
+                .addContainerGap())
         );
         HomeLayout.setVerticalGroup(
             HomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1373,7 +1359,6 @@ public class FRMCaixa extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel5.setText("Líquido:");
 
-        jtfFaturamentoLiquido.setEditable(false);
         jtfFaturamentoLiquido.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jtfFaturamentoLiquido.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1389,7 +1374,6 @@ public class FRMCaixa extends javax.swing.JFrame {
         jLabel357.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jLabel357.setText("Troco:");
 
-        jtfTroco.setEditable(false);
         jtfTroco.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         jtfTroco.setText("0");
         jtfTroco.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1529,6 +1513,7 @@ public class FRMCaixa extends javax.swing.JFrame {
         jLabel17.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel17.setText("Total de Troco:");
 
+        jtfTotalTroco.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jtfTotalTroco.setText("0");
         jtfTotalTroco.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -2934,7 +2919,7 @@ public class FRMCaixa extends javax.swing.JFrame {
                 });
             }
         });
-        
+
     }//GEN-LAST:event_btnLocalizar1ActionPerformed
 
     private void btnDespesasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDespesasActionPerformed
@@ -3117,91 +3102,6 @@ public class FRMCaixa extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
-        limpaTabelaProdutos();
-        atualizaMesas();
-
-    }//GEN-LAST:event_jButton15ActionPerformed
-
-    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
-        if (!labNumMesa.getText().equals("0")) {
-            jtfClienteF.setText("");
-            jtfMesa.setText(labNumMesa.getText());
-            mudarTela("mesa");
-            somarTotal();
-            listarVenda();
-        }
-
-    }//GEN-LAST:event_jButton13ActionPerformed
-
-    private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
-        if (!labNumMesa.getText().equals("0")) {
-            String mesa = JOptionPane.showInputDialog("Insira o n° da mesa");
-            Carregamento a = new Carregamento(this, true);
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-
-                    a.setVisible(true);
-
-                }
-            });
-            SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
-            RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-            final Call<Void> call = api.transferiMesa(mesa, labNumMesa.getText(), sh.getEmpEmail(), sh.getEmpSenha());
-            call.enqueue(new Callback<Void>() {
-                @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
-                    System.out.println(response.isSuccessful());
-                    if (response.isSuccessful()) {
-                        String auth = response.headers().get("auth");
-                        if (auth.equals("1")) {
-                            System.out.println("Login correto");
-
-                            SwingUtilities.invokeLater(new Runnable() {
-                                public void run() {
-                                    a.setVisible(false);
-                                    atualizaMesas();
-                                    //atualizarMesas
-                                }
-                            });
-
-                        } else {
-                            SwingUtilities.invokeLater(new Runnable() {
-                                public void run() {
-                                    a.setVisible(false);
-                                }
-                            });
-                            System.out.println("Login incorreto");
-                            // senha ou usuario incorreto
-
-                        }
-                    } else {
-                        SwingUtilities.invokeLater(new Runnable() {
-                            public void run() {
-                                a.setVisible(false);
-                            }
-                        });
-                        System.out.println("Login incorreto- fora do ar");
-                        //servidor fora do ar
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<Void> call, Throwable t) {
-                    SwingUtilities.invokeLater(new Runnable() {
-                        public void run() {
-                            a.setVisible(false);
-                        }
-                    });
-                }
-            });
-
-        } else {
-            JOptionPane.showMessageDialog(null, "Selecione uma Mesa");
-        }
-
-    }//GEN-LAST:event_jButton18ActionPerformed
-
     private void jtfVendaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfVendaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtfVendaActionPerformed
@@ -3339,7 +3239,7 @@ public class FRMCaixa extends javax.swing.JFrame {
                     if (auth.equals("1")) {
                         String nome = response.headers().get("nome");
                         if (!nome.equals("0")) {
-                            boolean writtenToDisk = SalvaDownload.writeResponseBodyToDisk(response.body(), nome);
+                            File writtenToDisk = SalvaDownload.writeResponseBodyToDisk(response.body(), nome);
                             System.out.println("Login correto");
                             SwingUtilities.invokeLater(new Runnable() {
                                 public void run() {
@@ -3425,8 +3325,8 @@ public class FRMCaixa extends javax.swing.JFrame {
 //Se o usuário clicar em "Sim" retorna 0 pra variavel reply, se informado não retorna 1
         int reply = JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
         if (reply == JOptionPane.YES_OPTION) {
-            if (!jtfFaturamentoLiquido.getText().equals("") || !jtfTroco.getText().equals("")) {
-                if (Float.parseFloat(jtfFaturamentoLiquido.getText()) == Float.parseFloat(jtfTotalTroco.getText())) {
+            if (!lbSaldoCaixa.getText().equals("") || !jtfTroco.getText().equals("")) {
+                if (Float.parseFloat(lbSaldoCaixa.getText()) == Float.parseFloat(jtfTotalTroco.getText())) {
 
                     Carregamento a = new Carregamento(this, true);
                     SwingUtilities.invokeLater(new Runnable() {
@@ -3451,9 +3351,8 @@ public class FRMCaixa extends javax.swing.JFrame {
                                     SwingUtilities.invokeLater(new Runnable() {
                                         public void run() {
                                             JOptionPane.showMessageDialog(null, response.headers().get("sucesso"));
-                                            atualizaTabelaprodusClose();
-
                                             a.setVisible(false);
+                                            mudarTela("index");
 
                                         }
                                     });
@@ -3691,15 +3590,37 @@ public class FRMCaixa extends javax.swing.JFrame {
                         if (auth.equals("1")) {
                             String nome = response.headers().get("nome");
                             if (!nome.equals("0")) {
-                                boolean writtenToDisk = SalvaDownload.writeResponseBodyToDisk(response.body(), nome);
-                                System.out.println("Login correto");
+                                File arquivo = SalvaDownload.writeResponseBodyToDisk(response.body(), nome);
+                                //abre arquivo
+                                PDDocument documento = null;
                                 SwingUtilities.invokeLater(new Runnable() {
                                     public void run() {
                                         a.setVisible(false);
 
                                     }
                                 });
-                                System.out.println("file download was a success? " + writtenToDisk);
+                                try {
+                                    documento = PDDocument.load(arquivo);
+
+                                    PrintService servico = PrintServiceLookup.lookupDefaultPrintService();
+
+                                    PrinterJob job = PrinterJob.getPrinterJob();
+                                    job.setPageable(new PDFPageable(documento));
+
+                                    try {
+                                        job.setPrintService(servico);
+                                    } catch (PrinterException ex) {
+
+                                    }
+
+                                    job.print();
+                                    documento.close();
+                                } catch (IOException ex) {
+
+                                } catch (PrinterException ex) {
+
+                                }
+                                System.out.println("file download was a success? " + arquivo);
                             } else {
                                 SwingUtilities.invokeLater(new Runnable() {
                                     public void run() {
@@ -3745,89 +3666,8 @@ public class FRMCaixa extends javax.swing.JFrame {
                 }
             });
         }
-        atualizaMesas();
+        //atualizaMesas();
     }//GEN-LAST:event_jButton19ActionPerformed
-
-    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
-        if (!labNumMesa.getText().endsWith("0")) {
-            RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-            SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
-            Carregamento a = new Carregamento(this, true);
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    a.setVisible(true);
-
-                }
-            });
-
-            final Call<ResponseBody> call = api.geraRelatorioMesa(sh.getEmpEmail(), sh.getEmpSenha(), labNumMesa.getText());
-            call.enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    System.out.println(response.isSuccessful());
-                    System.out.println(response);
-                    if (response.isSuccessful()) {
-                        String auth = response.headers().get("auth");
-                        if (auth.equals("1")) {
-                            String nome = response.headers().get("nome");
-                            if (!nome.equals("0")) {
-                                boolean writtenToDisk = SalvaDownload.writeResponseBodyToDisk(response.body(), nome);
-                                System.out.println("Login correto");
-                                SwingUtilities.invokeLater(new Runnable() {
-                                    public void run() {
-                                        a.setVisible(false);
-
-                                    }
-                                });
-                                System.out.println("file download was a success? " + writtenToDisk);
-                            } else {
-                                SwingUtilities.invokeLater(new Runnable() {
-                                    public void run() {
-                                        a.setVisible(false);
-
-                                    }
-                                });
-                                JOptionPane.showMessageDialog(null, "Houve algum erro no gerar arquivo!");
-                            }
-                        } else {
-                            SwingUtilities.invokeLater(new Runnable() {
-                                public void run() {
-                                    a.setVisible(false);
-
-                                }
-                            });
-                            System.out.println("Login incorreto");
-                            // senha ou usuario incorreto
-
-                        }
-                    } else {
-                        SwingUtilities.invokeLater(new Runnable() {
-                            public void run() {
-                                a.setVisible(false);
-
-                            }
-                        });
-                        System.out.println("Login incorreto- fora do ar");
-                        //servidor fora do ar
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    System.out.println("Login incorreto- erro");
-                    SwingUtilities.invokeLater(new Runnable() {
-
-                        public void run() {
-                            a.setVisible(false);
-
-                        }
-                    });
-                }
-            });
-        } else {
-            JOptionPane.showMessageDialog(null, "Selecione a mesa");
-        }
-    }//GEN-LAST:event_jButton14ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         FRMClientes c = new FRMClientes();
@@ -3889,6 +3729,194 @@ public class FRMCaixa extends javax.swing.JFrame {
     private void jtfTotalTrocoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfTotalTrocoKeyPressed
         jtfTroco.setText(jtfTotalTroco.getText());
     }//GEN-LAST:event_jtfTotalTrocoKeyPressed
+
+    private void jButton18ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton18ActionPerformed
+        if (!labNumMesa.getText().equals("0")) {
+            String mesa = JOptionPane.showInputDialog("Insira o n° da mesa");
+            Carregamento a = new Carregamento(this, true);
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+
+                    a.setVisible(true);
+
+                }
+            });
+            SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
+            RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+            final Call<Void> call = api.transferiMesa(mesa, labNumMesa.getText(), sh.getEmpEmail(), sh.getEmpSenha());
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    System.out.println(response.isSuccessful());
+                    if (response.isSuccessful()) {
+                        String auth = response.headers().get("auth");
+                        if (auth.equals("1")) {
+                            System.out.println("Login correto");
+
+                            SwingUtilities.invokeLater(new Runnable() {
+                                public void run() {
+                                    a.setVisible(false);
+                                    atualizaMesas();
+                                    //atualizarMesas
+                                }
+                            });
+
+                        } else {
+                            SwingUtilities.invokeLater(new Runnable() {
+                                public void run() {
+                                    a.setVisible(false);
+                                }
+                            });
+                            System.out.println("Login incorreto");
+                            // senha ou usuario incorreto
+
+                        }
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+                            }
+                        });
+                        System.out.println("Login incorreto- fora do ar");
+                        //servidor fora do ar
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        public void run() {
+                            a.setVisible(false);
+                        }
+                    });
+                }
+            });
+
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione uma Mesa");
+        }
+    }//GEN-LAST:event_jButton18ActionPerformed
+
+    private void jButton15ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton15ActionPerformed
+        atualizaMesas();
+    }//GEN-LAST:event_jButton15ActionPerformed
+
+    private void jButton14ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton14ActionPerformed
+        if (!labNumMesa.getText().endsWith("0")) {
+            RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
+            SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
+            Carregamento a = new Carregamento(this, true);
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    a.setVisible(true);
+
+                }
+            });
+
+            final Call<ResponseBody> call = api.geraRelatorioMesa(sh.getEmpEmail(), sh.getEmpSenha(), labNumMesa.getText());
+            call.enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    System.out.println(response.isSuccessful());
+                    System.out.println(response);
+                    if (response.isSuccessful()) {
+                        String auth = response.headers().get("auth");
+                        if (auth.equals("1")) {
+                            String nome = response.headers().get("nome");
+                            if (!nome.equals("0")) {
+                                File arquivo = SalvaDownload.writeResponseBodyToDisk(response.body(), nome);
+                                PDDocument documento = null;
+                                SwingUtilities.invokeLater(new Runnable() {
+                                    public void run() {
+                                        a.setVisible(false);
+
+                                    }
+                                });
+                                try {
+                                    documento = PDDocument.load(arquivo);
+
+                                    PrintService servico = PrintServiceLookup.lookupDefaultPrintService();
+
+                                    PrinterJob job = PrinterJob.getPrinterJob();
+                                    job.setPageable(new PDFPageable(documento));
+
+                                    try {
+                                        job.setPrintService(servico);
+                                    } catch (PrinterException ex) {
+
+                                    }
+
+                                    job.print();
+                                    documento.close();
+                                } catch (IOException ex) {
+
+                                } catch (PrinterException ex) {
+
+                                }
+                                SwingUtilities.invokeLater(new Runnable() {
+                                    public void run() {
+                                        a.setVisible(false);
+
+                                    }
+                                });
+                                System.out.println("file download was a success? " + arquivo);
+                            } else {
+                                SwingUtilities.invokeLater(new Runnable() {
+                                    public void run() {
+                                        a.setVisible(false);
+
+                                    }
+                                });
+                                JOptionPane.showMessageDialog(null, "Houve algum erro no gerar arquivo!");
+                            }
+                        } else {
+                            SwingUtilities.invokeLater(new Runnable() {
+                                public void run() {
+                                    a.setVisible(false);
+
+                                }
+                            });
+                            System.out.println("Login incorreto");
+                            // senha ou usuario incorreto
+
+                        }
+                    } else {
+                        SwingUtilities.invokeLater(new Runnable() {
+                            public void run() {
+                                a.setVisible(false);
+
+                            }
+                        });
+                        System.out.println("Login incorreto- fora do ar");
+                        //servidor fora do ar
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    System.out.println("Login incorreto- erro");
+                    SwingUtilities.invokeLater(new Runnable() {
+
+                        public void run() {
+                            a.setVisible(false);
+
+                        }
+                    });
+                }
+            });
+        } else {
+            JOptionPane.showMessageDialog(null, "Selecione a mesa");
+        }
+    }//GEN-LAST:event_jButton14ActionPerformed
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        if (!labNumMesa.getText().equals("0")) {
+            jtfClienteF.setText("");
+            jtfMesa.setText(labNumMesa.getText());
+            mudarTela("mesa");
+            listarVenda();
+        }
+    }//GEN-LAST:event_jButton13ActionPerformed
     private void bloqueaLetras(java.awt.event.KeyEvent evt) {
         String caracteres = "0987654321.";
         if (!caracteres.contains(evt.getKeyChar() + "")) {
@@ -4056,7 +4084,6 @@ public class FRMCaixa extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane14;
     private javax.swing.JScrollPane jScrollPane15;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
@@ -4117,7 +4144,6 @@ public class FRMCaixa extends javax.swing.JFrame {
     private javax.swing.JTable tabelaDespesas;
     private javax.swing.JTable tabelaProCancelados;
     private javax.swing.JTable tabelaProduClose;
-    private javax.swing.JTable tabelaProdutos;
     private javax.swing.JTable tabelaProdutosBalcao;
     private javax.swing.JTable tabelaProdutosCancelados;
     private javax.swing.JTable tabelaProdutosF;
@@ -4128,8 +4154,10 @@ public class FRMCaixa extends javax.swing.JFrame {
 
     public void setNunMesa(String mesa) {
         labNumMesa.setText(mesa);
-        atualizaProdutos(Integer.parseInt(mesa));
-        atualizaProdutosCancelados(Integer.parseInt(mesa));
+    }
+
+    public int getNunMesa() {
+        return Integer.parseInt(labNumMesa.getText());
     }
 
     private void home() {
@@ -4211,7 +4239,7 @@ public class FRMCaixa extends javax.swing.JFrame {
 
     private void setMesas(ArrayList<modelo.Mesa> m) {
         JPanel p = new JPanel();
-        p.setLayout(new GridLayout(0, 4));
+        p.setLayout(new GridLayout(0, 6));
         int controle = 100;
         for (int i = 1; i <= controle; i++) {
             Mesa v = new Mesa();
@@ -4273,10 +4301,8 @@ public class FRMCaixa extends javax.swing.JFrame {
                 dado.getQuantidade(), dado.getValor(), dado.getTime()});
         }
         //set o modelo da tabela
-        tabelaProdutos.setModel(dTable);
         tabelaProdutosF.setModel(dTable);
         tr = new TableRowSorter<TableModel>(dTable);
-        tabelaProdutos.setRowSorter(tr);
         tabelaProdutosF.setRowSorter(tr);
 
     }
@@ -4430,7 +4456,7 @@ public class FRMCaixa extends javax.swing.JFrame {
     // VENDA A BALCA
     public void atualizar() {
         // buscar produtos e valor total
-        buscarProdutosMesa(jtfNumPedido.getText());
+        buscarProdutosMesa(labNumMesa.getText());
     }
 
     private DefaultTableModel criaTabelaProdutosBalcao() {
@@ -4608,7 +4634,6 @@ public class FRMCaixa extends javax.swing.JFrame {
         comboProduto.removeAllItems();
         //jtfNumPedido.setText("");
         jtfCliente.setText("");
-        limpaTabelaProdutos();
     }
 
     private ArrayList<DespesaBEAN> getDespesas() {
@@ -4835,8 +4860,6 @@ public class FRMCaixa extends javax.swing.JFrame {
 
         tr = new TableRowSorter<TableModel>(dTable);
         tabelaProduClose.setRowSorter(tr);
-        listarDespesaDia();
-
     }
 
     private void atualizaTroco() {
@@ -4879,9 +4902,6 @@ public class FRMCaixa extends javax.swing.JFrame {
         numero = numero.replace(",", ".");
         jtfTroco.setText(numero);
         jtfTotalTroco.setText(numero);
-        if (Float.parseFloat(jtfFaturamentoLiquido.getText()) < troco) {
-            JOptionPane.showMessageDialog(null, "Verifique seu troco, incompativel com o seu dinheiro em caixa!!");
-        }
     }
 
     public void abrirCaixa(CaixaBEAN c) {
@@ -4897,7 +4917,6 @@ public class FRMCaixa extends javax.swing.JFrame {
         SharedPreferencesEmpresaBEAN sh1 = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
         CaixaBEAN cc = c;
-        cc.setFuncionario(sh.getFunCodigo());
         System.out.println("codigo funcionario " + sh.getFunCodigo());
         final Call<Void> call = api.abrirCaixa(new Gson().toJson(cc), sh1.getEmpEmail(), sh1.getEmpSenha());
         call.enqueue(new Callback<Void>() {
@@ -5551,7 +5570,6 @@ public class FRMCaixa extends javax.swing.JFrame {
                                 a.setVisible(false);
                                 if (u != null) {
                                     venda = u.get(0).getCodVenda();
-
                                     preencheTabelaProdutos(u);
 
                                 }
@@ -5626,8 +5644,6 @@ public class FRMCaixa extends javax.swing.JFrame {
 
                                 jtfTotalD.setText(totalD + "");
                                 a.setVisible(false);
-                                atualizaProdutos(mesa);
-                                atualizaProdutosCancelados(mesa);
 
                             }
                         });
@@ -5710,7 +5726,7 @@ public class FRMCaixa extends javax.swing.JFrame {
                             a.setVisible(false);
                         }
                     });
-                    System.out.println("Login incorreto- fora do ar");
+                    System.out.println("Login incorreto Excluzão - fora do ar");
                     //servidor fora do ar
                 }
             }
@@ -5914,12 +5930,7 @@ public class FRMCaixa extends javax.swing.JFrame {
     }
 
     public void listarVenda() {
-        int venda;
-        if (!jtfVenda.getText().equals("")) {
-            venda = Integer.parseInt(jtfVenda.getText());
-        } else {
-            venda = this.venda;
-        }
+
         Carregamento a = new Carregamento(this, true);
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -5930,7 +5941,7 @@ public class FRMCaixa extends javax.swing.JFrame {
         });
         SharedPreferencesEmpresaBEAN sh = SharedPEmpresa_Control.listar();
         RestauranteAPI api = SyncDefault.RETROFIT_RESTAURANTE.create(RestauranteAPI.class);
-        final Call<Venda> call = api.listarVenda(sh.getEmpEmail(), sh.getEmpSenha(), venda + "");
+        final Call<Venda> call = api.listarVenda(sh.getEmpEmail(), sh.getEmpSenha(), jtfMesa.getText() + "");
         call.enqueue(new Callback<Venda>() {
             @Override
             public void onResponse(Call<Venda> call, Response<Venda> response) {
@@ -5988,6 +5999,19 @@ public class FRMCaixa extends javax.swing.JFrame {
         jtfCliente.setText(v.getCliente() + "");
         jtfClienteF.setText(v.getCliente() + "");
         jtfTotalFiscal.setText(v.getValor() + "");
+        float total = v.getValor();
+        jtfTotal.setText(total + "");
+        total += total * 0.10;
+        String totalD = Numeros.formatarFloat(total);
+        System.out.println(totalD);
+        if (radioTotalD.isSelected() == true) {
+            lbTotal.setText(totalD + "");
+        } else {
+            lbTotal.setText(jtfTotal.getText());
+        }
+        jtfTotalD.setText(totalD + "");
+        atualizaProdutos(Integer.parseInt(jtfMesa.getText()));
+        atualizaProdutosCancelados(Integer.parseInt(jtfMesa.getText()));
     }
 
     /*--------------------------------------------------RELATORIO---------------------------------------------------------------------------------------------*/

@@ -6,8 +6,13 @@
 package visao;
 
 import controle.SharedPEmpresa_Control;
+import java.awt.Desktop;
 import java.awt.GridLayout;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
@@ -57,8 +62,6 @@ public class FRMVendas extends javax.swing.JFrame {
         Home = new javax.swing.JPanel();
         jPanel16 = new javax.swing.JPanel();
         jScrollPane9 = new javax.swing.JScrollPane();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tabelaProdutos = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jButton17 = new javax.swing.JButton();
         jButton15 = new javax.swing.JButton();
@@ -75,16 +78,6 @@ public class FRMVendas extends javax.swing.JFrame {
         jPanel16.setBackground(new java.awt.Color(204, 204, 204));
 
         jScrollPane9.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-
-        tabelaProdutos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Codigo", "Nome", "Preço", "Quantidade", "Hora"
-            }
-        ));
-        jScrollPane3.setViewportView(tabelaProdutos);
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 102));
 
@@ -149,7 +142,7 @@ public class FRMVendas extends javax.swing.JFrame {
                 .addComponent(jButton17, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton19, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(92, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,22 +166,18 @@ public class FRMVendas extends javax.swing.JFrame {
         jPanel16.setLayout(jPanel16Layout);
         jPanel16Layout.setHorizontalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel16Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 411, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 926, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel16Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane9)
+                .addContainerGap())
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel16Layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(2, 2, 2)
-                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 583, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 583, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jScrollPane9, javax.swing.GroupLayout.PREFERRED_SIZE, 583, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(44, Short.MAX_VALUE))
         );
 
@@ -325,15 +314,21 @@ public class FRMVendas extends javax.swing.JFrame {
                         if (auth.equals("1")) {
                             String nome = response.headers().get("nome");
                             if (!nome.equals("0")) {
-                                boolean writtenToDisk = SalvaDownload.writeResponseBodyToDisk(response.body(), nome);
-                                System.out.println("Login correto");
+                                File arquivo = SalvaDownload.writeResponseBodyToDisk(response.body(), nome);
+                                //abre arquivo
+                                Desktop desktop = Desktop.getDesktop();
+                                try {
+                                    desktop.print(arquivo);
+                                } catch (IOException ex) {
+                                    Logger.getLogger(FRMVendas.class.getName()).log(Level.SEVERE, null, ex);
+                                }
                                 SwingUtilities.invokeLater(new Runnable() {
                                     public void run() {
                                         a.setVisible(false);
 
                                     }
                                 });
-                                System.out.println("file download was a success? " + writtenToDisk);
+                                System.out.println("file download was a success? " + arquivo);
                             } else {
                                 SwingUtilities.invokeLater(new Runnable() {
                                     public void run() {
@@ -479,7 +474,7 @@ public class FRMVendas extends javax.swing.JFrame {
 
     private void setMesas(ArrayList<modelo.Mesa> m) {
         JPanel p = new JPanel();
-        p.setLayout(new GridLayout(0, 5));
+        p.setLayout(new GridLayout(0, 6));
         int controle = 100;
         for (int i = 1; i <= controle; i++) {
             Mesa v = new Mesa();
@@ -520,11 +515,11 @@ public class FRMVendas extends javax.swing.JFrame {
         return dTable;
     }
 
-    public void atualizaProdutos(int mesa) {
+    /* public void atualizaProdutos(int mesa) {
         listarProdutosMesa(mesa);
 
     }
-
+     */
     private void listarProdutosMesa(int mesa) {
         Carregamento a = new Carregamento(this, true);
         SwingUtilities.invokeLater(new Runnable() {
@@ -552,8 +547,6 @@ public class FRMVendas extends javax.swing.JFrame {
                                 a.setVisible(false);
                                 if (u != null) {
                                     venda = u.get(0).getCodVenda();
-                                    preencheTabelaProdutos(u);
-
                                 }
                             }
                         });
@@ -591,32 +584,12 @@ public class FRMVendas extends javax.swing.JFrame {
 
     }
 
-    private void preencheTabelaProdutos(ArrayList<ProdutosGravados> dados) {
-        dTable = criaTabelaProdutos();
-        //seta o nome das colunas da tabela
-        dTable.addColumn("Código");
-        dTable.addColumn("Nome");
-        dTable.addColumn("Quantidade");
-        dTable.addColumn("Valor");
-        dTable.addColumn("Hora");
-
-        //pega os dados do ArrayList
-        //cada célula do arrayList vira uma linha(row) na tabela
-        for (ProdutosGravados dado : dados) {
-            dTable.addRow(new Object[]{dado.getCodProduto(), dado.getNome(),
-                dado.getQuantidade(), dado.getValor(), dado.getTime()});
-        }
-        //set o modelo da tabela
-        tabelaProdutos.setModel(dTable);
-
-        tr = new TableRowSorter<TableModel>(dTable);
-        tabelaProdutos.setRowSorter(tr);
-
-    }
-
     public void setNunMesa(String mesa) {
         labNumMesa.setText(mesa);
-        atualizaProdutos(Integer.parseInt(mesa));
+    }
+
+    public int getNunMesa() {
+        return Integer.parseInt(labNumMesa.getText());
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Home;
@@ -628,9 +601,7 @@ public class FRMVendas extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel353;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel16;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JLabel labNumMesa;
-    private javax.swing.JTable tabelaProdutos;
     // End of variables declaration//GEN-END:variables
 }

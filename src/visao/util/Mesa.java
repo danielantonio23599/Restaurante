@@ -154,7 +154,7 @@ public class Mesa extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(5, 5, 5)
-                .addComponent(painel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(painel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(5, 5, 5))
         );
         layout.setVerticalGroup(
@@ -171,24 +171,23 @@ public class Mesa extends javax.swing.JPanel {
     }//GEN-LAST:event_painelMouseEntered
 
     private void painelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_painelMouseClicked
-        if (evt.getClickCount() >= 2) {
-
-            FRMListaProdutos l = new FRMListaProdutos();
-            if (caixa != null) {
+        if (caixa != null) {
+            if (caixa.getNunMesa() == Integer.parseInt(mesa)) {
+                FRMListaProdutos l = new FRMListaProdutos();
                 l.setCaixa(caixa);
+                l.setDados(mesa);
+                l.setVisible(true);
             } else {
-                l.setVendas(vendas);
+                caixa.setNunMesa(mesa);
             }
+        } else if (vendas.getNunMesa() == Integer.parseInt(mesa)) {
+            FRMListaProdutos l = new FRMListaProdutos();
+            l.setVendas(vendas);
             l.setDados(mesa);
             l.setVisible(true);
 
-        } else if (painel.getBackground() == azul) {
-            if (caixa != null) {
-                caixa.setNunMesa(mesa);
-            } else {
-                vendas.setNunMesa(mesa);
-            }
-            // caixa.atualizaProdutos();
+        } else {
+            vendas.setNunMesa(mesa);
         }
     }//GEN-LAST:event_painelMouseClicked
 

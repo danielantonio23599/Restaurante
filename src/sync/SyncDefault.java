@@ -10,7 +10,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 public class SyncDefault {
 
-    private static String ip = "localhost";
+    private static String ip = "192.168.1.100";
     private String url;
     public static final Retrofit RETROFIT_RESTAURANTE = new Retrofit.Builder().
             baseUrl(getUrl()).

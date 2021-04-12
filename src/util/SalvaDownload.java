@@ -23,12 +23,12 @@ import okhttp3.ResponseBody;
  */
 public class SalvaDownload {
 
-    public static boolean writeResponseBodyToDisk(ResponseBody body, String nome) {
+    public static File writeResponseBodyToDisk(ResponseBody body, String nome) {
         try {
             // todo change the file location/name according to your needs
             System.out.println(nome);
             File arquivo = null;
-            arquivo = new File("relatorios/" + nome);
+            arquivo = new File("c:/relatorios/" + nome);
             System.out.println(arquivo.getAbsolutePath());
             InputStream inputStream = null;
             OutputStream outputStream = null;
@@ -40,25 +40,17 @@ public class SalvaDownload {
                 outputStream = new FileOutputStream(arquivo);
                 while (true) {
                     int read = inputStream.read(fileReader);
-
                     if (read == -1) {
                         break;
                     }
-
                     outputStream.write(fileReader, 0, read);
-
                     fileSizeDownloaded += read;
 
                 }
-
                 outputStream.flush();
-                //abre arquivo
-                Desktop desktop = Desktop.getDesktop();
-                desktop.open(arquivo);
-
-                return true;
+                return arquivo;
             } catch (IOException e) {
-                return false;
+                return null;
             } finally {
                 if (inputStream != null) {
                     inputStream.close();
@@ -69,7 +61,7 @@ public class SalvaDownload {
                 }
             }
         } catch (IOException e) {
-            return false;
+            return null;
         }
     }
 

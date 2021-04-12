@@ -87,7 +87,6 @@ public class FRMListaProdutos extends javax.swing.JFrame {
             }
 
         });
-
     }
 
     private void buscar(String cadenaEscrita) {
@@ -226,6 +225,11 @@ public class FRMListaProdutos extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowActivated(java.awt.event.WindowEvent evt) {
+                formWindowActivated(evt);
+            }
+        });
 
         jPanel12.setBackground(new java.awt.Color(255, 153, 0));
 
@@ -278,6 +282,11 @@ public class FRMListaProdutos extends javax.swing.JFrame {
         );
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                jPanel1ComponentShown(evt);
+            }
+        });
 
         jTabbedPane1.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
         jTabbedPane1.setTabPlacement(javax.swing.JTabbedPane.LEFT);
@@ -599,7 +608,7 @@ public class FRMListaProdutos extends javax.swing.JFrame {
     }//GEN-LAST:event_jtfMesaDestinoActionPerformed
 
     private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
-        atualizaProdutos();
+
     }//GEN-LAST:event_jTabbedPane1MouseClicked
 
     private void btnTranferirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTranferirActionPerformed
@@ -762,6 +771,14 @@ public class FRMListaProdutos extends javax.swing.JFrame {
 
     }//GEN-LAST:event_comboProdutoPopupMenuCanceled
 
+    private void jPanel1ComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_jPanel1ComponentShown
+       
+    }//GEN-LAST:event_jPanel1ComponentShown
+
+    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
+
+    }//GEN-LAST:event_formWindowActivated
+
     /**
      * @param args the command line arguments
      */
@@ -801,6 +818,7 @@ public class FRMListaProdutos extends javax.swing.JFrame {
 
     public void setDados(String mesa) {
         labMesa.setText(mesa);
+        atualizaProdutos();
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
